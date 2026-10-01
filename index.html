@@ -137,13 +137,15 @@
   }
 
   .assign-grid{
-    display:grid;
-    grid-template-columns:repeat(auto-fill,minmax(240px,1fr));
-    gap:18px;
+    display:flex;
+    flex-direction:column;
+    gap:14px;
     margin-top:24px;
   }
   .assign-card{
-    display:flex; flex-direction:column;
+    display:flex;
+    flex-direction:row;
+    align-items:stretch;
     background:var(--paper);
     border:1px solid var(--line);
     border-radius:12px;
@@ -154,14 +156,18 @@
   }
   .assign-card:hover{ transform:translateY(-2px); border-color:var(--purple-mid); }
   .assign-cover{
-    height:80px;
-    background:linear-gradient(135deg, var(--purple) 0%, var(--panel-deep) 100%);
+    flex:0 0 120px;
+    width:120px;
+    background:linear-gradient(160deg, var(--purple) 0%, var(--panel-deep) 100%);
     display:flex; align-items:center; justify-content:center;
     color:var(--gold-soft);
     font-family:'IBM Plex Mono',monospace;
-    font-size:13px;
+    font-size:14px;
+    font-weight:600;
+    text-align:center;
+    padding:12px;
   }
-  .assign-body{ padding:16px 18px; }
+  .assign-body{ padding:16px 20px; flex:1; min-width:0; display:flex; flex-direction:column; justify-content:center; }
   .assign-meta{
     display:flex; align-items:center; gap:8px;
     font-family:'IBM Plex Mono',monospace;
@@ -173,6 +179,11 @@
   }
   .assign-title{ font-weight:600; font-size:15.5px; color:var(--ink); margin:0 0 6px; }
   .assign-desc{ font-size:13.5px; color:var(--slate); margin:0; }
+
+  @media (max-width:560px){
+    .assign-cover{ flex-basis:76px; width:76px; font-size:12px; padding:10px 6px; }
+    .assign-body{ padding:14px 16px; }
+  }
 
   /* ---------- Footer ---------- */
   footer{
@@ -245,12 +256,35 @@
 </footer>
 
 <script>
-  // Add course materials here as they're built. Empty by default.
+  // Add course materials here as they're built — order in this array doesn't
+  // matter, items are always displayed sorted by chapter, then title.
+  //
+  //   { type: "notes" | "walkthrough" | "homework",
+  //     chapter: "Ch. 1", title: "Intro to Financial Statements",
+  //     description: "Reading guide covering the four core statements.",
+  //     link: "notes/ch1-part-a.html" },
+  //
+  // Links are relative to this file — e.g. a notes page saved at
+  // /notes/ch3-part-a.html is linked here as "notes/ch3-part-a.html".
   const MATERIALS = [
-    // { type: "notes", chapter: "Ch. 1", title: "Intro to Financial Statements",
-    //   description: "Reading guide covering the four core statements.",
-    //   link: "https://your-repo.github.io/" },
+    { type: "notes", chapter: "Ch. 2", title: "Part A: Measuring Business Activities",
+      description: "Transaction analysis and the accounting equation, built around Nantahala Paddling Academy's first month in business.",
+      link: "notes/ch2-part-a.html" },
+    { type: "notes", chapter: "Ch. 2", title: "Part B: Debits and Credits",
+      description: "Debit/credit rules, journal entries, posting to T-accounts, and the trial balance.",
+      link: "notes/ch2-part-b.html" },
   ];
+
+  // Sort by chapter number first (Ch. 2 before Ch. 10), then by title.
+  function chapterNum(chapterStr) {
+    const match = /(\d+)/.exec(chapterStr || '');
+    return match ? parseInt(match[1], 10) : Infinity;
+  }
+  MATERIALS.sort((a, b) => {
+    const chapterDiff = chapterNum(a.chapter) - chapterNum(b.chapter);
+    if (chapterDiff !== 0) return chapterDiff;
+    return (a.title || '').localeCompare(b.title || '');
+  });
 
   const TYPE_LABELS = { notes: 'Notes', walkthrough: 'Walkthrough', homework: 'Homework' };
 
