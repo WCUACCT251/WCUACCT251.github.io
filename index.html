@@ -257,7 +257,10 @@
 
 <script>
   // Add course materials here as they're built — order in this array doesn't
-  // matter, items are always displayed sorted by chapter, then title.
+  // affect the page (items are always displayed sorted by chapter, then
+  // title). The N / W / H section dividers below are just for you — paste
+  // new entries under the matching letter so items of the same type stay
+  // together while you're editing.
   //
   //   { type: "notes" | "walkthrough" | "homework",
   //     chapter: "Ch. 1", title: "Intro to Financial Statements",
@@ -267,12 +270,19 @@
   // Links are relative to this file — e.g. a notes page saved at
   // /notes/ch3-part-a.html is linked here as "notes/ch3-part-a.html".
   const MATERIALS = [
+
+    // ---- N — NOTES ----
     { type: "notes", chapter: "Ch. 2", title: "Part A: Measuring Business Activities",
       description: "Transaction analysis and the accounting equation, built around Nantahala Paddling Academy's first month in business.",
       link: "notes/ch2-part-a.html" },
     { type: "notes", chapter: "Ch. 2", title: "Part B: Debits and Credits",
       description: "Debit/credit rules, journal entries, posting to T-accounts, and the trial balance.",
       link: "notes/ch2-part-b.html" },
+
+    // ---- W — WALKTHROUGHS ----
+
+    // ---- H — HOMEWORK ----
+
   ];
 
   // Sort by chapter number first (Ch. 2 before Ch. 10), then by title.
