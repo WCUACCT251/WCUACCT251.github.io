@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ACCT 251 Course Materials</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:opsz,wght@8..60,500;8..60,600;8..60,700&family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --sky-top:#1B0F30;
+    --sky-mid:#4A2A72;
+    --gold:#C9A24B;
+    --gold-soft:#E6CE93;
+    --stone:#F1EFE9;
+    --paper:#FFFFFF;
+    --ink:#211D2E;
+    --slate:#5C5768;
+    --line:#E3DFD3;
+    --shadow: 0 1px 2px rgba(33,29,46,0.06), 0 10px 24px rgba(33,29,46,0.07);
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{
+    background:var(--stone);
+    color:var(--ink);
+    font-family:'Inter',sans-serif;
+    line-height:1.55;
+    -webkit-font-smoothing:antialiased;
+  }
+  a{ color:inherit; }
+  .wrap{ max-width:1000px; margin:0 auto; padding:0 28px; }
+
+  /* ---------- Header: duotone mountain photo ---------- */
+  header{
+    position:relative;
+    min-height:clamp(380px, 48vw, 540px);
+    display:flex;
+    align-items:flex-end;
+    background:
+      linear-gradient(180deg, rgba(27,15,48,0) 58%, var(--stone) 100%),
+      linear-gradient(100deg, rgba(18,10,32,0.85) 0%, rgba(18,10,32,0.4) 42%, rgba(18,10,32,0) 68%),
+      url('images/header-mountain.jpg');
+    background-size:cover, cover, cover;
+    background-position:center, center, center 55%;
+    background-repeat:no-repeat;
+  }
+  .header-inner{
+    position:relative; z-index:2;
+    padding:0 0 68px;
+  }
+  .eyebrow{
+    font-size:14.5px; letter-spacing:.01em; color:var(--gold-soft);
+    margin:0 0 14px;
+  }
+  h1{
+    font-family:'Source Serif 4',serif;
+    font-weight:600;
+    font-size:clamp(32px,4.6vw,48px);
+    line-height:1.1;
+    margin:0 0 16px;
+    color:#FBF8F1;
+    max-width:16ch;
+    text-shadow:0 2px 18px rgba(16,8,28,0.35);
+  }
+  .dek{
+    font-size:17px;
+    color:#EDE6F3;
+    max-width:52ch;
+    margin:0;
+    text-shadow:0 1px 14px rgba(16,8,28,0.3);
+  }
+
+  /* ---------- Controls ---------- */
+  .controls{ padding:34px 0 0; }
+  .search-row{ display:flex; gap:12px; flex-wrap:wrap; margin-bottom:18px; }
+  .search-row input[type="text"]{
+    flex:1 1 240px;
+    font-family:'Inter',sans-serif;
+    font-size:14.5px;
+    padding:11px 14px;
+    border:1px solid var(--line);
+    border-radius:8px;
+    background:var(--paper);
+    color:var(--ink);
+  }
+  .search-row input[type="text"]:focus{ outline:2px solid var(--sky-mid); outline-offset:1px; }
+  .type-tabs{ display:flex; gap:8px; flex-wrap:wrap; }
+  .type-tab{
+    font-family:'IBM Plex Mono',monospace;
+    font-size:12.5px;
+    padding:9px 16px;
+    border-radius:999px;
+    border:1px solid var(--line);
+    background:var(--paper);
+    color:var(--slate);
+    cursor:pointer;
+    transition:background .15s ease, color .15s ease, border-color .15s ease;
+  }
+  .type-tab.active{
+    background:var(--sky-mid);
+    border-color:var(--sky-mid);
+    color:#FBF8F1;
+  }
+
+  /* ---------- Materials ---------- */
+  main{ padding:28px 0 64px; }
+
+  .empty-state{
+    background:var(--paper);
+    border:1px dashed var(--line);
+    border-radius:12px;
+    padding:44px 32px;
+    text-align:center;
+  }
+  .empty-state p{ margin:0 auto; max-width:46ch; color:var(--slate); font-size:15px; }
+  .empty-state .empty-title{
+    font-family:'Source Serif 4',serif;
+    font-size:19px; font-weight:600; color:var(--sky-mid); margin:0 0 8px;
+  }
+
+  .assign-grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fill,minmax(240px,1fr));
+    gap:18px;
+    margin-top:24px;
+  }
+  .assign-card{
+    display:flex; flex-direction:column;
+    background:var(--paper);
+    border:1px solid var(--line);
+    border-radius:12px;
+    overflow:hidden;
+    text-decoration:none;
+    box-shadow:var(--shadow);
+    transition:transform .15s ease, border-color .15s ease;
+  }
+  .assign-card:hover{ transform:translateY(-2px); border-color:var(--sky-mid); }
+  .assign-cover{
+    height:88px;
+    background:linear-gradient(135deg, var(--sky-mid) 0%, var(--sky-top) 100%);
+    display:flex; align-items:center; justify-content:center;
+    color:var(--gold-soft);
+    font-family:'IBM Plex Mono',monospace;
+    font-size:13px;
+  }
+  .assign-body{ padding:16px 18px; }
+  .assign-meta{
+    display:flex; align-items:center; gap:8px;
+    font-family:'IBM Plex Mono',monospace;
+    font-size:11px;
+    color:var(--gold);
+    margin:0 0 6px;
+    text-transform:uppercase;
+    letter-spacing:.03em;
+  }
+  .assign-title{ font-weight:600; font-size:15.5px; color:var(--ink); margin:0 0 6px; }
+  .assign-desc{ font-size:13.5px; color:var(--slate); margin:0; }
+
+  /* ---------- Footer ---------- */
+  footer{
+    padding:26px 0 48px;
+    color:var(--slate);
+    font-size:13px;
+    text-align:center;
+  }
+
+  @media (max-width:640px){
+    header{ min-height:380px; }
+    .header-inner{ padding:0 0 40px; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap header-inner">
+    <p class="eyebrow">Western Carolina University &middot; Accounting</p>
+    <h1>ACCT 251 Course Materials</h1>
+    <p class="dek">Reading notes, guided walkthroughs, and homework packets for Principles of Financial Accounting.</p>
+  </div>
+</header>
+
+<div class="wrap controls">
+  <div class="search-row">
+    <input type="text" id="searchInput" placeholder="Search by title or chapter&hellip;">
+  </div>
+  <div class="type-tabs" id="typeTabs">
+    <button class="type-tab active" data-type="all">All</button>
+    <button class="type-tab" data-type="notes">Notes</button>
+    <button class="type-tab" data-type="walkthrough">Walkthroughs</button>
+    <button class="type-tab" data-type="homework">Homework</button>
+  </div>
+</div>
+
+<main class="wrap">
+  <!--
+    Add items to the MATERIALS array below. Each entry:
+
+    { type: "notes" | "walkthrough" | "homework",
+      chapter: "Ch. 1", title: "Intro to Financial Statements",
+      description: "Reading guide covering the four core statements.",
+      link: "https://your-repo.github.io/" }
+
+    The empty state disappears automatically once MATERIALS has entries.
+  -->
+  <div id="materialsRoot"></div>
+</main>
+
+<footer>
+  <div class="wrap">
+    <p>Western Carolina University &middot; Department of Accounting</p>
+  </div>
+</footer>
+
+<script>
+  // Add course materials here as they're built. Empty by default.
+  const MATERIALS = [
+    // { type: "notes", chapter: "Ch. 1", title: "Intro to Financial Statements",
+    //   description: "Reading guide covering the four core statements.",
+    //   link: "https://your-repo.github.io/" },
+  ];
+
+  const TYPE_LABELS = { notes: 'Notes', walkthrough: 'Walkthrough', homework: 'Homework' };
+
+  let activeType = 'all';
+
+  function render() {
+    const root = document.getElementById('materialsRoot');
+    const query = document.getElementById('searchInput').value.trim().toLowerCase();
+
+    const filtered = MATERIALS.filter(m => {
+      const matchesType = activeType === 'all' || m.type === activeType;
+      const haystack = `${m.title} ${m.chapter || ''} ${m.description || ''}`.toLowerCase();
+      const matchesQuery = !query || haystack.includes(query);
+      return matchesType && matchesQuery;
+    });
+
+    if (MATERIALS.length === 0) {
+      root.innerHTML = `
+        <div class="empty-state">
+          <p class="empty-title">Nothing posted yet</p>
+          <p>Notes, walkthroughs, and homework will appear here as they're built &mdash; check back soon.</p>
+        </div>`;
+      return;
+    }
+
+    if (filtered.length === 0) {
+      root.innerHTML = `
+        <div class="empty-state">
+          <p class="empty-title">No matches</p>
+          <p>Try a different search term or filter.</p>
+        </div>`;
+      return;
+    }
+
+    const grid = document.createElement('div');
+    grid.className = 'assign-grid';
+    filtered.forEach(m => {
+      const card = document.createElement('a');
+      card.className = 'assign-card';
+      card.href = m.link;
+      const label = TYPE_LABELS[m.type] || '';
+      card.innerHTML = `
+        <div class="assign-cover">${m.chapter || ''}</div>
+        <div class="assign-body">
+          <p class="assign-meta">${[label, m.chapter].filter(Boolean).join(' &middot; ')}</p>
+          <p class="assign-title">${m.title}</p>
+          <p class="assign-desc">${m.description || ''}</p>
+        </div>`;
+      grid.appendChild(card);
+    });
+    root.innerHTML = '';
+    root.appendChild(grid);
+  }
+
+  document.getElementById('typeTabs').addEventListener('click', (e) => {
+    const btn = e.target.closest('.type-tab');
+    if (!btn) return;
+    document.querySelectorAll('.type-tab').forEach(t => t.classList.remove('active'));
+    btn.classList.add('active');
+    activeType = btn.dataset.type;
+    render();
+  });
+  document.getElementById('searchInput').addEventListener('input', render);
+
+  render();
+</script>
+
+</body>
+</html>
