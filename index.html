@@ -43,57 +43,49 @@
     background:var(--gold);
   }
 
-  /* ---------- Header: split panel + framed photo ---------- */
+  /* ---------- Header: full-bleed photo, purple spotlight behind text ---------- */
   header{
-    background:linear-gradient(170deg, var(--panel) 0%, var(--panel-deep) 100%);
-  }
-  .header-grid{
-    max-width:1080px; margin:0 auto;
-    display:flex;
-    align-items:stretch;
+    position:relative;
     min-height:480px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    background:
+      radial-gradient(ellipse 680px 460px at 50% 50%, var(--panel) 0%, rgba(89,44,136,0.97) 34%, rgba(89,44,136,0.7) 54%, rgba(89,44,136,0.25) 74%, rgba(89,44,136,0) 88%),
+      linear-gradient(rgba(40,20,64,0.12), rgba(40,20,64,0.12)),
+      url('images/header-mountain.jpg');
+    background-size:cover, cover, cover;
+    background-position:center, center, center 55%;
+    background-repeat:no-repeat;
   }
-  .header-text{
-    flex:1 1 50%; min-width:0;
-    display:flex; flex-direction:column; justify-content:center;
-    padding:60px 32px 60px 32px;
+  .header-inner{
+    position:relative; z-index:2;
+    max-width:620px;
+    margin:0 auto;
+    padding:64px 32px;
+    text-align:left;
   }
   .eyebrow{
     font-family:'IBM Plex Mono',monospace;
     font-size:12.5px; letter-spacing:.05em; color:var(--gold-soft);
     margin:0 0 18px;
     text-transform:uppercase;
+    text-shadow:0 1px 14px rgba(0,0,0,0.45);
   }
   h1{
     font-family:'Source Serif 4',serif;
     font-weight:600;
-    font-size:clamp(32px,3.6vw,44px);
+    font-size:clamp(32px,3.6vw,46px);
     line-height:1.12;
     margin:0 0 18px;
     color:#FFFFFF;
-    max-width:12ch;
+    text-shadow:0 2px 20px rgba(0,0,0,0.4);
   }
   .dek{
     font-size:16.5px;
-    color:#D6CCE3;
-    max-width:40ch;
+    color:#EDE6F3;
     margin:0;
-  }
-  .header-photo{
-    position:relative;
-    flex:1 1 50%;
-    min-width:0;
-    align-self:stretch;
-  }
-  .header-photo .frame{
-    position:absolute;
-    top:0; right:0; bottom:0; left:0;
-    background:
-      linear-gradient(90deg, var(--panel) 0%, rgba(89,44,136,0.55) 16%, rgba(89,44,136,0) 38%),
-      url('images/header-mountain.jpg');
-    background-size:cover, cover;
-    background-position:center, center 55%;
-    background-repeat:no-repeat;
+    text-shadow:0 1px 16px rgba(0,0,0,0.35);
   }
 
   /* ---------- Controls ---------- */
@@ -192,19 +184,17 @@
   }
 
   @media (max-width:800px){
-    .header-grid{ flex-direction:column; min-height:0; }
-    .header-text{ flex:none; width:100%; padding:48px 28px 28px; }
-    .header-photo{ flex:none; width:100%; min-height:0; height:260px; }
-    .header-photo .frame{
+    header{
+      min-height:360px;
       background:
-        linear-gradient(180deg, var(--panel) 0%, rgba(89,44,136,0.5) 18%, rgba(89,44,136,0) 42%),
+        radial-gradient(ellipse 320px 420px at 50% 50%, var(--panel) 0%, rgba(89,44,136,0.92) 30%, rgba(89,44,136,0.5) 55%, rgba(89,44,136,0) 80%),
+        linear-gradient(rgba(40,20,64,0.12), rgba(40,20,64,0.12)),
         url('images/header-mountain.jpg');
-      background-size:cover, cover;
-      background-position:center, center 55%;
+      background-size:cover, cover, cover;
+      background-position:center, center, center 55%;
       background-repeat:no-repeat;
     }
-    h1{ max-width:none; }
-    .dek{ max-width:none; }
+    .header-inner{ padding:44px 24px; max-width:none; }
   }
 </style>
 </head>
@@ -213,15 +203,10 @@
 <div class="topbar"></div>
 
 <header>
-  <div class="header-grid">
-    <div class="header-text">
-      <p class="eyebrow">Western Carolina University &middot; Accounting</p>
-      <h1>ACCT 251 Course Materials</h1>
-      <p class="dek">Reading notes, guided walkthroughs, and homework packets for Principles of Financial Accounting.</p>
-    </div>
-    <div class="header-photo">
-      <div class="frame"></div>
-    </div>
+  <div class="header-inner">
+    <p class="eyebrow">Western Carolina University &middot; Accounting</p>
+    <h1>ACCT 251 Course Materials</h1>
+    <p class="dek">Reading notes, guided walkthroughs, and homework packets for Principles of Financial Accounting.</p>
   </div>
 </header>
 
