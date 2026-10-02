@@ -1,0 +1,1404 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Walkthrough: Transaction Analysis &amp; Journal Entries | ACCT 251</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:opsz,wght@8..60,500;8..60,600;8..60,700&family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --panel:#592C88;
+    --panel-deep:#3B1D5C;
+    --gold:#C9A24B;
+    --gold-soft:#E6CE93;
+    --bg:#F7F5F0;
+    --paper:#FFFFFF;
+    --ink:#211D2E;
+    --slate:#5C5768;
+    --line:#E4E0D6;
+    --green:#2E7D4F;
+    --shadow: 0 1px 2px rgba(33,29,46,0.05), 0 10px 22px rgba(33,29,46,0.06);
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{
+    background:var(--bg);
+    color:var(--ink);
+    font-family:'Inter',sans-serif;
+    line-height:1.6;
+    -webkit-font-smoothing:antialiased;
+  }
+  a{ color:var(--panel); }
+  .wrap{ max-width:860px; margin:0 auto; padding:0 28px; }
+
+  .topbar{ height:5px; background:var(--gold); }
+
+  /* ---------- Header: trailhead sign ---------- */
+  header{
+    position:relative;
+    background:linear-gradient(170deg, var(--panel) 0%, var(--panel-deep) 100%);
+    padding:30px 0 34px;
+    border-bottom:3px dashed var(--gold-soft);
+  }
+  .crumb{
+    font-family:'IBM Plex Mono',monospace;
+    font-size:12px; letter-spacing:.03em;
+    color:var(--gold-soft);
+    margin:0 0 14px;
+  }
+  .crumb a{ color:var(--gold-soft); text-decoration:none; border-bottom:1px solid rgba(230,206,147,0.4); }
+  .crumb a:hover{ border-color:var(--gold-soft); }
+  header h1{
+    font-family:'Source Serif 4',serif;
+    font-weight:600;
+    font-size:clamp(26px,3.6vw,36px);
+    line-height:1.15;
+    margin:0 0 8px;
+    color:#FFFFFF;
+  }
+  header .subtitle{
+    font-size:15.5px;
+    color:#D9CCE8;
+    margin:0;
+  }
+  .sign-row{ display:flex; gap:8px; flex-wrap:wrap; margin:22px 0 0; }
+  .sign-pill{
+    font-family:'IBM Plex Mono',monospace;
+    font-size:11.5px;
+    background:rgba(255,255,255,0.12);
+    border:1px solid rgba(230,206,147,0.35);
+    color:var(--gold-soft);
+    padding:6px 12px;
+    border-radius:6px;
+  }
+
+  main{ padding:40px 0 70px; }
+
+  h2{
+    font-family:'Source Serif 4',serif;
+    font-weight:600;
+    font-size:22px;
+    color:var(--panel);
+    margin:0 0 14px;
+  }
+  p{ font-size:15.5px; color:var(--ink); margin:0 0 14px; }
+  strong{ color:var(--ink); }
+
+  .intro{
+    background:var(--paper);
+    border:1px solid var(--line);
+    border-radius:10px;
+    padding:22px 24px;
+    margin:0 0 40px;
+    box-shadow:var(--shadow);
+  }
+  .intro .co-name{ color:var(--panel); font-weight:700; }
+
+  /* ---------- Trail of stops ---------- */
+  .trail{ position:relative; }
+  .stop{ display:flex; gap:20px; }
+  .stop-rail{ flex:0 0 44px; display:flex; flex-direction:column; align-items:center; }
+  .stop-dot{
+    width:40px; height:40px; border-radius:50%;
+    background:linear-gradient(160deg, var(--gold) 0%, #B0863A 100%);
+    color:var(--panel-deep);
+    font-family:'IBM Plex Mono',monospace;
+    font-weight:700; font-size:15px;
+    display:flex; align-items:center; justify-content:center;
+    box-shadow:0 2px 6px rgba(33,29,46,0.25);
+    flex:none;
+  }
+  .stop-line{
+    flex:1;
+    width:2px;
+    margin-top:6px;
+    background:repeating-linear-gradient(to bottom, var(--gold) 0, var(--gold) 6px, transparent 6px, transparent 13px);
+  }
+  .stop:last-child .stop-line{ display:none; }
+  .stop-content{ flex:1; min-width:0; padding-bottom:36px; }
+
+  .stop-card{
+    background:var(--paper);
+    border:1px solid var(--line);
+    border-radius:10px;
+    padding:20px 22px;
+    box-shadow:var(--shadow);
+  }
+  .stop-head{ display:flex; align-items:baseline; gap:10px; flex-wrap:wrap; margin-bottom:8px; }
+  .stop-title{ font-weight:700; font-size:16px; color:var(--ink); }
+  .stop-date{ font-family:'IBM Plex Mono',monospace; font-size:12px; color:var(--slate); margin-left:auto; }
+  .stop-desc{ font-size:15px; color:var(--ink); margin-bottom:18px; }
+
+  .task{ margin-top:18px; padding-top:18px; border-top:1px solid var(--line); }
+  .task:first-child{ margin-top:0; padding-top:0; border-top:none; }
+  .task-label{
+    font-family:'IBM Plex Mono',monospace;
+    font-size:11px; text-transform:uppercase; letter-spacing:.04em;
+    color:var(--gold); background:#FBF3E3; display:inline-block;
+    padding:4px 10px; border-radius:999px; margin-bottom:10px;
+  }
+  .task-q{ font-weight:600; font-size:14.5px; margin-bottom:10px; }
+  textarea.answer-box{
+    width:100%;
+    min-height:64px;
+    font-family:'Inter',sans-serif;
+    font-size:14px;
+    color:var(--ink);
+    border:1px solid var(--line);
+    border-radius:8px;
+    padding:10px 12px;
+    resize:vertical;
+    margin-bottom:10px;
+  }
+  textarea.answer-box:focus{ outline:2px solid var(--panel); outline-offset:1px; }
+
+  /* Structured answer templates */
+  .input-template{ margin-bottom:10px; }
+  .req-input{
+    font-family:'Inter',sans-serif;
+    font-size:13.5px;
+    color:var(--ink);
+    border:1px solid var(--line);
+    border-radius:6px;
+    padding:8px 10px;
+    background:var(--paper);
+    width:100%;
+  }
+  .req-input:focus{ outline:2px solid var(--panel); outline-offset:1px; }
+
+  /* Accounting-equation input (Assets = Liabilities + Equity) */
+  .eq-cols{
+    display:flex;
+    align-items:flex-start;
+    gap:10px;
+    background:var(--bg);
+    border-radius:8px;
+    padding:14px;
+    flex-wrap:wrap;
+  }
+  .eq-col{ flex:1 1 0; min-width:160px; display:flex; flex-direction:column; gap:6px; }
+  .eq-col-label{
+    font-family:'IBM Plex Mono',monospace;
+    font-size:10.5px; text-transform:uppercase; letter-spacing:.03em;
+    color:var(--gold); margin:0 0 2px; text-align:center;
+  }
+  .eq-op{
+    flex:0 0 auto; align-self:center;
+    font-family:'IBM Plex Mono',monospace;
+    font-weight:700; font-size:16px; color:var(--slate);
+    padding-top:22px;
+  }
+  .eq-row{ display:flex; flex-direction:column; gap:4px; }
+  .eq-hint{ font-size:12px; color:var(--slate); margin:10px 0 0; font-style:italic; }
+
+  @media (max-width:640px){
+    .eq-cols{ flex-direction:column; }
+    .eq-op{ padding-top:0; align-self:flex-start; }
+    .eq-col{ width:100%; }
+  }
+
+  table.journal-input{ width:100%; border-collapse:collapse; margin-bottom:10px; background:var(--bg); border-radius:8px; overflow:hidden; }
+  table.journal-input th{ font-family:'IBM Plex Mono',monospace; font-size:10.5px; text-transform:uppercase; letter-spacing:.03em; color:var(--slate); text-align:left; padding:8px 10px 4px; }
+  table.journal-input th:nth-child(2), table.journal-input th:nth-child(3){ text-align:right; width:110px; }
+  table.journal-input td{ padding:5px 10px 9px; }
+  table.journal-input td.indent{ padding-left:28px; }
+  table.journal-input .req-input{ width:100%; }
+  table.journal-input .amt-line .req-input{ width:auto; flex:1; min-width:0; }
+  table.journal-input .req-input.amt,
+  table.journal-input .je-amt{ text-align:right; }
+
+  .amt-line{ display:flex; align-items:center; gap:6px; }
+  .amt-line .eq-amt{ flex:1; min-width:0; }
+  .row-mark{
+    display:none;
+    flex:none;
+    color:#B2271A;
+    font-weight:700;
+    font-size:15px;
+    line-height:1;
+  }
+  .row-mark.show{ display:inline-block; }
+
+  .reveal-warning{
+    display:none;
+    font-size:13px;
+    color:#A23B2E;
+    margin:8px 0 0;
+  }
+  .reveal-warning.show{ display:block; }
+
+  .reveal-btn{
+    font-family:'Inter',sans-serif;
+    font-size:13.5px; font-weight:600;
+    background:var(--panel);
+    color:#FBF8F1;
+    border:none;
+    border-radius:999px;
+    padding:9px 18px;
+    cursor:pointer;
+  }
+  .reveal-btn:hover{ background:var(--panel-deep); }
+
+  .solution{
+    display:none;
+    margin-top:16px;
+    padding-top:16px;
+    border-top:1px dashed var(--line);
+  }
+  .solution.show{ display:block; }
+  .solution-label{
+    font-family:'IBM Plex Mono',monospace;
+    font-size:11px; text-transform:uppercase; letter-spacing:.04em;
+    color:var(--green); margin:0 0 10px; font-weight:700;
+  }
+
+  .eq-effect{
+    display:flex;
+    align-items:center;
+    gap:8px;
+    font-family:'IBM Plex Mono',monospace;
+    font-size:13px;
+    background:var(--bg);
+    border-radius:6px;
+    padding:12px 14px;
+    margin-bottom:12px;
+  }
+  .eq-effect .cell{ text-align:center; flex:1 1 0; min-width:0; }
+  .eq-effect .op{ color:var(--slate); font-weight:600; text-align:center; flex:0 0 auto; width:18px; }
+  .eq-effect .acct-label{ font-size:10px; color:var(--slate); text-transform:uppercase; letter-spacing:.03em; margin-bottom:2px; }
+  .eq-effect .acct{ font-weight:600; color:var(--ink); }
+  .eq-effect .amt-up{ color:var(--green); }
+  .eq-effect .amt-down{ color:#A23B2E; }
+
+  table.journal{ width:100%; border-collapse:collapse; margin-bottom:12px; font-size:13.5px; background:var(--bg); border-radius:6px; overflow:hidden; }
+  table.journal td{ padding:7px 12px; }
+  table.journal td.num{ text-align:right; font-family:'IBM Plex Mono',monospace; }
+  table.journal td.credit-acct{ padding-left:30px; color:var(--slate); }
+
+  .why{ font-size:14px; color:var(--slate); margin:0; }
+  .why strong{ color:var(--panel); }
+
+  @media (max-width:600px){
+    .stop{ gap:12px; }
+    .stop-rail{ flex-basis:32px; }
+    .stop-dot{ width:32px; height:32px; font-size:13px; }
+    .stop-date{ margin-left:0; }
+  }
+
+  .pagefoot{
+    display:flex; justify-content:space-between; align-items:center;
+    margin-top:20px; padding-top:24px; border-top:1px solid var(--line);
+    font-size:14px;
+  }
+  .pagefoot a{ text-decoration:none; font-weight:600; }
+
+  footer{
+    padding:22px 0 44px;
+    text-align:center;
+    font-size:13px;
+    color:var(--slate);
+    border-top:1px solid var(--line);
+  }
+</style>
+</head>
+<body>
+
+<div class="topbar"></div>
+<header>
+  <div class="wrap">
+    <p class="crumb"><a href="../index.html">&larr; All course materials</a> &nbsp;/&nbsp; ACCT 251 &nbsp;/&nbsp; Chapter 2</p>
+    <h1>Walkthrough: Transaction Analysis &amp; Journal Entries</h1>
+    <p class="subtitle">Work each stop in order &mdash; analyze the effect on the accounting equation, then write the journal entry. Reveal the solution whenever you're ready to check your thinking.</p>
+    <div class="sign-row">
+      <span class="sign-pill">8 STOPS</span>
+      <span class="sign-pill">COMPANY: BRYSON CITY BIKE WORKS</span>
+      <span class="sign-pill">FOCUS: TRANSACTIONS &amp; JOURNAL ENTRIES</span>
+    </div>
+  </div>
+</header>
+
+<main class="wrap">
+
+  <div class="intro">
+    <h2 style="margin-bottom:10px;">Meet Bryson City Bike Works</h2>
+    <p><span class="co-name">Bryson City Bike Works</span> rents mountain bikes and leads guided trail tours out of a shop near the Tsali trail system. Below are eight transactions from the company's first month in business, this November. For each stop: think through the accounting equation effect first, jot down your own answer, then reveal the solution before moving to the journal entry for that same transaction.</p>
+  </div>
+
+  <div class="trail">
+
+    <!-- Stop 1 -->
+    <div class="stop" data-stop="1">
+      <div class="stop-rail"><div class="stop-dot">1</div><div class="stop-line"></div></div>
+      <div class="stop-content">
+        <div class="stop-card">
+          <div class="stop-head"><span class="stop-title">Issue Common Stock</span><span class="stop-date">Nov 1</span></div>
+          <p class="stop-desc">Bryson City Bike Works issues common stock to investors for <strong>$180,000 cash</strong> to start the business.</p>
+
+          <div class="task">
+            <span class="task-label">Step 1</span>
+            <p class="task-q">What two accounts are affected? Enter each amount with a + for an increase or &minus; for a decrease.</p>
+            <div class="input-template eq-template">
+              <div class="eq-cols">
+                <div class="eq-col" data-col="assets">
+                  <p class="eq-col-label">Assets</p>
+                  <div class="eq-row">
+                    <input type="text" class="req-input eq-acct" placeholder="Account">
+                    <div class="amt-line">
+                      <input type="text" class="req-input eq-amt" placeholder="$">
+                      <span class="row-mark">&#10007;</span>
+                    </div>
+                  </div>
+                  <div class="eq-row">
+                    <input type="text" class="req-input eq-acct" placeholder="Account">
+                    <div class="amt-line">
+                      <input type="text" class="req-input eq-amt" placeholder="$">
+                      <span class="row-mark">&#10007;</span>
+                    </div>
+                  </div>
+                </div>
+                <div class="eq-op">=</div>
+                <div class="eq-col" data-col="liabilities">
+                  <p class="eq-col-label">Liabilities</p>
+                  <div class="eq-row">
+                    <input type="text" class="req-input eq-acct" placeholder="Account">
+                    <div class="amt-line">
+                      <input type="text" class="req-input eq-amt" placeholder="$">
+                      <span class="row-mark">&#10007;</span>
+                    </div>
+                  </div>
+                  <div class="eq-row">
+                    <input type="text" class="req-input eq-acct" placeholder="Account">
+                    <div class="amt-line">
+                      <input type="text" class="req-input eq-amt" placeholder="$">
+                      <span class="row-mark">&#10007;</span>
+                    </div>
+                  </div>
+                </div>
+                <div class="eq-op">+</div>
+                <div class="eq-col" data-col="equity">
+                  <p class="eq-col-label">Stockholders&rsquo; Equity</p>
+                  <div class="eq-row">
+                    <input type="text" class="req-input eq-acct" placeholder="Account">
+                    <div class="amt-line">
+                      <input type="text" class="req-input eq-amt" placeholder="$">
+                      <span class="row-mark">&#10007;</span>
+                    </div>
+                  </div>
+                  <div class="eq-row">
+                    <input type="text" class="req-input eq-acct" placeholder="Account">
+                    <div class="amt-line">
+                      <input type="text" class="req-input eq-amt" placeholder="$">
+                      <span class="row-mark">&#10007;</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <p class="eq-hint">Use a plus sign for an increase and a minus sign for a decrease (e.g. +180,000 or &minus;95,000). Each column has two rows in case a transaction affects two accounts in the same category (for example, buying equipment with cash affects two asset accounts) &mdash; if only one account in a category changes, leave its second row blank. Fill in at least two complete rows total.</p>
+            </div>
+            <button class="reveal-btn" onclick="checkAndReveal(this)">Reveal Solution</button>
+            <p class="reveal-warning">Fill in your answer above before revealing the solution.</p>
+            <div class="solution">
+              <p class="solution-label">Solution</p>
+              <div class="eq-effect">
+                <div class="cell"><div class="acct-label">Asset</div><div class="acct">Cash</div><div class="amt-up">+$180,000</div></div>
+                <div class="op">=</div>
+                <div class="cell"><div class="acct-label">Liabilities</div><div class="acct">&mdash;</div><div>no change</div></div>
+                <div class="op">+</div>
+                <div class="cell"><div class="acct-label">Stockholders&rsquo; Equity</div><div class="acct">Common Stock</div><div class="amt-up">+$180,000</div></div>
+              </div>
+              <p class="why"><strong>Let Me Explain:</strong> investors hand the shop $180,000 in exchange for ownership shares. The shop now controls more cash &mdash; an asset increase &mdash; and investors get a bigger claim on the business, which is exactly what stockholders' equity measures. Both sides grow together, so the equation stays balanced.</p>
+            </div>
+          </div>
+
+          <div class="task">
+            <span class="task-label">Step 2</span>
+            <p class="task-q">Write the journal entry for this transaction.</p>
+            <table class="journal-input">
+              <tr><th>Account</th><th>Debit</th><th>Credit</th></tr>
+              <tr data-role="debit">
+                <td><input type="text" class="req-input je-acct" placeholder="Account debited"></td>
+                <td><div class="amt-line"><input type="text" class="req-input je-amt" placeholder="$"><span class="row-mark">&#10007;</span></div></td>
+                <td></td>
+              </tr>
+              <tr data-role="credit">
+                <td class="indent"><input type="text" class="req-input je-acct" placeholder="Account credited"></td>
+                <td></td>
+                <td><div class="amt-line"><input type="text" class="req-input je-amt" placeholder="$"><span class="row-mark">&#10007;</span></div></td>
+              </tr>
+            </table>
+            <button class="reveal-btn" onclick="checkAndReveal(this)">Reveal Solution</button>
+            <p class="reveal-warning">Fill in your answer above before revealing the solution.</p>
+            <div class="solution">
+              <p class="solution-label">Solution</p>
+              <table class="journal">
+                <tr><td>Cash</td><td class="num">180,000</td><td></td></tr>
+                <tr><td class="credit-acct">Common Stock</td><td></td><td class="num">180,000</td></tr>
+              </table>
+              <p class="why"><strong>Let Me Explain:</strong> Cash is an asset, and assets increase with a debit &mdash; so Cash is debited. Common Stock is an equity account, and equity accounts increase with a credit &mdash; so Common Stock is credited. Debits ($180,000) equal credits ($180,000), so the entry balances.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Stop 2 -->
+    <div class="stop" data-stop="2">
+      <div class="stop-rail"><div class="stop-dot">2</div><div class="stop-line"></div></div>
+      <div class="stop-content">
+        <div class="stop-card">
+          <div class="stop-head"><span class="stop-title">Borrow Cash from the Bank</span><span class="stop-date">Nov 1</span></div>
+          <p class="stop-desc">The shop borrows <strong>$90,000</strong> from a local bank, signing a note promising to repay it in five years.</p>
+
+          <div class="task">
+            <span class="task-label">Step 1</span>
+            <p class="task-q">What two accounts are affected? Enter each amount with a + for an increase or &minus; for a decrease.</p>
+            <div class="input-template eq-template">
+              <div class="eq-cols">
+                <div class="eq-col" data-col="assets">
+                  <p class="eq-col-label">Assets</p>
+                  <div class="eq-row">
+                    <input type="text" class="req-input eq-acct" placeholder="Account">
+                    <div class="amt-line">
+                      <input type="text" class="req-input eq-amt" placeholder="$">
+                      <span class="row-mark">&#10007;</span>
+                    </div>
+                  </div>
+                  <div class="eq-row">
+                    <input type="text" class="req-input eq-acct" placeholder="Account">
+                    <div class="amt-line">
+                      <input type="text" class="req-input eq-amt" placeholder="$">
+                      <span class="row-mark">&#10007;</span>
+                    </div>
+                  </div>
+                </div>
+                <div class="eq-op">=</div>
+                <div class="eq-col" data-col="liabilities">
+                  <p class="eq-col-label">Liabilities</p>
+                  <div class="eq-row">
+                    <input type="text" class="req-input eq-acct" placeholder="Account">
+                    <div class="amt-line">
+                      <input type="text" class="req-input eq-amt" placeholder="$">
+                      <span class="row-mark">&#10007;</span>
+                    </div>
+                  </div>
+                  <div class="eq-row">
+                    <input type="text" class="req-input eq-acct" placeholder="Account">
+                    <div class="amt-line">
+                      <input type="text" class="req-input eq-amt" placeholder="$">
+                      <span class="row-mark">&#10007;</span>
+                    </div>
+                  </div>
+                </div>
+                <div class="eq-op">+</div>
+                <div class="eq-col" data-col="equity">
+                  <p class="eq-col-label">Stockholders&rsquo; Equity</p>
+                  <div class="eq-row">
+                    <input type="text" class="req-input eq-acct" placeholder="Account">
+                    <div class="amt-line">
+                      <input type="text" class="req-input eq-amt" placeholder="$">
+                      <span class="row-mark">&#10007;</span>
+                    </div>
+                  </div>
+                  <div class="eq-row">
+                    <input type="text" class="req-input eq-acct" placeholder="Account">
+                    <div class="amt-line">
+                      <input type="text" class="req-input eq-amt" placeholder="$">
+                      <span class="row-mark">&#10007;</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <p class="eq-hint">Use a plus sign for an increase and a minus sign for a decrease (e.g. +180,000 or &minus;95,000). Each column has two rows in case a transaction affects two accounts in the same category (for example, buying equipment with cash affects two asset accounts) &mdash; if only one account in a category changes, leave its second row blank. Fill in at least two complete rows total.</p>
+            </div>
+            <button class="reveal-btn" onclick="checkAndReveal(this)">Reveal Solution</button>
+            <p class="reveal-warning">Fill in your answer above before revealing the solution.</p>
+            <div class="solution">
+              <p class="solution-label">Solution</p>
+              <div class="eq-effect">
+                <div class="cell"><div class="acct-label">Asset</div><div class="acct">Cash</div><div class="amt-up">+$90,000</div></div>
+                <div class="op">=</div>
+                <div class="cell"><div class="acct-label">Liabilities</div><div class="acct">Notes Payable</div><div class="amt-up">+$90,000</div></div>
+                <div class="op">+</div>
+                <div class="cell"><div class="acct-label">Stockholders&rsquo; Equity</div><div class="acct">&mdash;</div><div>no change</div></div>
+              </div>
+              <p class="why"><strong>Let Me Explain:</strong> borrowing money brings cash in right now, but it also creates an obligation to pay that money back later &mdash; that's a liability, not equity. Nothing about ownership changes here, so stockholders' equity is untouched.</p>
+            </div>
+          </div>
+
+          <div class="task">
+            <span class="task-label">Step 2</span>
+            <p class="task-q">Write the journal entry for this transaction.</p>
+            <table class="journal-input">
+              <tr><th>Account</th><th>Debit</th><th>Credit</th></tr>
+              <tr data-role="debit">
+                <td><input type="text" class="req-input je-acct" placeholder="Account debited"></td>
+                <td><div class="amt-line"><input type="text" class="req-input je-amt" placeholder="$"><span class="row-mark">&#10007;</span></div></td>
+                <td></td>
+              </tr>
+              <tr data-role="credit">
+                <td class="indent"><input type="text" class="req-input je-acct" placeholder="Account credited"></td>
+                <td></td>
+                <td><div class="amt-line"><input type="text" class="req-input je-amt" placeholder="$"><span class="row-mark">&#10007;</span></div></td>
+              </tr>
+            </table>
+            <button class="reveal-btn" onclick="checkAndReveal(this)">Reveal Solution</button>
+            <p class="reveal-warning">Fill in your answer above before revealing the solution.</p>
+            <div class="solution">
+              <p class="solution-label">Solution</p>
+              <table class="journal">
+                <tr><td>Cash</td><td class="num">90,000</td><td></td></tr>
+                <tr><td class="credit-acct">Notes Payable</td><td></td><td class="num">90,000</td></tr>
+              </table>
+              <p class="why"><strong>Let Me Explain:</strong> Cash (an asset) goes up, so it's debited. Notes Payable (a liability) goes up too, and liabilities increase with a credit &mdash; the opposite of assets.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Stop 3 -->
+    <div class="stop" data-stop="3">
+      <div class="stop-rail"><div class="stop-dot">3</div><div class="stop-line"></div></div>
+      <div class="stop-content">
+        <div class="stop-card">
+          <div class="stop-head"><span class="stop-title">Purchase Bike Fleet</span><span class="stop-date">Nov 2</span></div>
+          <p class="stop-desc">Purchases a fleet of trail bikes for <strong>$95,000 cash</strong>.</p>
+
+          <div class="task">
+            <span class="task-label">Step 1</span>
+            <p class="task-q">What two accounts are affected? Enter each amount with a + for an increase or &minus; for a decrease.</p>
+            <div class="input-template eq-template">
+              <div class="eq-cols">
+                <div class="eq-col" data-col="assets">
+                  <p class="eq-col-label">Assets</p>
+                  <div class="eq-row">
+                    <input type="text" class="req-input eq-acct" placeholder="Account">
+                    <div class="amt-line">
+                      <input type="text" class="req-input eq-amt" placeholder="$">
+                      <span class="row-mark">&#10007;</span>
+                    </div>
+                  </div>
+                  <div class="eq-row">
+                    <input type="text" class="req-input eq-acct" placeholder="Account">
+                    <div class="amt-line">
+                      <input type="text" class="req-input eq-amt" placeholder="$">
+                      <span class="row-mark">&#10007;</span>
+                    </div>
+                  </div>
+                </div>
+                <div class="eq-op">=</div>
+                <div class="eq-col" data-col="liabilities">
+                  <p class="eq-col-label">Liabilities</p>
+                  <div class="eq-row">
+                    <input type="text" class="req-input eq-acct" placeholder="Account">
+                    <div class="amt-line">
+                      <input type="text" class="req-input eq-amt" placeholder="$">
+                      <span class="row-mark">&#10007;</span>
+                    </div>
+                  </div>
+                  <div class="eq-row">
+                    <input type="text" class="req-input eq-acct" placeholder="Account">
+                    <div class="amt-line">
+                      <input type="text" class="req-input eq-amt" placeholder="$">
+                      <span class="row-mark">&#10007;</span>
+                    </div>
+                  </div>
+                </div>
+                <div class="eq-op">+</div>
+                <div class="eq-col" data-col="equity">
+                  <p class="eq-col-label">Stockholders&rsquo; Equity</p>
+                  <div class="eq-row">
+                    <input type="text" class="req-input eq-acct" placeholder="Account">
+                    <div class="amt-line">
+                      <input type="text" class="req-input eq-amt" placeholder="$">
+                      <span class="row-mark">&#10007;</span>
+                    </div>
+                  </div>
+                  <div class="eq-row">
+                    <input type="text" class="req-input eq-acct" placeholder="Account">
+                    <div class="amt-line">
+                      <input type="text" class="req-input eq-amt" placeholder="$">
+                      <span class="row-mark">&#10007;</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <p class="eq-hint">Use a plus sign for an increase and a minus sign for a decrease (e.g. +180,000 or &minus;95,000). Each column has two rows in case a transaction affects two accounts in the same category (for example, buying equipment with cash affects two asset accounts) &mdash; if only one account in a category changes, leave its second row blank. Fill in at least two complete rows total.</p>
+            </div>
+            <button class="reveal-btn" onclick="checkAndReveal(this)">Reveal Solution</button>
+            <p class="reveal-warning">Fill in your answer above before revealing the solution.</p>
+            <div class="solution">
+              <p class="solution-label">Solution</p>
+              <div class="eq-effect">
+                <div class="cell"><div class="acct-label">Asset</div><div class="acct">Equipment</div><div class="amt-up">+$95,000</div></div>
+                <div class="op">&amp;</div>
+                <div class="cell"><div class="acct-label">Asset</div><div class="acct">Cash</div><div class="amt-down">&minus;$95,000</div></div>
+                <div class="op">=</div>
+                <div class="cell"><div class="acct-label">No Net Change</div><div class="acct">&mdash;</div><div>$0</div></div>
+              </div>
+              <p class="why"><strong>Let Me Explain:</strong> the shop is just trading one resource for another &mdash; cash for bikes. Total assets don't change at all, since one asset account goes up by exactly what the other goes down.</p>
+            </div>
+          </div>
+
+          <div class="task">
+            <span class="task-label">Step 2</span>
+            <p class="task-q">Write the journal entry for this transaction.</p>
+            <table class="journal-input">
+              <tr><th>Account</th><th>Debit</th><th>Credit</th></tr>
+              <tr data-role="debit">
+                <td><input type="text" class="req-input je-acct" placeholder="Account debited"></td>
+                <td><div class="amt-line"><input type="text" class="req-input je-amt" placeholder="$"><span class="row-mark">&#10007;</span></div></td>
+                <td></td>
+              </tr>
+              <tr data-role="credit">
+                <td class="indent"><input type="text" class="req-input je-acct" placeholder="Account credited"></td>
+                <td></td>
+                <td><div class="amt-line"><input type="text" class="req-input je-amt" placeholder="$"><span class="row-mark">&#10007;</span></div></td>
+              </tr>
+            </table>
+            <button class="reveal-btn" onclick="checkAndReveal(this)">Reveal Solution</button>
+            <p class="reveal-warning">Fill in your answer above before revealing the solution.</p>
+            <div class="solution">
+              <p class="solution-label">Solution</p>
+              <table class="journal">
+                <tr><td>Equipment</td><td class="num">95,000</td><td></td></tr>
+                <tr><td class="credit-acct">Cash</td><td></td><td class="num">95,000</td></tr>
+              </table>
+              <p class="why"><strong>Let Me Explain:</strong> Equipment (an asset) increases, so it's debited. Cash (also an asset) decreases, and assets decrease with a credit &mdash; the opposite of how they increase.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Stop 4 -->
+    <div class="stop" data-stop="4">
+      <div class="stop-rail"><div class="stop-dot">4</div><div class="stop-line"></div></div>
+      <div class="stop-content">
+        <div class="stop-card">
+          <div class="stop-head"><span class="stop-title">Prepay Insurance</span><span class="stop-date">Nov 3</span></div>
+          <p class="stop-desc">Pays one year of business insurance in advance, <strong>$24,000</strong> ($2,000/month).</p>
+
+          <div class="task">
+            <span class="task-label">Step 1</span>
+            <p class="task-q">What two accounts are affected? Enter each amount with a + for an increase or &minus; for a decrease.</p>
+            <div class="input-template eq-template">
+              <div class="eq-cols">
+                <div class="eq-col" data-col="assets">
+                  <p class="eq-col-label">Assets</p>
+                  <div class="eq-row">
+                    <input type="text" class="req-input eq-acct" placeholder="Account">
+                    <div class="amt-line">
+                      <input type="text" class="req-input eq-amt" placeholder="$">
+                      <span class="row-mark">&#10007;</span>
+                    </div>
+                  </div>
+                  <div class="eq-row">
+                    <input type="text" class="req-input eq-acct" placeholder="Account">
+                    <div class="amt-line">
+                      <input type="text" class="req-input eq-amt" placeholder="$">
+                      <span class="row-mark">&#10007;</span>
+                    </div>
+                  </div>
+                </div>
+                <div class="eq-op">=</div>
+                <div class="eq-col" data-col="liabilities">
+                  <p class="eq-col-label">Liabilities</p>
+                  <div class="eq-row">
+                    <input type="text" class="req-input eq-acct" placeholder="Account">
+                    <div class="amt-line">
+                      <input type="text" class="req-input eq-amt" placeholder="$">
+                      <span class="row-mark">&#10007;</span>
+                    </div>
+                  </div>
+                  <div class="eq-row">
+                    <input type="text" class="req-input eq-acct" placeholder="Account">
+                    <div class="amt-line">
+                      <input type="text" class="req-input eq-amt" placeholder="$">
+                      <span class="row-mark">&#10007;</span>
+                    </div>
+                  </div>
+                </div>
+                <div class="eq-op">+</div>
+                <div class="eq-col" data-col="equity">
+                  <p class="eq-col-label">Stockholders&rsquo; Equity</p>
+                  <div class="eq-row">
+                    <input type="text" class="req-input eq-acct" placeholder="Account">
+                    <div class="amt-line">
+                      <input type="text" class="req-input eq-amt" placeholder="$">
+                      <span class="row-mark">&#10007;</span>
+                    </div>
+                  </div>
+                  <div class="eq-row">
+                    <input type="text" class="req-input eq-acct" placeholder="Account">
+                    <div class="amt-line">
+                      <input type="text" class="req-input eq-amt" placeholder="$">
+                      <span class="row-mark">&#10007;</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <p class="eq-hint">Use a plus sign for an increase and a minus sign for a decrease (e.g. +180,000 or &minus;95,000). Each column has two rows in case a transaction affects two accounts in the same category (for example, buying equipment with cash affects two asset accounts) &mdash; if only one account in a category changes, leave its second row blank. Fill in at least two complete rows total.</p>
+            </div>
+            <button class="reveal-btn" onclick="checkAndReveal(this)">Reveal Solution</button>
+            <p class="reveal-warning">Fill in your answer above before revealing the solution.</p>
+            <div class="solution">
+              <p class="solution-label">Solution</p>
+              <div class="eq-effect">
+                <div class="cell"><div class="acct-label">Asset</div><div class="acct">Prepaid Insurance</div><div class="amt-up">+$24,000</div></div>
+                <div class="op">&amp;</div>
+                <div class="cell"><div class="acct-label">Asset</div><div class="acct">Cash</div><div class="amt-down">&minus;$24,000</div></div>
+                <div class="op">=</div>
+                <div class="cell"><div class="acct-label">No Net Change</div><div class="acct">&mdash;</div><div>$0</div></div>
+              </div>
+              <p class="why"><strong>Let Me Explain:</strong> paying for a full year of coverage up front doesn't use up the value right away &mdash; the shop still has something of value, just in a different form: the right to insurance coverage over the next 12 months. That's why it's recorded as an asset instead of an expense.</p>
+            </div>
+          </div>
+
+          <div class="task">
+            <span class="task-label">Step 2</span>
+            <p class="task-q">Write the journal entry for this transaction.</p>
+            <table class="journal-input">
+              <tr><th>Account</th><th>Debit</th><th>Credit</th></tr>
+              <tr data-role="debit">
+                <td><input type="text" class="req-input je-acct" placeholder="Account debited"></td>
+                <td><div class="amt-line"><input type="text" class="req-input je-amt" placeholder="$"><span class="row-mark">&#10007;</span></div></td>
+                <td></td>
+              </tr>
+              <tr data-role="credit">
+                <td class="indent"><input type="text" class="req-input je-acct" placeholder="Account credited"></td>
+                <td></td>
+                <td><div class="amt-line"><input type="text" class="req-input je-amt" placeholder="$"><span class="row-mark">&#10007;</span></div></td>
+              </tr>
+            </table>
+            <button class="reveal-btn" onclick="checkAndReveal(this)">Reveal Solution</button>
+            <p class="reveal-warning">Fill in your answer above before revealing the solution.</p>
+            <div class="solution">
+              <p class="solution-label">Solution</p>
+              <table class="journal">
+                <tr><td>Prepaid Insurance</td><td class="num">24,000</td><td></td></tr>
+                <tr><td class="credit-acct">Cash</td><td></td><td class="num">24,000</td></tr>
+              </table>
+              <p class="why"><strong>Let Me Explain:</strong> Prepaid Insurance is an asset going up, so it's debited. Cash is an asset going down, so it's credited.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Stop 5 -->
+    <div class="stop" data-stop="5">
+      <div class="stop-rail"><div class="stop-dot">5</div><div class="stop-line"></div></div>
+      <div class="stop-content">
+        <div class="stop-card">
+          <div class="stop-head"><span class="stop-title">Purchase Supplies on Account</span><span class="stop-date">Nov 6</span></div>
+          <p class="stop-desc">Purchases repair supplies &mdash; tubes, chains, patch kits &mdash; on account for <strong>$12,000</strong>.</p>
+
+          <div class="task">
+            <span class="task-label">Step 1</span>
+            <p class="task-q">What two accounts are affected? Enter each amount with a + for an increase or &minus; for a decrease.</p>
+            <div class="input-template eq-template">
+              <div class="eq-cols">
+                <div class="eq-col" data-col="assets">
+                  <p class="eq-col-label">Assets</p>
+                  <div class="eq-row">
+                    <input type="text" class="req-input eq-acct" placeholder="Account">
+                    <div class="amt-line">
+                      <input type="text" class="req-input eq-amt" placeholder="$">
+                      <span class="row-mark">&#10007;</span>
+                    </div>
+                  </div>
+                  <div class="eq-row">
+                    <input type="text" class="req-input eq-acct" placeholder="Account">
+                    <div class="amt-line">
+                      <input type="text" class="req-input eq-amt" placeholder="$">
+                      <span class="row-mark">&#10007;</span>
+                    </div>
+                  </div>
+                </div>
+                <div class="eq-op">=</div>
+                <div class="eq-col" data-col="liabilities">
+                  <p class="eq-col-label">Liabilities</p>
+                  <div class="eq-row">
+                    <input type="text" class="req-input eq-acct" placeholder="Account">
+                    <div class="amt-line">
+                      <input type="text" class="req-input eq-amt" placeholder="$">
+                      <span class="row-mark">&#10007;</span>
+                    </div>
+                  </div>
+                  <div class="eq-row">
+                    <input type="text" class="req-input eq-acct" placeholder="Account">
+                    <div class="amt-line">
+                      <input type="text" class="req-input eq-amt" placeholder="$">
+                      <span class="row-mark">&#10007;</span>
+                    </div>
+                  </div>
+                </div>
+                <div class="eq-op">+</div>
+                <div class="eq-col" data-col="equity">
+                  <p class="eq-col-label">Stockholders&rsquo; Equity</p>
+                  <div class="eq-row">
+                    <input type="text" class="req-input eq-acct" placeholder="Account">
+                    <div class="amt-line">
+                      <input type="text" class="req-input eq-amt" placeholder="$">
+                      <span class="row-mark">&#10007;</span>
+                    </div>
+                  </div>
+                  <div class="eq-row">
+                    <input type="text" class="req-input eq-acct" placeholder="Account">
+                    <div class="amt-line">
+                      <input type="text" class="req-input eq-amt" placeholder="$">
+                      <span class="row-mark">&#10007;</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <p class="eq-hint">Use a plus sign for an increase and a minus sign for a decrease (e.g. +180,000 or &minus;95,000). Each column has two rows in case a transaction affects two accounts in the same category (for example, buying equipment with cash affects two asset accounts) &mdash; if only one account in a category changes, leave its second row blank. Fill in at least two complete rows total.</p>
+            </div>
+            <button class="reveal-btn" onclick="checkAndReveal(this)">Reveal Solution</button>
+            <p class="reveal-warning">Fill in your answer above before revealing the solution.</p>
+            <div class="solution">
+              <p class="solution-label">Solution</p>
+              <div class="eq-effect">
+                <div class="cell"><div class="acct-label">Asset</div><div class="acct">Supplies</div><div class="amt-up">+$12,000</div></div>
+                <div class="op">=</div>
+                <div class="cell"><div class="acct-label">Liabilities</div><div class="acct">Accounts Payable</div><div class="amt-up">+$12,000</div></div>
+                <div class="op">+</div>
+                <div class="cell"><div class="acct-label">Stockholders&rsquo; Equity</div><div class="acct">&mdash;</div><div>no change</div></div>
+              </div>
+              <p class="why"><strong>Let Me Explain:</strong> "on account" is the signal phrase for a liability. The shop now has the supplies in hand, but it hasn't paid the supplier yet &mdash; that unpaid promise is Accounts Payable.</p>
+            </div>
+          </div>
+
+          <div class="task">
+            <span class="task-label">Step 2</span>
+            <p class="task-q">Write the journal entry for this transaction.</p>
+            <table class="journal-input">
+              <tr><th>Account</th><th>Debit</th><th>Credit</th></tr>
+              <tr data-role="debit">
+                <td><input type="text" class="req-input je-acct" placeholder="Account debited"></td>
+                <td><div class="amt-line"><input type="text" class="req-input je-amt" placeholder="$"><span class="row-mark">&#10007;</span></div></td>
+                <td></td>
+              </tr>
+              <tr data-role="credit">
+                <td class="indent"><input type="text" class="req-input je-acct" placeholder="Account credited"></td>
+                <td></td>
+                <td><div class="amt-line"><input type="text" class="req-input je-amt" placeholder="$"><span class="row-mark">&#10007;</span></div></td>
+              </tr>
+            </table>
+            <button class="reveal-btn" onclick="checkAndReveal(this)">Reveal Solution</button>
+            <p class="reveal-warning">Fill in your answer above before revealing the solution.</p>
+            <div class="solution">
+              <p class="solution-label">Solution</p>
+              <table class="journal">
+                <tr><td>Supplies</td><td class="num">12,000</td><td></td></tr>
+                <tr><td class="credit-acct">Accounts Payable</td><td></td><td class="num">12,000</td></tr>
+              </table>
+              <p class="why"><strong>Let Me Explain:</strong> Supplies (an asset) increases, so it's debited. Accounts Payable (a liability) increases, so it's credited.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Stop 6 -->
+    <div class="stop" data-stop="6">
+      <div class="stop-rail"><div class="stop-dot">6</div><div class="stop-line"></div></div>
+      <div class="stop-content">
+        <div class="stop-card">
+          <div class="stop-head"><span class="stop-title">Guide Tours for Cash</span><span class="stop-date">Nov 12</span></div>
+          <p class="stop-desc">Guides a week of paid mountain-bike tours for cash, <strong>$34,000</strong>.</p>
+
+          <div class="task">
+            <span class="task-label">Step 1</span>
+            <p class="task-q">What two accounts are affected? Enter each amount with a + for an increase or &minus; for a decrease.</p>
+            <div class="input-template eq-template">
+              <div class="eq-cols">
+                <div class="eq-col" data-col="assets">
+                  <p class="eq-col-label">Assets</p>
+                  <div class="eq-row">
+                    <input type="text" class="req-input eq-acct" placeholder="Account">
+                    <div class="amt-line">
+                      <input type="text" class="req-input eq-amt" placeholder="$">
+                      <span class="row-mark">&#10007;</span>
+                    </div>
+                  </div>
+                  <div class="eq-row">
+                    <input type="text" class="req-input eq-acct" placeholder="Account">
+                    <div class="amt-line">
+                      <input type="text" class="req-input eq-amt" placeholder="$">
+                      <span class="row-mark">&#10007;</span>
+                    </div>
+                  </div>
+                </div>
+                <div class="eq-op">=</div>
+                <div class="eq-col" data-col="liabilities">
+                  <p class="eq-col-label">Liabilities</p>
+                  <div class="eq-row">
+                    <input type="text" class="req-input eq-acct" placeholder="Account">
+                    <div class="amt-line">
+                      <input type="text" class="req-input eq-amt" placeholder="$">
+                      <span class="row-mark">&#10007;</span>
+                    </div>
+                  </div>
+                  <div class="eq-row">
+                    <input type="text" class="req-input eq-acct" placeholder="Account">
+                    <div class="amt-line">
+                      <input type="text" class="req-input eq-amt" placeholder="$">
+                      <span class="row-mark">&#10007;</span>
+                    </div>
+                  </div>
+                </div>
+                <div class="eq-op">+</div>
+                <div class="eq-col" data-col="equity">
+                  <p class="eq-col-label">Stockholders&rsquo; Equity</p>
+                  <div class="eq-row">
+                    <input type="text" class="req-input eq-acct" placeholder="Account">
+                    <div class="amt-line">
+                      <input type="text" class="req-input eq-amt" placeholder="$">
+                      <span class="row-mark">&#10007;</span>
+                    </div>
+                  </div>
+                  <div class="eq-row">
+                    <input type="text" class="req-input eq-acct" placeholder="Account">
+                    <div class="amt-line">
+                      <input type="text" class="req-input eq-amt" placeholder="$">
+                      <span class="row-mark">&#10007;</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <p class="eq-hint">Use a plus sign for an increase and a minus sign for a decrease (e.g. +180,000 or &minus;95,000). Each column has two rows in case a transaction affects two accounts in the same category (for example, buying equipment with cash affects two asset accounts) &mdash; if only one account in a category changes, leave its second row blank. Fill in at least two complete rows total.</p>
+            </div>
+            <button class="reveal-btn" onclick="checkAndReveal(this)">Reveal Solution</button>
+            <p class="reveal-warning">Fill in your answer above before revealing the solution.</p>
+            <div class="solution">
+              <p class="solution-label">Solution</p>
+              <div class="eq-effect">
+                <div class="cell"><div class="acct-label">Asset</div><div class="acct">Cash</div><div class="amt-up">+$34,000</div></div>
+                <div class="op">=</div>
+                <div class="cell"><div class="acct-label">Liabilities</div><div class="acct">&mdash;</div><div>no change</div></div>
+                <div class="op">+</div>
+                <div class="cell"><div class="acct-label">Stockholders&rsquo; Equity</div><div class="acct">Service Revenue</div><div class="amt-up">+$34,000</div></div>
+              </div>
+              <p class="why"><strong>Let Me Explain:</strong> the shop did the work and got paid on the spot, so it's entitled to recognize revenue immediately. Revenue flows into retained earnings, which is part of stockholders' equity.</p>
+            </div>
+          </div>
+
+          <div class="task">
+            <span class="task-label">Step 2</span>
+            <p class="task-q">Write the journal entry for this transaction.</p>
+            <table class="journal-input">
+              <tr><th>Account</th><th>Debit</th><th>Credit</th></tr>
+              <tr data-role="debit">
+                <td><input type="text" class="req-input je-acct" placeholder="Account debited"></td>
+                <td><div class="amt-line"><input type="text" class="req-input je-amt" placeholder="$"><span class="row-mark">&#10007;</span></div></td>
+                <td></td>
+              </tr>
+              <tr data-role="credit">
+                <td class="indent"><input type="text" class="req-input je-acct" placeholder="Account credited"></td>
+                <td></td>
+                <td><div class="amt-line"><input type="text" class="req-input je-amt" placeholder="$"><span class="row-mark">&#10007;</span></div></td>
+              </tr>
+            </table>
+            <button class="reveal-btn" onclick="checkAndReveal(this)">Reveal Solution</button>
+            <p class="reveal-warning">Fill in your answer above before revealing the solution.</p>
+            <div class="solution">
+              <p class="solution-label">Solution</p>
+              <table class="journal">
+                <tr><td>Cash</td><td class="num">34,000</td><td></td></tr>
+                <tr><td class="credit-acct">Service Revenue</td><td></td><td class="num">34,000</td></tr>
+              </table>
+              <p class="why"><strong>Let Me Explain:</strong> Cash (an asset) increases, so it's debited. Service Revenue increases equity, and equity-side accounts increase with a credit.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Stop 7 -->
+    <div class="stop" data-stop="7">
+      <div class="stop-rail"><div class="stop-dot">7</div><div class="stop-line"></div></div>
+      <div class="stop-content">
+        <div class="stop-card">
+          <div class="stop-head"><span class="stop-title">Guide a Tour on Account</span><span class="stop-date">Nov 18</span></div>
+          <p class="stop-desc">Leads a corporate team-building ride, billed on account, <strong>$8,000</strong>.</p>
+
+          <div class="task">
+            <span class="task-label">Step 1</span>
+            <p class="task-q">What two accounts are affected? Enter each amount with a + for an increase or &minus; for a decrease.</p>
+            <div class="input-template eq-template">
+              <div class="eq-cols">
+                <div class="eq-col" data-col="assets">
+                  <p class="eq-col-label">Assets</p>
+                  <div class="eq-row">
+                    <input type="text" class="req-input eq-acct" placeholder="Account">
+                    <div class="amt-line">
+                      <input type="text" class="req-input eq-amt" placeholder="$">
+                      <span class="row-mark">&#10007;</span>
+                    </div>
+                  </div>
+                  <div class="eq-row">
+                    <input type="text" class="req-input eq-acct" placeholder="Account">
+                    <div class="amt-line">
+                      <input type="text" class="req-input eq-amt" placeholder="$">
+                      <span class="row-mark">&#10007;</span>
+                    </div>
+                  </div>
+                </div>
+                <div class="eq-op">=</div>
+                <div class="eq-col" data-col="liabilities">
+                  <p class="eq-col-label">Liabilities</p>
+                  <div class="eq-row">
+                    <input type="text" class="req-input eq-acct" placeholder="Account">
+                    <div class="amt-line">
+                      <input type="text" class="req-input eq-amt" placeholder="$">
+                      <span class="row-mark">&#10007;</span>
+                    </div>
+                  </div>
+                  <div class="eq-row">
+                    <input type="text" class="req-input eq-acct" placeholder="Account">
+                    <div class="amt-line">
+                      <input type="text" class="req-input eq-amt" placeholder="$">
+                      <span class="row-mark">&#10007;</span>
+                    </div>
+                  </div>
+                </div>
+                <div class="eq-op">+</div>
+                <div class="eq-col" data-col="equity">
+                  <p class="eq-col-label">Stockholders&rsquo; Equity</p>
+                  <div class="eq-row">
+                    <input type="text" class="req-input eq-acct" placeholder="Account">
+                    <div class="amt-line">
+                      <input type="text" class="req-input eq-amt" placeholder="$">
+                      <span class="row-mark">&#10007;</span>
+                    </div>
+                  </div>
+                  <div class="eq-row">
+                    <input type="text" class="req-input eq-acct" placeholder="Account">
+                    <div class="amt-line">
+                      <input type="text" class="req-input eq-amt" placeholder="$">
+                      <span class="row-mark">&#10007;</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <p class="eq-hint">Use a plus sign for an increase and a minus sign for a decrease (e.g. +180,000 or &minus;95,000). Each column has two rows in case a transaction affects two accounts in the same category (for example, buying equipment with cash affects two asset accounts) &mdash; if only one account in a category changes, leave its second row blank. Fill in at least two complete rows total.</p>
+            </div>
+            <button class="reveal-btn" onclick="checkAndReveal(this)">Reveal Solution</button>
+            <p class="reveal-warning">Fill in your answer above before revealing the solution.</p>
+            <div class="solution">
+              <p class="solution-label">Solution</p>
+              <div class="eq-effect">
+                <div class="cell"><div class="acct-label">Asset</div><div class="acct">Accounts Receivable</div><div class="amt-up">+$8,000</div></div>
+                <div class="op">=</div>
+                <div class="cell"><div class="acct-label">Liabilities</div><div class="acct">&mdash;</div><div>no change</div></div>
+                <div class="op">+</div>
+                <div class="cell"><div class="acct-label">Stockholders&rsquo; Equity</div><div class="acct">Service Revenue</div><div class="amt-up">+$8,000</div></div>
+              </div>
+              <p class="why"><strong>Let Me Explain:</strong> the ride already happened, so the revenue is earned even though no cash has come in yet. The right to collect that $8,000 later is itself a resource &mdash; accounts receivable.</p>
+            </div>
+          </div>
+
+          <div class="task">
+            <span class="task-label">Step 2</span>
+            <p class="task-q">Write the journal entry for this transaction.</p>
+            <table class="journal-input">
+              <tr><th>Account</th><th>Debit</th><th>Credit</th></tr>
+              <tr data-role="debit">
+                <td><input type="text" class="req-input je-acct" placeholder="Account debited"></td>
+                <td><div class="amt-line"><input type="text" class="req-input je-amt" placeholder="$"><span class="row-mark">&#10007;</span></div></td>
+                <td></td>
+              </tr>
+              <tr data-role="credit">
+                <td class="indent"><input type="text" class="req-input je-acct" placeholder="Account credited"></td>
+                <td></td>
+                <td><div class="amt-line"><input type="text" class="req-input je-amt" placeholder="$"><span class="row-mark">&#10007;</span></div></td>
+              </tr>
+            </table>
+            <button class="reveal-btn" onclick="checkAndReveal(this)">Reveal Solution</button>
+            <p class="reveal-warning">Fill in your answer above before revealing the solution.</p>
+            <div class="solution">
+              <p class="solution-label">Solution</p>
+              <table class="journal">
+                <tr><td>Accounts Receivable</td><td class="num">8,000</td><td></td></tr>
+                <tr><td class="credit-acct">Service Revenue</td><td></td><td class="num">8,000</td></tr>
+              </table>
+              <p class="why"><strong>Let Me Explain:</strong> Accounts Receivable (an asset) increases, so it's debited. Service Revenue increases equity, so it's credited &mdash; the same logic as Stop 6, just with a receivable instead of cash.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Stop 8 -->
+    <div class="stop" data-stop="8">
+      <div class="stop-rail"><div class="stop-dot">8</div></div>
+      <div class="stop-content">
+        <div class="stop-card">
+          <div class="stop-head"><span class="stop-title">Pay Wages</span><span class="stop-date">Nov 27</span></div>
+          <p class="stop-desc">Pays wages to trail guides and shop staff for the month, <strong>$17,000</strong>.</p>
+
+          <div class="task">
+            <span class="task-label">Step 1</span>
+            <p class="task-q">What two accounts are affected? Enter each amount with a + for an increase or &minus; for a decrease.</p>
+            <div class="input-template eq-template">
+              <div class="eq-cols">
+                <div class="eq-col" data-col="assets">
+                  <p class="eq-col-label">Assets</p>
+                  <div class="eq-row">
+                    <input type="text" class="req-input eq-acct" placeholder="Account">
+                    <div class="amt-line">
+                      <input type="text" class="req-input eq-amt" placeholder="$">
+                      <span class="row-mark">&#10007;</span>
+                    </div>
+                  </div>
+                  <div class="eq-row">
+                    <input type="text" class="req-input eq-acct" placeholder="Account">
+                    <div class="amt-line">
+                      <input type="text" class="req-input eq-amt" placeholder="$">
+                      <span class="row-mark">&#10007;</span>
+                    </div>
+                  </div>
+                </div>
+                <div class="eq-op">=</div>
+                <div class="eq-col" data-col="liabilities">
+                  <p class="eq-col-label">Liabilities</p>
+                  <div class="eq-row">
+                    <input type="text" class="req-input eq-acct" placeholder="Account">
+                    <div class="amt-line">
+                      <input type="text" class="req-input eq-amt" placeholder="$">
+                      <span class="row-mark">&#10007;</span>
+                    </div>
+                  </div>
+                  <div class="eq-row">
+                    <input type="text" class="req-input eq-acct" placeholder="Account">
+                    <div class="amt-line">
+                      <input type="text" class="req-input eq-amt" placeholder="$">
+                      <span class="row-mark">&#10007;</span>
+                    </div>
+                  </div>
+                </div>
+                <div class="eq-op">+</div>
+                <div class="eq-col" data-col="equity">
+                  <p class="eq-col-label">Stockholders&rsquo; Equity</p>
+                  <div class="eq-row">
+                    <input type="text" class="req-input eq-acct" placeholder="Account">
+                    <div class="amt-line">
+                      <input type="text" class="req-input eq-amt" placeholder="$">
+                      <span class="row-mark">&#10007;</span>
+                    </div>
+                  </div>
+                  <div class="eq-row">
+                    <input type="text" class="req-input eq-acct" placeholder="Account">
+                    <div class="amt-line">
+                      <input type="text" class="req-input eq-amt" placeholder="$">
+                      <span class="row-mark">&#10007;</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <p class="eq-hint">Use a plus sign for an increase and a minus sign for a decrease (e.g. +180,000 or &minus;95,000). Each column has two rows in case a transaction affects two accounts in the same category (for example, buying equipment with cash affects two asset accounts) &mdash; if only one account in a category changes, leave its second row blank. Fill in at least two complete rows total.</p>
+            </div>
+            <button class="reveal-btn" onclick="checkAndReveal(this)">Reveal Solution</button>
+            <p class="reveal-warning">Fill in your answer above before revealing the solution.</p>
+            <div class="solution">
+              <p class="solution-label">Solution</p>
+              <div class="eq-effect">
+                <div class="cell"><div class="acct-label">Asset</div><div class="acct">Cash</div><div class="amt-down">&minus;$17,000</div></div>
+                <div class="op">=</div>
+                <div class="cell"><div class="acct-label">Liabilities</div><div class="acct">&mdash;</div><div>no change</div></div>
+                <div class="op">+</div>
+                <div class="cell"><div class="acct-label">Stockholders&rsquo; Equity</div><div class="acct">Wages Expense</div><div class="amt-down">&minus;$17,000</div></div>
+              </div>
+              <p class="why"><strong>Let Me Explain:</strong> paying employees for work they've already done is a cost of running the shop this month. Expenses reduce retained earnings, which reduces total stockholders' equity &mdash; and cash goes out the door to cover it.</p>
+            </div>
+          </div>
+
+          <div class="task">
+            <span class="task-label">Step 2</span>
+            <p class="task-q">Write the journal entry for this transaction.</p>
+            <table class="journal-input">
+              <tr><th>Account</th><th>Debit</th><th>Credit</th></tr>
+              <tr data-role="debit">
+                <td><input type="text" class="req-input je-acct" placeholder="Account debited"></td>
+                <td><div class="amt-line"><input type="text" class="req-input je-amt" placeholder="$"><span class="row-mark">&#10007;</span></div></td>
+                <td></td>
+              </tr>
+              <tr data-role="credit">
+                <td class="indent"><input type="text" class="req-input je-acct" placeholder="Account credited"></td>
+                <td></td>
+                <td><div class="amt-line"><input type="text" class="req-input je-amt" placeholder="$"><span class="row-mark">&#10007;</span></div></td>
+              </tr>
+            </table>
+            <button class="reveal-btn" onclick="checkAndReveal(this)">Reveal Solution</button>
+            <p class="reveal-warning">Fill in your answer above before revealing the solution.</p>
+            <div class="solution">
+              <p class="solution-label">Solution</p>
+              <table class="journal">
+                <tr><td>Wages Expense</td><td class="num">17,000</td><td></td></tr>
+                <tr><td class="credit-acct">Cash</td><td></td><td class="num">17,000</td></tr>
+              </table>
+              <p class="why"><strong>Let Me Explain:</strong> Wages Expense increases, and expenses &mdash; like dividends and assets &mdash; increase with a debit. Cash (an asset) decreases, so it's credited.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="pagefoot">
+    <a href="../notes/ch2-part-a.html">&larr; Review Ch. 2 Part A notes</a>
+    <a href="../index.html">All course materials &rarr;</a>
+  </div>
+
+</main>
+
+<script>
+  // Correct answers for each stop, used only to mark wrong entries with an
+  // X when the solution is revealed — the solution text itself is static
+  // HTML elsewhere on the page.
+  const STOPS = {
+    1: { eq: { assets: [{ name: 'Cash', amount: 180000 }], liabilities: [], equity: [{ name: 'Common Stock', amount: 180000 }] },
+         journal: { debit: { name: 'Cash', amount: 180000 }, credit: { name: 'Common Stock', amount: 180000 } } },
+    2: { eq: { assets: [{ name: 'Cash', amount: 90000 }], liabilities: [{ name: 'Notes Payable', amount: 90000 }], equity: [] },
+         journal: { debit: { name: 'Cash', amount: 90000 }, credit: { name: 'Notes Payable', amount: 90000 } } },
+    3: { eq: { assets: [{ name: 'Equipment', amount: 95000 }, { name: 'Cash', amount: -95000 }], liabilities: [], equity: [] },
+         journal: { debit: { name: 'Equipment', amount: 95000 }, credit: { name: 'Cash', amount: 95000 } } },
+    4: { eq: { assets: [{ name: 'Prepaid Insurance', amount: 24000 }, { name: 'Cash', amount: -24000 }], liabilities: [], equity: [] },
+         journal: { debit: { name: 'Prepaid Insurance', amount: 24000 }, credit: { name: 'Cash', amount: 24000 } } },
+    5: { eq: { assets: [{ name: 'Supplies', amount: 12000 }], liabilities: [{ name: 'Accounts Payable', amount: 12000, aliases: ['ap'] }], equity: [] },
+         journal: { debit: { name: 'Supplies', amount: 12000 }, credit: { name: 'Accounts Payable', amount: 12000, aliases: ['ap'] } } },
+    6: { eq: { assets: [{ name: 'Cash', amount: 34000 }], liabilities: [], equity: [{ name: 'Service Revenue', amount: 34000 }] },
+         journal: { debit: { name: 'Cash', amount: 34000 }, credit: { name: 'Service Revenue', amount: 34000 } } },
+    7: { eq: { assets: [{ name: 'Accounts Receivable', amount: 8000, aliases: ['ar'] }], liabilities: [], equity: [{ name: 'Service Revenue', amount: 8000 }] },
+         journal: { debit: { name: 'Accounts Receivable', amount: 8000, aliases: ['ar'] }, credit: { name: 'Service Revenue', amount: 8000 } } },
+    8: { eq: { assets: [{ name: 'Cash', amount: -17000 }], liabilities: [], equity: [{ name: 'Wages Expense', amount: -17000 }] },
+         journal: { debit: { name: 'Wages Expense', amount: 17000 }, credit: { name: 'Cash', amount: 17000 } } },
+  };
+
+  function normalize(s) {
+    return (s || '').toLowerCase().trim().replace(/[^a-z0-9]+/g, ' ').replace(/\s+/g, ' ').trim();
+  }
+  function matchAccount(input, expected) {
+    const normInput = normalize(input);
+    if (!normInput) return false;
+    const candidates = [expected.name].concat(expected.aliases || []).map(normalize);
+    return candidates.some(c => normInput === c || normInput.includes(c) || c.includes(normInput));
+  }
+  function parseAmount(s) {
+    if (!s) return null;
+    let t = s.trim();
+    let neg = false;
+    if (/^\(.*\)$/.test(t)) { neg = true; t = t.slice(1, -1); }
+    t = t.replace(/[$,\s]/g, '');
+    if (t.startsWith('+')) { t = t.slice(1); }
+    else if (t.startsWith('-') || t.startsWith('\u2212')) { neg = true; t = t.slice(1); }
+    const val = parseFloat(t);
+    if (isNaN(val)) return null;
+    return neg ? -val : val;
+  }
+  function matchAmount(input, expectedAmount) {
+    const val = parseAmount(input);
+    return val !== null && Math.abs(val - expectedAmount) < 0.5;
+  }
+
+  function clearMarks(task) {
+    task.querySelectorAll('.row-mark').forEach(m => m.classList.remove('show'));
+  }
+
+  function markRow(acctInput, amtInput, mark, expected) {
+    const acctVal = acctInput.value.trim();
+    const amtVal = amtInput.value.trim();
+    if (!acctVal && !amtVal) return; // blank row — nothing attempted, no mark
+    const ok = expected && matchAccount(acctVal, expected) && matchAmount(amtVal, expected.amount);
+    mark.classList.toggle('show', !ok);
+  }
+
+  function gradeTask(task, stopId) {
+    const data = STOPS[stopId];
+    if (!data) return;
+
+    const eqCols = task.querySelectorAll('.eq-col');
+    if (eqCols.length > 0) {
+      eqCols.forEach(col => {
+        const colKey = col.dataset.col;
+        const expected = (data.eq[colKey] || []).slice();
+        col.querySelectorAll('.eq-row').forEach(row => {
+          const acctInput = row.querySelector('.eq-acct');
+          const amtInput = row.querySelector('.eq-amt');
+          const mark = row.querySelector('.row-mark');
+          const acctVal = acctInput.value.trim();
+          const amtVal = amtInput.value.trim();
+          if (!acctVal && !amtVal) { mark.classList.remove('show'); return; }
+          const idx = expected.findIndex(e => matchAccount(acctVal, e) && matchAmount(amtVal, e.amount));
+          if (idx >= 0) {
+            expected.splice(idx, 1);
+            mark.classList.remove('show');
+          } else {
+            mark.classList.add('show');
+          }
+        });
+      });
+      return;
+    }
+
+    const debitRow = task.querySelector('tr[data-role="debit"]');
+    const creditRow = task.querySelector('tr[data-role="credit"]');
+    if (debitRow && creditRow) {
+      markRow(debitRow.querySelector('.je-acct'), debitRow.querySelector('.je-amt'), debitRow.querySelector('.row-mark'), data.journal.debit);
+      markRow(creditRow.querySelector('.je-acct'), creditRow.querySelector('.je-amt'), creditRow.querySelector('.row-mark'), data.journal.credit);
+    }
+  }
+
+  function checkAndReveal(btn) {
+    const task = btn.closest('.task');
+    const stopEl = btn.closest('.stop');
+    const stopId = stopEl ? stopEl.dataset.stop : null;
+    const solution = task.querySelector('.solution');
+    const warning = task.querySelector('.reveal-warning');
+    const isShowing = solution.classList.contains('show');
+
+    if (!isShowing) {
+      const eqRows = task.querySelectorAll('.eq-row');
+      let ready;
+      if (eqRows.length > 0) {
+        // Equation template: at least two fully-filled rows across the
+        // Assets / Liabilities / Equity columns (unused rows stay blank).
+        let completeRows = 0;
+        eqRows.forEach(row => {
+          const rowInputs = row.querySelectorAll('input, select');
+          if (Array.from(rowInputs).every(inp => inp.value.trim() !== '')) completeRows++;
+        });
+        ready = completeRows >= 2;
+      } else {
+        // Journal entry template: every field is required.
+        const inputs = task.querySelectorAll('.req-input');
+        ready = Array.from(inputs).every(inp => inp.value.trim() !== '');
+      }
+      if (!ready) {
+        if (warning) warning.classList.add('show');
+        return;
+      }
+      gradeTask(task, stopId);
+    } else {
+      clearMarks(task);
+    }
+
+    if (warning) warning.classList.remove('show');
+    solution.classList.toggle('show');
+    btn.textContent = solution.classList.contains('show') ? 'Hide Solution' : 'Reveal Solution';
+  }
+</script>
+
+<footer>
+  <div class="wrap">
+    <p>Western Carolina University &middot; Department of Accounting</p>
+  </div>
+</footer>
+
+</body>
+</html>
