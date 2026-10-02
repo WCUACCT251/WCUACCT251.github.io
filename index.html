@@ -257,15 +257,21 @@
 
 <script>
   // Add course materials here as they're built — order in this array doesn't
-  // affect the page (items are always displayed sorted by chapter, then
-  // title). The N / W / H section dividers below are just for you — paste
-  // new entries under the matching letter so items of the same type stay
+  // affect the page. Items are always displayed: Notes first, then
+  // Walkthroughs, then Homework; within that, by chapter number; within
+  // that, by the "order" number below (not shown anywhere on the page —
+  // it's just so you can control the sequence of same-chapter, same-type
+  // items, e.g. which walkthrough example comes first). Leave "order" out
+  // of an entry and it'll just sort after any numbered ones, by title.
+  //
+  // The N / W / H section dividers below are just for you — paste new
+  // entries under the matching letter so items of the same type stay
   // together while you're editing.
   //
   //   { type: "notes" | "walkthrough" | "homework",
   //     chapter: "Ch. 1", title: "Intro to Financial Statements",
   //     description: "Reading guide covering the four core statements.",
-  //     link: "notes/ch1-part-a.html" },
+  //     link: "notes/ch1-part-a.html", order: 1 },
   //
   // Links are relative to this file — e.g. a notes page saved at
   // /notes/ch3-part-a.html is linked here as "notes/ch3-part-a.html".
@@ -274,28 +280,39 @@
     // ---- N — NOTES ----
     { type: "notes", chapter: "Ch. 2", title: "Part A: Measuring Business Activities",
       description: "Transaction analysis and the accounting equation, built around Nantahala Paddling Academy's first month in business.",
-      link: "notes/ch2-part-a.html" },
+      link: "notes/ch2-part-a.html", order: 1 },
     { type: "notes", chapter: "Ch. 2", title: "Part B: Debits and Credits",
       description: "Debit/credit rules, journal entries, posting to T-accounts, and the trial balance.",
-      link: "notes/ch2-part-b.html" },
+      link: "notes/ch2-part-b.html", order: 2 },
 
     // ---- W — WALKTHROUGHS ----
-    { type: "walkthrough", chapter: "Ch. 2", title: "Transaction Analysis & Journal Entries Walkthrough",
+    { type: "walkthrough", chapter: "Ch. 2", title: "Transaction Analysis & Journal Entries Walkthrough Example 1",
       description: "Eight guided transactions for Bryson City Bike Works — analyze the equation effect, then write the journal entry, with reveal-to-check solutions.",
-      link: "walkthroughs/ch2-transactions-walkthrough.html" },
+      link: "walkthroughs/ch2-transactions-walkthrough.html", order: 1 },
+    { type: "walkthrough", chapter: "Ch. 2", title: "Transactions Analysis & Journal Entries Walkthrough Example 2",
+      description: "Eight more guided transactions for Bryson City Bike Works' second month — collecting receivables, paying payables, buying on account, deferred revenue, and dividends.",
+      link: "walkthroughs/ch2-december-transactions-walkthrough.html", order: 2 },
 
     // ---- H — HOMEWORK ----
 
   ];
 
-  // Sort by chapter number first (Ch. 2 before Ch. 10), then by title.
+  // Sort order: type (Notes, then Walkthroughs, then Homework) → chapter
+  // number → the hidden "order" field above → title as a final tiebreaker.
+  const TYPE_RANK = { notes: 0, walkthrough: 1, homework: 2 };
   function chapterNum(chapterStr) {
     const match = /(\d+)/.exec(chapterStr || '');
     return match ? parseInt(match[1], 10) : Infinity;
   }
   MATERIALS.sort((a, b) => {
+    const aType = TYPE_RANK[a.type] !== undefined ? TYPE_RANK[a.type] : 99;
+    const bType = TYPE_RANK[b.type] !== undefined ? TYPE_RANK[b.type] : 99;
+    if (aType !== bType) return aType - bType;
     const chapterDiff = chapterNum(a.chapter) - chapterNum(b.chapter);
     if (chapterDiff !== 0) return chapterDiff;
+    const aOrder = a.order !== undefined ? a.order : Infinity;
+    const bOrder = b.order !== undefined ? b.order : Infinity;
+    if (aOrder !== bOrder) return aOrder - bOrder;
     return (a.title || '').localeCompare(b.title || '');
   });
 
