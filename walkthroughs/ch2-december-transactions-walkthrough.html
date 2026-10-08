@@ -19,6 +19,9 @@
     --slate:#5C5768;
     --line:#E4E0D6;
     --green:#2E7D4F;
+    --green-text:#256B43;  /* success text: 5.9:1+ on white and stone */
+    --gold-text:#80622A;   /* gold darkened for text: 5.1:1+ on white, cream and stone */
+    --line-ui:#8F8059;     /* borders of form fields: 3.5:1+ on white and stone (WCAG 1.4.11) */
     --shadow: 0 1px 2px rgba(33,29,46,0.05), 0 10px 22px rgba(33,29,46,0.06);
   }
   *{box-sizing:border-box;}
@@ -31,6 +34,23 @@
     -webkit-font-smoothing:antialiased;
   }
   a{ color:var(--panel); }
+
+  /* Visually hidden, still read by screen readers */
+  .sr-only{
+    position:absolute !important; width:1px; height:1px; padding:0; margin:-1px;
+    overflow:hidden; clip:rect(0,0,0,0); clip-path:inset(50%); white-space:nowrap; border:0;
+  }
+  /* Skip link (WCAG 2.4.1) */
+  .skip-link{
+    position:absolute; left:12px; top:-80px; z-index:100;
+    background:#FFFFFF; color:var(--panel); font-weight:600; font-size:15px;
+    padding:12px 18px; border:2px solid var(--panel); border-radius:8px; text-decoration:none;
+  }
+  .skip-link:focus{ top:12px; }
+  /* One clear focus indicator on every interactive element (WCAG 2.4.7, 1.4.11) */
+  a:focus-visible, button:focus-visible, input:focus-visible{ outline:3px solid var(--panel); outline-offset:3px; }
+  header a:focus-visible{ outline-color:#FFFFFF; }   /* a purple ring would vanish on the purple header */
+  main:focus{ outline:none; }
   .wrap{ max-width:860px; margin:0 auto; padding:0 28px; }
 
   .topbar{ height:5px; background:var(--gold); }
@@ -50,6 +70,7 @@
   }
   .crumb a{ color:var(--gold-soft); text-decoration:none; border-bottom:1px solid rgba(230,206,147,0.4); }
   .crumb a:hover{ border-color:var(--gold-soft); }
+  .crumb [aria-hidden="true"]{ margin:0 .15em; }
   header h1{
     font-family:'Source Serif 4',serif;
     font-weight:600;
@@ -63,15 +84,16 @@
     color:#D9CCE8;
     margin:0;
   }
-  .sign-row{ display:flex; gap:8px; flex-wrap:wrap; margin:22px 0 0; }
+  .sign-row{ display:flex; flex-wrap:wrap; margin:22px 0 0; padding:0; list-style:none; }
   .sign-pill{
     font-family:'IBM Plex Mono',monospace;
     font-size:11.5px;
-    background:rgba(255,255,255,0.12);
-    border:1px solid rgba(230,206,147,0.35);
+    background:rgba(0,0,0,0.22);
+    border:1px solid rgba(230,206,147,0.5);
     color:var(--gold-soft);
     padding:6px 12px;
     border-radius:6px;
+    margin:0 8px 8px 0;
   }
 
   main{ padding:40px 0 70px; }
@@ -103,7 +125,7 @@
   .stop-dot{
     width:40px; height:40px; border-radius:50%;
     background:linear-gradient(160deg, var(--gold) 0%, #B0863A 100%);
-    color:var(--panel-deep);
+    color:#2A1244;   /* 5.0:1 even on the darkest part of the gradient */
     font-family:'IBM Plex Mono',monospace;
     font-weight:700; font-size:15px;
     display:flex; align-items:center; justify-content:center;
@@ -126,18 +148,20 @@
     padding:20px 22px;
     box-shadow:var(--shadow);
   }
-  .stop-head{ display:flex; align-items:baseline; gap:10px; flex-wrap:wrap; margin-bottom:8px; }
-  .stop-title{ font-weight:700; font-size:16px; color:var(--ink); }
+  /* now an <h2>; keep the card look */
+  .stop-head{ display:flex; align-items:baseline; flex-wrap:wrap; margin:0 0 8px; font-family:'Inter',sans-serif; font-size:inherit; font-weight:400; color:inherit; line-height:inherit; }
+  .stop-title{ font-weight:700; font-size:16px; color:var(--ink); margin-right:10px; }
   .stop-date{ font-family:'IBM Plex Mono',monospace; font-size:12px; color:var(--slate); margin-left:auto; }
   .stop-desc{ font-size:15px; color:var(--ink); margin-bottom:18px; }
 
   .task{ margin-top:18px; padding-top:18px; border-top:1px solid var(--line); }
   .task:first-child{ margin-top:0; padding-top:0; border-top:none; }
+  /* now an <h3> */
   .task-label{
     font-family:'IBM Plex Mono',monospace;
-    font-size:11px; text-transform:uppercase; letter-spacing:.04em;
-    color:var(--gold); background:#FBF3E3; display:inline-block;
-    padding:4px 10px; border-radius:999px; margin-bottom:10px;
+    font-size:12px; font-weight:600; text-transform:uppercase; letter-spacing:.04em;
+    color:var(--gold-text); background:#FBF3E3; display:inline-block;
+    padding:4px 10px; border-radius:999px; margin:0 0 10px; line-height:1.4;
   }
   .task-q{ font-weight:600; font-size:14.5px; margin-bottom:10px; }
   textarea.answer-box{
@@ -160,13 +184,13 @@
     font-family:'Inter',sans-serif;
     font-size:13.5px;
     color:var(--ink);
-    border:1px solid var(--line);
+    border:1px solid var(--line-ui);
     border-radius:6px;
     padding:8px 10px;
     background:var(--paper);
     width:100%;
   }
-  .req-input:focus{ outline:2px solid var(--panel); outline-offset:1px; }
+  .req-input::placeholder{ color:var(--slate); opacity:1; }
 
   /* Accounting-equation input (Assets = Liabilities + Equity) */
   .eq-cols{
@@ -181,8 +205,8 @@
   .eq-col{ flex:1 1 0; min-width:160px; display:flex; flex-direction:column; gap:6px; }
   .eq-col-label{
     font-family:'IBM Plex Mono',monospace;
-    font-size:10.5px; text-transform:uppercase; letter-spacing:.03em;
-    color:var(--gold); margin:0 0 2px; text-align:center;
+    font-size:11.5px; font-weight:600; text-transform:uppercase; letter-spacing:.03em;
+    color:var(--gold-text); margin:0 0 2px; text-align:center;
   }
   .eq-op{
     flex:0 0 auto; align-self:center;
@@ -191,7 +215,7 @@
     padding-top:22px;
   }
   .eq-row{ display:flex; flex-direction:column; gap:4px; }
-  .eq-hint{ font-size:12px; color:var(--slate); margin:10px 0 0; font-style:italic; }
+  .eq-hint{ font-size:12.5px; color:var(--slate); margin:10px 0 0; font-style:italic; }
 
   @media (max-width:640px){
     .eq-cols{ flex-direction:column; }
@@ -200,7 +224,7 @@
   }
 
   table.journal-input{ width:100%; border-collapse:collapse; margin-bottom:10px; background:var(--bg); border-radius:8px; overflow:hidden; }
-  table.journal-input th{ font-family:'IBM Plex Mono',monospace; font-size:10.5px; text-transform:uppercase; letter-spacing:.03em; color:var(--slate); text-align:left; padding:8px 10px 4px; }
+  table.journal-input th{ font-family:'IBM Plex Mono',monospace; font-size:11.5px; font-weight:500; text-transform:uppercase; letter-spacing:.03em; color:var(--slate); text-align:left; padding:8px 10px 4px; }
   table.journal-input th:nth-child(2), table.journal-input th:nth-child(3){ text-align:right; width:110px; }
   table.journal-input td{ padding:5px 10px 9px; }
   table.journal-input td.indent{ padding-left:28px; }
@@ -221,13 +245,11 @@
   }
   .row-mark.show{ display:inline-block; }
 
-  .reveal-warning{
-    display:none;
-    font-size:13px;
-    color:#A23B2E;
-    margin:8px 0 0;
-  }
-  .reveal-warning.show{ display:block; }
+  /* Live feedback line under each Reveal button (warnings and results, as text) */
+  .task-feedback{ font-size:13.5px; font-weight:600; margin:10px 0 0; }
+  .task-feedback:empty{ margin:0; }
+  .task-feedback.warn, .task-feedback.bad{ color:#8A3B2E; }
+  .task-feedback.good{ color:var(--green-text); }
 
   .reveal-btn{
     font-family:'Inter',sans-serif;
@@ -250,8 +272,8 @@
   .solution.show{ display:block; }
   .solution-label{
     font-family:'IBM Plex Mono',monospace;
-    font-size:11px; text-transform:uppercase; letter-spacing:.04em;
-    color:var(--green); margin:0 0 10px; font-weight:700;
+    font-size:12px; text-transform:uppercase; letter-spacing:.04em;
+    color:var(--green-text); margin:0 0 10px; font-weight:700;
   }
 
   .eq-effect{
@@ -267,15 +289,22 @@
   }
   .eq-effect .cell{ text-align:center; flex:1 1 0; min-width:0; }
   .eq-effect .op{ color:var(--slate); font-weight:600; text-align:center; flex:0 0 auto; width:18px; }
-  .eq-effect .acct-label{ font-size:10px; color:var(--slate); text-transform:uppercase; letter-spacing:.03em; margin-bottom:2px; }
+  .eq-effect .acct-label{ font-size:11.5px; color:var(--slate); text-transform:uppercase; letter-spacing:.03em; margin-bottom:2px; }
   .eq-effect .acct{ font-weight:600; color:var(--ink); }
-  .eq-effect .amt-up{ color:var(--green); }
+  .eq-effect .amt-up{ color:var(--green-text); }
   .eq-effect .amt-down{ color:#A23B2E; }
 
   table.journal{ width:100%; border-collapse:collapse; margin-bottom:12px; font-size:13.5px; background:var(--bg); border-radius:6px; overflow:hidden; }
-  table.journal td{ padding:7px 12px; }
+  table.journal td, table.journal th{ padding:7px 12px; }
+  table.journal thead th{ font-family:'IBM Plex Mono',monospace; font-size:11.5px; font-weight:500; text-transform:uppercase; letter-spacing:.03em; color:var(--slate); text-align:left; padding:8px 12px 4px; }
+  table.journal thead th.num{ text-align:right; }
+  table.journal tbody th{ font-weight:400; text-align:left; color:var(--ink); }
   table.journal td.num{ text-align:right; font-family:'IBM Plex Mono',monospace; }
-  table.journal td.credit-acct{ padding-left:30px; color:var(--slate); }
+  table.journal th.credit-acct{ padding-left:30px; color:var(--slate); }
+  /* Wide tables scroll inside their own box instead of pushing the page sideways (WCAG 1.4.10) */
+  .table-scroll{ overflow-x:auto; max-width:100%; margin-bottom:12px; }
+  div.table-scroll > table{ margin-bottom:0; }
+  .table-scroll:focus-visible{ outline:3px solid var(--panel); outline-offset:2px; }
 
   .why{ font-size:14px; color:var(--slate); margin:0; }
   .why strong{ color:var(--panel); }
@@ -285,6 +314,29 @@
     .stop-rail{ flex-basis:32px; }
     .stop-dot{ width:32px; height:32px; font-size:13px; }
     .stop-date{ margin-left:0; }
+    .eq-effect{ flex-direction:column; align-items:stretch; }
+    .eq-effect .op{ width:auto; }
+  }
+  /* Very narrow phones (320px): stack the journal-entry fields so nothing is cut off (WCAG 1.4.10) */
+  @media (max-width:520px){
+    .wrap{ padding:0 14px; }
+    .stop{ gap:8px; }
+    .stop-rail{ flex-basis:28px; }
+    .stop-dot{ width:28px; height:28px; font-size:12px; }
+    .stop-card, .intro{ padding:14px; }
+    .eq-cols{ padding:10px; }
+    table.journal-input, table.journal-input tbody, table.journal-input tr, table.journal-input td{ display:block; width:100%; }
+    table.journal-input thead{ display:none; }
+    table.journal-input td:empty{ display:none; }
+    table.journal-input td{ padding:4px 10px 6px; }
+    table.journal-input td.indent{ padding-left:10px; }
+    table.journal-input td[data-label]::before{
+      content:attr(data-label); display:block; font-family:'IBM Plex Mono',monospace;
+      font-size:11.5px; text-transform:uppercase; letter-spacing:.03em; color:var(--slate); margin-bottom:3px;
+    }
+    table.journal-input tr[data-role="credit"]{ border-top:1px solid var(--line); margin-top:4px; padding-top:4px; }
+    table.journal th, table.journal td{ padding-left:8px; padding-right:8px; }
+    table.journal th.credit-acct{ padding-left:18px; }
   }
 
   .pagefoot{
@@ -292,7 +344,8 @@
     margin-top:20px; padding-top:24px; border-top:1px solid var(--line);
     font-size:14px;
   }
-  .pagefoot a{ text-decoration:none; font-weight:600; }
+  .pagefoot a{ font-weight:600; }
+  .pagefoot [aria-hidden="true"]{ margin:0 .35em; }
 
   footer{
     padding:22px 0 44px;
@@ -305,21 +358,23 @@
 </head>
 <body>
 
-<div class="topbar"></div>
+<a class="skip-link" href="#main-content">Skip to main content</a>
+
+<div class="topbar" aria-hidden="true"></div>
 <header>
   <div class="wrap">
-    <p class="crumb"><a href="../index.html">&larr; All course materials</a> &nbsp;/&nbsp; ACCT 251 &nbsp;/&nbsp; Chapter 2</p>
+    <nav class="crumb" aria-label="Breadcrumb"><a href="../index.html"><span aria-hidden="true">&larr;</span> All course materials</a> <span aria-hidden="true">/</span> ACCT 251 <span aria-hidden="true">/</span> <span aria-current="page">Chapter 2</span></nav>
     <h1>Walkthrough: December Transactions</h1>
     <p class="subtitle">Bryson City Bike Works&rsquo; second month in business &mdash; analyze the effect on the accounting equation, then write the journal entry. Reveal the solution whenever you're ready to check your thinking.</p>
-    <div class="sign-row">
-      <span class="sign-pill">8 STOPS</span>
-      <span class="sign-pill">COMPANY: BRYSON CITY BIKE WORKS</span>
-      <span class="sign-pill">FOCUS: TRANSACTIONS &amp; JOURNAL ENTRIES</span>
-    </div>
+    <ul class="sign-row" aria-label="Walkthrough details">
+      <li class="sign-pill">8 STOPS</li>
+      <li class="sign-pill">COMPANY: BRYSON CITY BIKE WORKS</li>
+      <li class="sign-pill">FOCUS: TRANSACTIONS &amp; JOURNAL ENTRIES</li>
+    </ul>
   </div>
 </header>
 
-<main class="wrap">
+<main class="wrap" id="main-content" tabindex="-1">
 
   <div class="intro">
     <h2 style="margin-bottom:10px;">Back at Bryson City Bike Works</h2>
@@ -330,930 +385,1002 @@
 
     <!-- Stop 1 -->
     <div class="stop" data-stop="1">
-      <div class="stop-rail"><div class="stop-dot">1</div><div class="stop-line"></div></div>
+      <div class="stop-rail" aria-hidden="true"><div class="stop-dot">1</div><div class="stop-line"></div></div>
       <div class="stop-content">
-        <div class="stop-card">
-          <div class="stop-head"><span class="stop-title">Pay Wages</span><span class="stop-date">Dec 3</span></div>
+        <article class="stop-card" aria-labelledby="stop1-h">
+          <h2 class="stop-head" id="stop1-h"><span class="sr-only">Stop 1: </span><span class="stop-title">Pay Wages</span><span class="stop-date">Dec 3</span></h2>
           <p class="stop-desc">Pays wages to trail guides and shop staff for the month, <strong>$19,000</strong>.</p>
 
-          <div class="task">
-            <span class="task-label">Step 1</span>
+          <div class="task" role="group" aria-labelledby="s1-t1-h">
+            <h3 class="task-label" id="s1-t1-h">Step 1<span class="sr-only">: effect on the accounting equation</span></h3>
             <p class="task-q">What two accounts are affected? Enter each amount with a + for an increase or &minus; for a decrease.</p>
-            <div class="input-template eq-template">
+            <div class="input-template eq-template" role="group" aria-label="Accounting equation: Assets equals Liabilities plus Stockholders' Equity" aria-describedby="s1-hint">
               <div class="eq-cols">
-                <div class="eq-col" data-col="assets">
-                  <p class="eq-col-label">Assets</p>
+                <div class="eq-col" data-col="assets" role="group" aria-labelledby="s1-assets-lbl">
+                  <p class="eq-col-label" id="s1-assets-lbl">Assets</p>
                   <div class="eq-row">
-                    <input type="text" class="req-input eq-acct" placeholder="Account">
+                    <input type="text" class="req-input eq-acct" placeholder="Account" aria-label="Assets, row 1: account name" autocomplete="off" spellcheck="false">
                     <div class="amt-line">
-                      <input type="text" class="req-input eq-amt" placeholder="$">
-                      <span class="row-mark">&#10007;</span>
+                      <input type="text" class="req-input eq-amt" placeholder="$" aria-label="Assets, row 1: amount ($)" autocomplete="off" spellcheck="false">
+                      <span class="row-mark" id="s1-m1"><span aria-hidden="true">&#10007;</span><span class="sr-only">Incorrect: this row does not match the solution.</span></span>
                     </div>
                   </div>
                   <div class="eq-row">
-                    <input type="text" class="req-input eq-acct" placeholder="Account">
+                    <input type="text" class="req-input eq-acct" placeholder="Account" aria-label="Assets, row 2: account name" autocomplete="off" spellcheck="false">
                     <div class="amt-line">
-                      <input type="text" class="req-input eq-amt" placeholder="$">
-                      <span class="row-mark">&#10007;</span>
-                    </div>
-                  </div>
-                </div>
-                <div class="eq-op">=</div>
-                <div class="eq-col" data-col="liabilities">
-                  <p class="eq-col-label">Liabilities</p>
-                  <div class="eq-row">
-                    <input type="text" class="req-input eq-acct" placeholder="Account">
-                    <div class="amt-line">
-                      <input type="text" class="req-input eq-amt" placeholder="$">
-                      <span class="row-mark">&#10007;</span>
-                    </div>
-                  </div>
-                  <div class="eq-row">
-                    <input type="text" class="req-input eq-acct" placeholder="Account">
-                    <div class="amt-line">
-                      <input type="text" class="req-input eq-amt" placeholder="$">
-                      <span class="row-mark">&#10007;</span>
+                      <input type="text" class="req-input eq-amt" placeholder="$" aria-label="Assets, row 2: amount ($)" autocomplete="off" spellcheck="false">
+                      <span class="row-mark" id="s1-m2"><span aria-hidden="true">&#10007;</span><span class="sr-only">Incorrect: this row does not match the solution.</span></span>
                     </div>
                   </div>
                 </div>
-                <div class="eq-op">+</div>
-                <div class="eq-col" data-col="equity">
-                  <p class="eq-col-label">Stockholders&rsquo; Equity</p>
+                <div class="eq-op" aria-hidden="true">=</div>
+                <div class="eq-col" data-col="liabilities" role="group" aria-labelledby="s1-liabilities-lbl">
+                  <p class="eq-col-label" id="s1-liabilities-lbl">Liabilities</p>
                   <div class="eq-row">
-                    <input type="text" class="req-input eq-acct" placeholder="Account">
+                    <input type="text" class="req-input eq-acct" placeholder="Account" aria-label="Liabilities, row 1: account name" autocomplete="off" spellcheck="false">
                     <div class="amt-line">
-                      <input type="text" class="req-input eq-amt" placeholder="$">
-                      <span class="row-mark">&#10007;</span>
+                      <input type="text" class="req-input eq-amt" placeholder="$" aria-label="Liabilities, row 1: amount ($)" autocomplete="off" spellcheck="false">
+                      <span class="row-mark" id="s1-m3"><span aria-hidden="true">&#10007;</span><span class="sr-only">Incorrect: this row does not match the solution.</span></span>
                     </div>
                   </div>
                   <div class="eq-row">
-                    <input type="text" class="req-input eq-acct" placeholder="Account">
+                    <input type="text" class="req-input eq-acct" placeholder="Account" aria-label="Liabilities, row 2: account name" autocomplete="off" spellcheck="false">
                     <div class="amt-line">
-                      <input type="text" class="req-input eq-amt" placeholder="$">
-                      <span class="row-mark">&#10007;</span>
+                      <input type="text" class="req-input eq-amt" placeholder="$" aria-label="Liabilities, row 2: amount ($)" autocomplete="off" spellcheck="false">
+                      <span class="row-mark" id="s1-m4"><span aria-hidden="true">&#10007;</span><span class="sr-only">Incorrect: this row does not match the solution.</span></span>
+                    </div>
+                  </div>
+                </div>
+                <div class="eq-op" aria-hidden="true">+</div>
+                <div class="eq-col" data-col="equity" role="group" aria-labelledby="s1-equity-lbl">
+                  <p class="eq-col-label" id="s1-equity-lbl">Stockholders&rsquo; Equity</p>
+                  <div class="eq-row">
+                    <input type="text" class="req-input eq-acct" placeholder="Account" aria-label="Stockholders&rsquo; Equity, row 1: account name" autocomplete="off" spellcheck="false">
+                    <div class="amt-line">
+                      <input type="text" class="req-input eq-amt" placeholder="$" aria-label="Stockholders&rsquo; Equity, row 1: amount ($)" autocomplete="off" spellcheck="false">
+                      <span class="row-mark" id="s1-m5"><span aria-hidden="true">&#10007;</span><span class="sr-only">Incorrect: this row does not match the solution.</span></span>
+                    </div>
+                  </div>
+                  <div class="eq-row">
+                    <input type="text" class="req-input eq-acct" placeholder="Account" aria-label="Stockholders&rsquo; Equity, row 2: account name" autocomplete="off" spellcheck="false">
+                    <div class="amt-line">
+                      <input type="text" class="req-input eq-amt" placeholder="$" aria-label="Stockholders&rsquo; Equity, row 2: amount ($)" autocomplete="off" spellcheck="false">
+                      <span class="row-mark" id="s1-m6"><span aria-hidden="true">&#10007;</span><span class="sr-only">Incorrect: this row does not match the solution.</span></span>
                     </div>
                   </div>
                 </div>
               </div>
-              <p class="eq-hint">Use a plus sign for an increase and a minus sign for a decrease (e.g. +180,000 or &minus;95,000). Each column has two rows in case a transaction affects two accounts in the same category (for example, buying equipment with cash affects two asset accounts) &mdash; if only one account in a category changes, leave its second row blank. Fill in at least two complete rows total.</p>
+              <p class="eq-hint" id="s1-hint">Use a plus sign for an increase and a minus sign for a decrease (e.g. +180,000 or &minus;95,000). Each column has two rows in case a transaction affects two accounts in the same category (for example, buying equipment with cash affects two asset accounts) &mdash; if only one account in a category changes, leave its second row blank. Fill in at least two complete rows total.</p>
             </div>
-            <button class="reveal-btn" onclick="checkAndReveal(this)">Reveal Solution</button>
-            <p class="reveal-warning">Fill in your answer above before revealing the solution.</p>
-            <div class="solution">
+            <button type="button" class="reveal-btn" aria-expanded="false" aria-controls="s1-t1-sol">Reveal Solution</button>
+            <p class="task-feedback" role="status" aria-atomic="true"></p>
+            <div class="solution" id="s1-t1-sol">
               <p class="solution-label">Solution</p>
-              <div class="eq-effect">
+              <div class="eq-effect" role="group" aria-label="Effect on the accounting equation">
                 <div class="cell"><div class="acct-label">Asset</div><div class="acct">Cash</div><div class="amt-down">&minus;$19,000</div></div>
-                <div class="op">=</div>
-                <div class="cell"><div class="acct-label">Liabilities</div><div class="acct">&mdash;</div><div>no change</div></div>
-                <div class="op">+</div>
+                <div class="op"><span aria-hidden="true">=</span><span class="sr-only">equals</span></div>
+                <div class="cell"><div class="acct-label">Liabilities</div><div class="acct" aria-hidden="true">&mdash;</div><div>no change</div></div>
+                <div class="op"><span aria-hidden="true">+</span><span class="sr-only">plus</span></div>
                 <div class="cell"><div class="acct-label">Stockholders&rsquo; Equity</div><div class="acct">Wages Expense</div><div class="amt-down">&minus;$19,000</div></div>
               </div>
               <p class="why"><strong>Let Me Explain:</strong> Paying employees for work already performed is a cost of running the shop this month. Expenses reduce retained earnings, which reduces total stockholders&rsquo; equity &mdash; and cash goes out to cover it.</p>
             </div>
           </div>
 
-          <div class="task">
-            <span class="task-label">Step 2</span>
+          <div class="task" role="group" aria-labelledby="s1-t2-h">
+            <h3 class="task-label" id="s1-t2-h">Step 2<span class="sr-only">: journal entry</span></h3>
             <p class="task-q">Write the journal entry for this transaction.</p>
             <table class="journal-input">
-              <tr><th>Account</th><th>Debit</th><th>Credit</th></tr>
+              <caption class="sr-only">Journal entry for stop 1: the account and amount debited, then the account and amount credited</caption>
+              <thead><tr><th scope="col">Account</th><th scope="col">Debit</th><th scope="col">Credit</th></tr></thead>
+              <tbody>
               <tr data-role="debit">
-                <td><input type="text" class="req-input je-acct" placeholder="Account debited"></td>
-                <td><div class="amt-line"><input type="text" class="req-input je-amt" placeholder="$"><span class="row-mark">&#10007;</span></div></td>
+                <td data-label="Debit account"><input type="text" class="req-input je-acct" placeholder="Account debited" aria-label="Account debited" autocomplete="off" spellcheck="false"></td>
+                <td data-label="Debit amount"><div class="amt-line"><input type="text" class="req-input je-amt" placeholder="$" aria-label="Debit amount ($)" autocomplete="off" spellcheck="false"><span class="row-mark" id="s1-m7"><span aria-hidden="true">&#10007;</span><span class="sr-only">Incorrect: this row does not match the solution.</span></span></div></td>
                 <td></td>
               </tr>
               <tr data-role="credit">
-                <td class="indent"><input type="text" class="req-input je-acct" placeholder="Account credited"></td>
+                <td class="indent" data-label="Credit account"><input type="text" class="req-input je-acct" placeholder="Account credited" aria-label="Account credited" autocomplete="off" spellcheck="false"></td>
                 <td></td>
-                <td><div class="amt-line"><input type="text" class="req-input je-amt" placeholder="$"><span class="row-mark">&#10007;</span></div></td>
+                <td data-label="Credit amount"><div class="amt-line"><input type="text" class="req-input je-amt" placeholder="$" aria-label="Credit amount ($)" autocomplete="off" spellcheck="false"><span class="row-mark" id="s1-m8"><span aria-hidden="true">&#10007;</span><span class="sr-only">Incorrect: this row does not match the solution.</span></span></div></td>
               </tr>
+              </tbody>
             </table>
-            <button class="reveal-btn" onclick="checkAndReveal(this)">Reveal Solution</button>
-            <p class="reveal-warning">Fill in your answer above before revealing the solution.</p>
-            <div class="solution">
+            <button type="button" class="reveal-btn" aria-expanded="false" aria-controls="s1-t2-sol">Reveal Solution</button>
+            <p class="task-feedback" role="status" aria-atomic="true"></p>
+            <div class="solution" id="s1-t2-sol">
               <p class="solution-label">Solution</p>
+              <div class="table-scroll">
               <table class="journal">
-                <tr><td>Wages Expense</td><td class="num">19,000</td><td></td></tr>
-                <tr><td class="credit-acct">Cash</td><td></td><td class="num">19,000</td></tr>
+                <caption class="sr-only">Solution: journal entry for stop 1</caption>
+                <thead><tr><th scope="col">Account</th><th scope="col" class="num">Debit</th><th scope="col" class="num">Credit</th></tr></thead>
+                <tbody>
+                <tr><th scope="row">Wages Expense</th><td class="num">19,000</td><td></td></tr>
+                <tr><th scope="row" class="credit-acct">Cash</th><td></td><td class="num">19,000</td></tr>
+                </tbody>
               </table>
+              </div>
               <p class="why"><strong>Let Me Explain:</strong> Wages Expense increases, and expenses increase with a debit. Cash (an asset) decreases, so it&rsquo;s credited.</p>
             </div>
           </div>
-        </div>
+        </article>
       </div>
     </div>
 
     <!-- Stop 2 -->
     <div class="stop" data-stop="2">
-      <div class="stop-rail"><div class="stop-dot">2</div><div class="stop-line"></div></div>
+      <div class="stop-rail" aria-hidden="true"><div class="stop-dot">2</div><div class="stop-line"></div></div>
       <div class="stop-content">
-        <div class="stop-card">
-          <div class="stop-head"><span class="stop-title">Collect Cash on Account</span><span class="stop-date">Dec 5</span></div>
+        <article class="stop-card" aria-labelledby="stop2-h">
+          <h2 class="stop-head" id="stop2-h"><span class="sr-only">Stop 2: </span><span class="stop-title">Collect Cash on Account</span><span class="stop-date">Dec 5</span></h2>
           <p class="stop-desc">Collects the full <strong>$8,000</strong> owed by the corporate client billed back on November 18.</p>
 
-          <div class="task">
-            <span class="task-label">Step 1</span>
+          <div class="task" role="group" aria-labelledby="s2-t1-h">
+            <h3 class="task-label" id="s2-t1-h">Step 1<span class="sr-only">: effect on the accounting equation</span></h3>
             <p class="task-q">What two accounts are affected? Enter each amount with a + for an increase or &minus; for a decrease.</p>
-            <div class="input-template eq-template">
+            <div class="input-template eq-template" role="group" aria-label="Accounting equation: Assets equals Liabilities plus Stockholders' Equity" aria-describedby="s2-hint">
               <div class="eq-cols">
-                <div class="eq-col" data-col="assets">
-                  <p class="eq-col-label">Assets</p>
+                <div class="eq-col" data-col="assets" role="group" aria-labelledby="s2-assets-lbl">
+                  <p class="eq-col-label" id="s2-assets-lbl">Assets</p>
                   <div class="eq-row">
-                    <input type="text" class="req-input eq-acct" placeholder="Account">
+                    <input type="text" class="req-input eq-acct" placeholder="Account" aria-label="Assets, row 1: account name" autocomplete="off" spellcheck="false">
                     <div class="amt-line">
-                      <input type="text" class="req-input eq-amt" placeholder="$">
-                      <span class="row-mark">&#10007;</span>
+                      <input type="text" class="req-input eq-amt" placeholder="$" aria-label="Assets, row 1: amount ($)" autocomplete="off" spellcheck="false">
+                      <span class="row-mark" id="s2-m1"><span aria-hidden="true">&#10007;</span><span class="sr-only">Incorrect: this row does not match the solution.</span></span>
                     </div>
                   </div>
                   <div class="eq-row">
-                    <input type="text" class="req-input eq-acct" placeholder="Account">
+                    <input type="text" class="req-input eq-acct" placeholder="Account" aria-label="Assets, row 2: account name" autocomplete="off" spellcheck="false">
                     <div class="amt-line">
-                      <input type="text" class="req-input eq-amt" placeholder="$">
-                      <span class="row-mark">&#10007;</span>
-                    </div>
-                  </div>
-                </div>
-                <div class="eq-op">=</div>
-                <div class="eq-col" data-col="liabilities">
-                  <p class="eq-col-label">Liabilities</p>
-                  <div class="eq-row">
-                    <input type="text" class="req-input eq-acct" placeholder="Account">
-                    <div class="amt-line">
-                      <input type="text" class="req-input eq-amt" placeholder="$">
-                      <span class="row-mark">&#10007;</span>
-                    </div>
-                  </div>
-                  <div class="eq-row">
-                    <input type="text" class="req-input eq-acct" placeholder="Account">
-                    <div class="amt-line">
-                      <input type="text" class="req-input eq-amt" placeholder="$">
-                      <span class="row-mark">&#10007;</span>
+                      <input type="text" class="req-input eq-amt" placeholder="$" aria-label="Assets, row 2: amount ($)" autocomplete="off" spellcheck="false">
+                      <span class="row-mark" id="s2-m2"><span aria-hidden="true">&#10007;</span><span class="sr-only">Incorrect: this row does not match the solution.</span></span>
                     </div>
                   </div>
                 </div>
-                <div class="eq-op">+</div>
-                <div class="eq-col" data-col="equity">
-                  <p class="eq-col-label">Stockholders&rsquo; Equity</p>
+                <div class="eq-op" aria-hidden="true">=</div>
+                <div class="eq-col" data-col="liabilities" role="group" aria-labelledby="s2-liabilities-lbl">
+                  <p class="eq-col-label" id="s2-liabilities-lbl">Liabilities</p>
                   <div class="eq-row">
-                    <input type="text" class="req-input eq-acct" placeholder="Account">
+                    <input type="text" class="req-input eq-acct" placeholder="Account" aria-label="Liabilities, row 1: account name" autocomplete="off" spellcheck="false">
                     <div class="amt-line">
-                      <input type="text" class="req-input eq-amt" placeholder="$">
-                      <span class="row-mark">&#10007;</span>
+                      <input type="text" class="req-input eq-amt" placeholder="$" aria-label="Liabilities, row 1: amount ($)" autocomplete="off" spellcheck="false">
+                      <span class="row-mark" id="s2-m3"><span aria-hidden="true">&#10007;</span><span class="sr-only">Incorrect: this row does not match the solution.</span></span>
                     </div>
                   </div>
                   <div class="eq-row">
-                    <input type="text" class="req-input eq-acct" placeholder="Account">
+                    <input type="text" class="req-input eq-acct" placeholder="Account" aria-label="Liabilities, row 2: account name" autocomplete="off" spellcheck="false">
                     <div class="amt-line">
-                      <input type="text" class="req-input eq-amt" placeholder="$">
-                      <span class="row-mark">&#10007;</span>
+                      <input type="text" class="req-input eq-amt" placeholder="$" aria-label="Liabilities, row 2: amount ($)" autocomplete="off" spellcheck="false">
+                      <span class="row-mark" id="s2-m4"><span aria-hidden="true">&#10007;</span><span class="sr-only">Incorrect: this row does not match the solution.</span></span>
+                    </div>
+                  </div>
+                </div>
+                <div class="eq-op" aria-hidden="true">+</div>
+                <div class="eq-col" data-col="equity" role="group" aria-labelledby="s2-equity-lbl">
+                  <p class="eq-col-label" id="s2-equity-lbl">Stockholders&rsquo; Equity</p>
+                  <div class="eq-row">
+                    <input type="text" class="req-input eq-acct" placeholder="Account" aria-label="Stockholders&rsquo; Equity, row 1: account name" autocomplete="off" spellcheck="false">
+                    <div class="amt-line">
+                      <input type="text" class="req-input eq-amt" placeholder="$" aria-label="Stockholders&rsquo; Equity, row 1: amount ($)" autocomplete="off" spellcheck="false">
+                      <span class="row-mark" id="s2-m5"><span aria-hidden="true">&#10007;</span><span class="sr-only">Incorrect: this row does not match the solution.</span></span>
+                    </div>
+                  </div>
+                  <div class="eq-row">
+                    <input type="text" class="req-input eq-acct" placeholder="Account" aria-label="Stockholders&rsquo; Equity, row 2: account name" autocomplete="off" spellcheck="false">
+                    <div class="amt-line">
+                      <input type="text" class="req-input eq-amt" placeholder="$" aria-label="Stockholders&rsquo; Equity, row 2: amount ($)" autocomplete="off" spellcheck="false">
+                      <span class="row-mark" id="s2-m6"><span aria-hidden="true">&#10007;</span><span class="sr-only">Incorrect: this row does not match the solution.</span></span>
                     </div>
                   </div>
                 </div>
               </div>
-              <p class="eq-hint">Use a plus sign for an increase and a minus sign for a decrease (e.g. +180,000 or &minus;95,000). Each column has two rows in case a transaction affects two accounts in the same category (for example, buying equipment with cash affects two asset accounts) &mdash; if only one account in a category changes, leave its second row blank. Fill in at least two complete rows total.</p>
+              <p class="eq-hint" id="s2-hint">Use a plus sign for an increase and a minus sign for a decrease (e.g. +180,000 or &minus;95,000). Each column has two rows in case a transaction affects two accounts in the same category (for example, buying equipment with cash affects two asset accounts) &mdash; if only one account in a category changes, leave its second row blank. Fill in at least two complete rows total.</p>
             </div>
-            <button class="reveal-btn" onclick="checkAndReveal(this)">Reveal Solution</button>
-            <p class="reveal-warning">Fill in your answer above before revealing the solution.</p>
-            <div class="solution">
+            <button type="button" class="reveal-btn" aria-expanded="false" aria-controls="s2-t1-sol">Reveal Solution</button>
+            <p class="task-feedback" role="status" aria-atomic="true"></p>
+            <div class="solution" id="s2-t1-sol">
               <p class="solution-label">Solution</p>
-              <div class="eq-effect">
+              <div class="eq-effect" role="group" aria-label="Effect on the accounting equation">
                 <div class="cell"><div class="acct-label">Asset</div><div class="acct">Cash</div><div class="amt-up">+$8,000</div></div>
-                <div class="op">&amp;</div>
+                <div class="op"><span aria-hidden="true">&amp;</span><span class="sr-only">and</span></div>
                 <div class="cell"><div class="acct-label">Asset</div><div class="acct">Accounts Receivable</div><div class="amt-down">&minus;$8,000</div></div>
-                <div class="op">=</div>
-                <div class="cell"><div class="acct-label">No Net Change</div><div class="acct">&mdash;</div><div>$0</div></div>
+                <div class="op"><span aria-hidden="true">=</span><span class="sr-only">equals</span></div>
+                <div class="cell"><div class="acct-label">No Net Change</div><div class="acct" aria-hidden="true">&mdash;</div><div>$0</div></div>
               </div>
               <p class="why"><strong>Let Me Explain:</strong> This isn&rsquo;t new revenue &mdash; that was already recognized back in November when the ride actually happened. Collecting the cash now just swaps one asset (the receivable) for another (cash); total assets don&rsquo;t change.</p>
             </div>
           </div>
 
-          <div class="task">
-            <span class="task-label">Step 2</span>
+          <div class="task" role="group" aria-labelledby="s2-t2-h">
+            <h3 class="task-label" id="s2-t2-h">Step 2<span class="sr-only">: journal entry</span></h3>
             <p class="task-q">Write the journal entry for this transaction.</p>
             <table class="journal-input">
-              <tr><th>Account</th><th>Debit</th><th>Credit</th></tr>
+              <caption class="sr-only">Journal entry for stop 2: the account and amount debited, then the account and amount credited</caption>
+              <thead><tr><th scope="col">Account</th><th scope="col">Debit</th><th scope="col">Credit</th></tr></thead>
+              <tbody>
               <tr data-role="debit">
-                <td><input type="text" class="req-input je-acct" placeholder="Account debited"></td>
-                <td><div class="amt-line"><input type="text" class="req-input je-amt" placeholder="$"><span class="row-mark">&#10007;</span></div></td>
+                <td data-label="Debit account"><input type="text" class="req-input je-acct" placeholder="Account debited" aria-label="Account debited" autocomplete="off" spellcheck="false"></td>
+                <td data-label="Debit amount"><div class="amt-line"><input type="text" class="req-input je-amt" placeholder="$" aria-label="Debit amount ($)" autocomplete="off" spellcheck="false"><span class="row-mark" id="s2-m7"><span aria-hidden="true">&#10007;</span><span class="sr-only">Incorrect: this row does not match the solution.</span></span></div></td>
                 <td></td>
               </tr>
               <tr data-role="credit">
-                <td class="indent"><input type="text" class="req-input je-acct" placeholder="Account credited"></td>
+                <td class="indent" data-label="Credit account"><input type="text" class="req-input je-acct" placeholder="Account credited" aria-label="Account credited" autocomplete="off" spellcheck="false"></td>
                 <td></td>
-                <td><div class="amt-line"><input type="text" class="req-input je-amt" placeholder="$"><span class="row-mark">&#10007;</span></div></td>
+                <td data-label="Credit amount"><div class="amt-line"><input type="text" class="req-input je-amt" placeholder="$" aria-label="Credit amount ($)" autocomplete="off" spellcheck="false"><span class="row-mark" id="s2-m8"><span aria-hidden="true">&#10007;</span><span class="sr-only">Incorrect: this row does not match the solution.</span></span></div></td>
               </tr>
+              </tbody>
             </table>
-            <button class="reveal-btn" onclick="checkAndReveal(this)">Reveal Solution</button>
-            <p class="reveal-warning">Fill in your answer above before revealing the solution.</p>
-            <div class="solution">
+            <button type="button" class="reveal-btn" aria-expanded="false" aria-controls="s2-t2-sol">Reveal Solution</button>
+            <p class="task-feedback" role="status" aria-atomic="true"></p>
+            <div class="solution" id="s2-t2-sol">
               <p class="solution-label">Solution</p>
+              <div class="table-scroll">
               <table class="journal">
-                <tr><td>Cash</td><td class="num">8,000</td><td></td></tr>
-                <tr><td class="credit-acct">Accounts Receivable</td><td></td><td class="num">8,000</td></tr>
+                <caption class="sr-only">Solution: journal entry for stop 2</caption>
+                <thead><tr><th scope="col">Account</th><th scope="col" class="num">Debit</th><th scope="col" class="num">Credit</th></tr></thead>
+                <tbody>
+                <tr><th scope="row">Cash</th><td class="num">8,000</td><td></td></tr>
+                <tr><th scope="row" class="credit-acct">Accounts Receivable</th><td></td><td class="num">8,000</td></tr>
+                </tbody>
               </table>
+              </div>
               <p class="why"><strong>Let Me Explain:</strong> Cash (an asset) increases, so it&rsquo;s debited. Accounts Receivable (also an asset) decreases, so it&rsquo;s credited &mdash; the opposite of how it increased.</p>
             </div>
           </div>
-        </div>
+        </article>
       </div>
     </div>
 
     <!-- Stop 3 -->
     <div class="stop" data-stop="3">
-      <div class="stop-rail"><div class="stop-dot">3</div><div class="stop-line"></div></div>
+      <div class="stop-rail" aria-hidden="true"><div class="stop-dot">3</div><div class="stop-line"></div></div>
       <div class="stop-content">
-        <div class="stop-card">
-          <div class="stop-head"><span class="stop-title">Pay Accounts Payable</span><span class="stop-date">Dec 7</span></div>
+        <article class="stop-card" aria-labelledby="stop3-h">
+          <h2 class="stop-head" id="stop3-h"><span class="sr-only">Stop 3: </span><span class="stop-title">Pay Accounts Payable</span><span class="stop-date">Dec 7</span></h2>
           <p class="stop-desc">Pays <strong>$6,000</strong> toward the $12,000 owed to the supplies vendor from November.</p>
 
-          <div class="task">
-            <span class="task-label">Step 1</span>
+          <div class="task" role="group" aria-labelledby="s3-t1-h">
+            <h3 class="task-label" id="s3-t1-h">Step 1<span class="sr-only">: effect on the accounting equation</span></h3>
             <p class="task-q">What two accounts are affected? Enter each amount with a + for an increase or &minus; for a decrease.</p>
-            <div class="input-template eq-template">
+            <div class="input-template eq-template" role="group" aria-label="Accounting equation: Assets equals Liabilities plus Stockholders' Equity" aria-describedby="s3-hint">
               <div class="eq-cols">
-                <div class="eq-col" data-col="assets">
-                  <p class="eq-col-label">Assets</p>
+                <div class="eq-col" data-col="assets" role="group" aria-labelledby="s3-assets-lbl">
+                  <p class="eq-col-label" id="s3-assets-lbl">Assets</p>
                   <div class="eq-row">
-                    <input type="text" class="req-input eq-acct" placeholder="Account">
+                    <input type="text" class="req-input eq-acct" placeholder="Account" aria-label="Assets, row 1: account name" autocomplete="off" spellcheck="false">
                     <div class="amt-line">
-                      <input type="text" class="req-input eq-amt" placeholder="$">
-                      <span class="row-mark">&#10007;</span>
+                      <input type="text" class="req-input eq-amt" placeholder="$" aria-label="Assets, row 1: amount ($)" autocomplete="off" spellcheck="false">
+                      <span class="row-mark" id="s3-m1"><span aria-hidden="true">&#10007;</span><span class="sr-only">Incorrect: this row does not match the solution.</span></span>
                     </div>
                   </div>
                   <div class="eq-row">
-                    <input type="text" class="req-input eq-acct" placeholder="Account">
+                    <input type="text" class="req-input eq-acct" placeholder="Account" aria-label="Assets, row 2: account name" autocomplete="off" spellcheck="false">
                     <div class="amt-line">
-                      <input type="text" class="req-input eq-amt" placeholder="$">
-                      <span class="row-mark">&#10007;</span>
-                    </div>
-                  </div>
-                </div>
-                <div class="eq-op">=</div>
-                <div class="eq-col" data-col="liabilities">
-                  <p class="eq-col-label">Liabilities</p>
-                  <div class="eq-row">
-                    <input type="text" class="req-input eq-acct" placeholder="Account">
-                    <div class="amt-line">
-                      <input type="text" class="req-input eq-amt" placeholder="$">
-                      <span class="row-mark">&#10007;</span>
-                    </div>
-                  </div>
-                  <div class="eq-row">
-                    <input type="text" class="req-input eq-acct" placeholder="Account">
-                    <div class="amt-line">
-                      <input type="text" class="req-input eq-amt" placeholder="$">
-                      <span class="row-mark">&#10007;</span>
+                      <input type="text" class="req-input eq-amt" placeholder="$" aria-label="Assets, row 2: amount ($)" autocomplete="off" spellcheck="false">
+                      <span class="row-mark" id="s3-m2"><span aria-hidden="true">&#10007;</span><span class="sr-only">Incorrect: this row does not match the solution.</span></span>
                     </div>
                   </div>
                 </div>
-                <div class="eq-op">+</div>
-                <div class="eq-col" data-col="equity">
-                  <p class="eq-col-label">Stockholders&rsquo; Equity</p>
+                <div class="eq-op" aria-hidden="true">=</div>
+                <div class="eq-col" data-col="liabilities" role="group" aria-labelledby="s3-liabilities-lbl">
+                  <p class="eq-col-label" id="s3-liabilities-lbl">Liabilities</p>
                   <div class="eq-row">
-                    <input type="text" class="req-input eq-acct" placeholder="Account">
+                    <input type="text" class="req-input eq-acct" placeholder="Account" aria-label="Liabilities, row 1: account name" autocomplete="off" spellcheck="false">
                     <div class="amt-line">
-                      <input type="text" class="req-input eq-amt" placeholder="$">
-                      <span class="row-mark">&#10007;</span>
+                      <input type="text" class="req-input eq-amt" placeholder="$" aria-label="Liabilities, row 1: amount ($)" autocomplete="off" spellcheck="false">
+                      <span class="row-mark" id="s3-m3"><span aria-hidden="true">&#10007;</span><span class="sr-only">Incorrect: this row does not match the solution.</span></span>
                     </div>
                   </div>
                   <div class="eq-row">
-                    <input type="text" class="req-input eq-acct" placeholder="Account">
+                    <input type="text" class="req-input eq-acct" placeholder="Account" aria-label="Liabilities, row 2: account name" autocomplete="off" spellcheck="false">
                     <div class="amt-line">
-                      <input type="text" class="req-input eq-amt" placeholder="$">
-                      <span class="row-mark">&#10007;</span>
+                      <input type="text" class="req-input eq-amt" placeholder="$" aria-label="Liabilities, row 2: amount ($)" autocomplete="off" spellcheck="false">
+                      <span class="row-mark" id="s3-m4"><span aria-hidden="true">&#10007;</span><span class="sr-only">Incorrect: this row does not match the solution.</span></span>
+                    </div>
+                  </div>
+                </div>
+                <div class="eq-op" aria-hidden="true">+</div>
+                <div class="eq-col" data-col="equity" role="group" aria-labelledby="s3-equity-lbl">
+                  <p class="eq-col-label" id="s3-equity-lbl">Stockholders&rsquo; Equity</p>
+                  <div class="eq-row">
+                    <input type="text" class="req-input eq-acct" placeholder="Account" aria-label="Stockholders&rsquo; Equity, row 1: account name" autocomplete="off" spellcheck="false">
+                    <div class="amt-line">
+                      <input type="text" class="req-input eq-amt" placeholder="$" aria-label="Stockholders&rsquo; Equity, row 1: amount ($)" autocomplete="off" spellcheck="false">
+                      <span class="row-mark" id="s3-m5"><span aria-hidden="true">&#10007;</span><span class="sr-only">Incorrect: this row does not match the solution.</span></span>
+                    </div>
+                  </div>
+                  <div class="eq-row">
+                    <input type="text" class="req-input eq-acct" placeholder="Account" aria-label="Stockholders&rsquo; Equity, row 2: account name" autocomplete="off" spellcheck="false">
+                    <div class="amt-line">
+                      <input type="text" class="req-input eq-amt" placeholder="$" aria-label="Stockholders&rsquo; Equity, row 2: amount ($)" autocomplete="off" spellcheck="false">
+                      <span class="row-mark" id="s3-m6"><span aria-hidden="true">&#10007;</span><span class="sr-only">Incorrect: this row does not match the solution.</span></span>
                     </div>
                   </div>
                 </div>
               </div>
-              <p class="eq-hint">Use a plus sign for an increase and a minus sign for a decrease (e.g. +180,000 or &minus;95,000). Each column has two rows in case a transaction affects two accounts in the same category (for example, buying equipment with cash affects two asset accounts) &mdash; if only one account in a category changes, leave its second row blank. Fill in at least two complete rows total.</p>
+              <p class="eq-hint" id="s3-hint">Use a plus sign for an increase and a minus sign for a decrease (e.g. +180,000 or &minus;95,000). Each column has two rows in case a transaction affects two accounts in the same category (for example, buying equipment with cash affects two asset accounts) &mdash; if only one account in a category changes, leave its second row blank. Fill in at least two complete rows total.</p>
             </div>
-            <button class="reveal-btn" onclick="checkAndReveal(this)">Reveal Solution</button>
-            <p class="reveal-warning">Fill in your answer above before revealing the solution.</p>
-            <div class="solution">
+            <button type="button" class="reveal-btn" aria-expanded="false" aria-controls="s3-t1-sol">Reveal Solution</button>
+            <p class="task-feedback" role="status" aria-atomic="true"></p>
+            <div class="solution" id="s3-t1-sol">
               <p class="solution-label">Solution</p>
-              <div class="eq-effect">
+              <div class="eq-effect" role="group" aria-label="Effect on the accounting equation">
                 <div class="cell"><div class="acct-label">Asset</div><div class="acct">Cash</div><div class="amt-down">&minus;$6,000</div></div>
-                <div class="op">=</div>
+                <div class="op"><span aria-hidden="true">=</span><span class="sr-only">equals</span></div>
                 <div class="cell"><div class="acct-label">Liabilities</div><div class="acct">Accounts Payable</div><div class="amt-down">&minus;$6,000</div></div>
-                <div class="op">+</div>
-                <div class="cell"><div class="acct-label">Stockholders&rsquo; Equity</div><div class="acct">&mdash;</div><div>no change</div></div>
+                <div class="op"><span aria-hidden="true">+</span><span class="sr-only">plus</span></div>
+                <div class="cell"><div class="acct-label">Stockholders&rsquo; Equity</div><div class="acct" aria-hidden="true">&mdash;</div><div>no change</div></div>
               </div>
               <p class="why"><strong>Let Me Explain:</strong> Paying down a debt doesn&rsquo;t create a new expense &mdash; the expense (or asset) tied to that debt was already recorded back when the supplies were purchased on account. This transaction just reduces what&rsquo;s owed and the cash used to do it.</p>
             </div>
           </div>
 
-          <div class="task">
-            <span class="task-label">Step 2</span>
+          <div class="task" role="group" aria-labelledby="s3-t2-h">
+            <h3 class="task-label" id="s3-t2-h">Step 2<span class="sr-only">: journal entry</span></h3>
             <p class="task-q">Write the journal entry for this transaction.</p>
             <table class="journal-input">
-              <tr><th>Account</th><th>Debit</th><th>Credit</th></tr>
+              <caption class="sr-only">Journal entry for stop 3: the account and amount debited, then the account and amount credited</caption>
+              <thead><tr><th scope="col">Account</th><th scope="col">Debit</th><th scope="col">Credit</th></tr></thead>
+              <tbody>
               <tr data-role="debit">
-                <td><input type="text" class="req-input je-acct" placeholder="Account debited"></td>
-                <td><div class="amt-line"><input type="text" class="req-input je-amt" placeholder="$"><span class="row-mark">&#10007;</span></div></td>
+                <td data-label="Debit account"><input type="text" class="req-input je-acct" placeholder="Account debited" aria-label="Account debited" autocomplete="off" spellcheck="false"></td>
+                <td data-label="Debit amount"><div class="amt-line"><input type="text" class="req-input je-amt" placeholder="$" aria-label="Debit amount ($)" autocomplete="off" spellcheck="false"><span class="row-mark" id="s3-m7"><span aria-hidden="true">&#10007;</span><span class="sr-only">Incorrect: this row does not match the solution.</span></span></div></td>
                 <td></td>
               </tr>
               <tr data-role="credit">
-                <td class="indent"><input type="text" class="req-input je-acct" placeholder="Account credited"></td>
+                <td class="indent" data-label="Credit account"><input type="text" class="req-input je-acct" placeholder="Account credited" aria-label="Account credited" autocomplete="off" spellcheck="false"></td>
                 <td></td>
-                <td><div class="amt-line"><input type="text" class="req-input je-amt" placeholder="$"><span class="row-mark">&#10007;</span></div></td>
+                <td data-label="Credit amount"><div class="amt-line"><input type="text" class="req-input je-amt" placeholder="$" aria-label="Credit amount ($)" autocomplete="off" spellcheck="false"><span class="row-mark" id="s3-m8"><span aria-hidden="true">&#10007;</span><span class="sr-only">Incorrect: this row does not match the solution.</span></span></div></td>
               </tr>
+              </tbody>
             </table>
-            <button class="reveal-btn" onclick="checkAndReveal(this)">Reveal Solution</button>
-            <p class="reveal-warning">Fill in your answer above before revealing the solution.</p>
-            <div class="solution">
+            <button type="button" class="reveal-btn" aria-expanded="false" aria-controls="s3-t2-sol">Reveal Solution</button>
+            <p class="task-feedback" role="status" aria-atomic="true"></p>
+            <div class="solution" id="s3-t2-sol">
               <p class="solution-label">Solution</p>
+              <div class="table-scroll">
               <table class="journal">
-                <tr><td>Accounts Payable</td><td class="num">6,000</td><td></td></tr>
-                <tr><td class="credit-acct">Cash</td><td></td><td class="num">6,000</td></tr>
+                <caption class="sr-only">Solution: journal entry for stop 3</caption>
+                <thead><tr><th scope="col">Account</th><th scope="col" class="num">Debit</th><th scope="col" class="num">Credit</th></tr></thead>
+                <tbody>
+                <tr><th scope="row">Accounts Payable</th><td class="num">6,000</td><td></td></tr>
+                <tr><th scope="row" class="credit-acct">Cash</th><td></td><td class="num">6,000</td></tr>
+                </tbody>
               </table>
+              </div>
               <p class="why"><strong>Let Me Explain:</strong> Accounts Payable (a liability) decreases, and liabilities decrease with a debit. Cash (an asset) decreases, so it&rsquo;s credited.</p>
             </div>
           </div>
-        </div>
+        </article>
       </div>
     </div>
 
     <!-- Stop 4 -->
     <div class="stop" data-stop="4">
-      <div class="stop-rail"><div class="stop-dot">4</div><div class="stop-line"></div></div>
+      <div class="stop-rail" aria-hidden="true"><div class="stop-dot">4</div><div class="stop-line"></div></div>
       <div class="stop-content">
-        <div class="stop-card">
-          <div class="stop-head"><span class="stop-title">Purchase Equipment on Account</span><span class="stop-date">Dec 10</span></div>
+        <article class="stop-card" aria-labelledby="stop4-h">
+          <h2 class="stop-head" id="stop4-h"><span class="sr-only">Stop 4: </span><span class="stop-title">Purchase Equipment on Account</span><span class="stop-date">Dec 10</span></h2>
           <p class="stop-desc">Buys additional bike racks and repair stands on account for <strong>$14,000</strong>, to be paid next month.</p>
 
-          <div class="task">
-            <span class="task-label">Step 1</span>
+          <div class="task" role="group" aria-labelledby="s4-t1-h">
+            <h3 class="task-label" id="s4-t1-h">Step 1<span class="sr-only">: effect on the accounting equation</span></h3>
             <p class="task-q">What two accounts are affected? Enter each amount with a + for an increase or &minus; for a decrease.</p>
-            <div class="input-template eq-template">
+            <div class="input-template eq-template" role="group" aria-label="Accounting equation: Assets equals Liabilities plus Stockholders' Equity" aria-describedby="s4-hint">
               <div class="eq-cols">
-                <div class="eq-col" data-col="assets">
-                  <p class="eq-col-label">Assets</p>
+                <div class="eq-col" data-col="assets" role="group" aria-labelledby="s4-assets-lbl">
+                  <p class="eq-col-label" id="s4-assets-lbl">Assets</p>
                   <div class="eq-row">
-                    <input type="text" class="req-input eq-acct" placeholder="Account">
+                    <input type="text" class="req-input eq-acct" placeholder="Account" aria-label="Assets, row 1: account name" autocomplete="off" spellcheck="false">
                     <div class="amt-line">
-                      <input type="text" class="req-input eq-amt" placeholder="$">
-                      <span class="row-mark">&#10007;</span>
+                      <input type="text" class="req-input eq-amt" placeholder="$" aria-label="Assets, row 1: amount ($)" autocomplete="off" spellcheck="false">
+                      <span class="row-mark" id="s4-m1"><span aria-hidden="true">&#10007;</span><span class="sr-only">Incorrect: this row does not match the solution.</span></span>
                     </div>
                   </div>
                   <div class="eq-row">
-                    <input type="text" class="req-input eq-acct" placeholder="Account">
+                    <input type="text" class="req-input eq-acct" placeholder="Account" aria-label="Assets, row 2: account name" autocomplete="off" spellcheck="false">
                     <div class="amt-line">
-                      <input type="text" class="req-input eq-amt" placeholder="$">
-                      <span class="row-mark">&#10007;</span>
-                    </div>
-                  </div>
-                </div>
-                <div class="eq-op">=</div>
-                <div class="eq-col" data-col="liabilities">
-                  <p class="eq-col-label">Liabilities</p>
-                  <div class="eq-row">
-                    <input type="text" class="req-input eq-acct" placeholder="Account">
-                    <div class="amt-line">
-                      <input type="text" class="req-input eq-amt" placeholder="$">
-                      <span class="row-mark">&#10007;</span>
-                    </div>
-                  </div>
-                  <div class="eq-row">
-                    <input type="text" class="req-input eq-acct" placeholder="Account">
-                    <div class="amt-line">
-                      <input type="text" class="req-input eq-amt" placeholder="$">
-                      <span class="row-mark">&#10007;</span>
+                      <input type="text" class="req-input eq-amt" placeholder="$" aria-label="Assets, row 2: amount ($)" autocomplete="off" spellcheck="false">
+                      <span class="row-mark" id="s4-m2"><span aria-hidden="true">&#10007;</span><span class="sr-only">Incorrect: this row does not match the solution.</span></span>
                     </div>
                   </div>
                 </div>
-                <div class="eq-op">+</div>
-                <div class="eq-col" data-col="equity">
-                  <p class="eq-col-label">Stockholders&rsquo; Equity</p>
+                <div class="eq-op" aria-hidden="true">=</div>
+                <div class="eq-col" data-col="liabilities" role="group" aria-labelledby="s4-liabilities-lbl">
+                  <p class="eq-col-label" id="s4-liabilities-lbl">Liabilities</p>
                   <div class="eq-row">
-                    <input type="text" class="req-input eq-acct" placeholder="Account">
+                    <input type="text" class="req-input eq-acct" placeholder="Account" aria-label="Liabilities, row 1: account name" autocomplete="off" spellcheck="false">
                     <div class="amt-line">
-                      <input type="text" class="req-input eq-amt" placeholder="$">
-                      <span class="row-mark">&#10007;</span>
+                      <input type="text" class="req-input eq-amt" placeholder="$" aria-label="Liabilities, row 1: amount ($)" autocomplete="off" spellcheck="false">
+                      <span class="row-mark" id="s4-m3"><span aria-hidden="true">&#10007;</span><span class="sr-only">Incorrect: this row does not match the solution.</span></span>
                     </div>
                   </div>
                   <div class="eq-row">
-                    <input type="text" class="req-input eq-acct" placeholder="Account">
+                    <input type="text" class="req-input eq-acct" placeholder="Account" aria-label="Liabilities, row 2: account name" autocomplete="off" spellcheck="false">
                     <div class="amt-line">
-                      <input type="text" class="req-input eq-amt" placeholder="$">
-                      <span class="row-mark">&#10007;</span>
+                      <input type="text" class="req-input eq-amt" placeholder="$" aria-label="Liabilities, row 2: amount ($)" autocomplete="off" spellcheck="false">
+                      <span class="row-mark" id="s4-m4"><span aria-hidden="true">&#10007;</span><span class="sr-only">Incorrect: this row does not match the solution.</span></span>
+                    </div>
+                  </div>
+                </div>
+                <div class="eq-op" aria-hidden="true">+</div>
+                <div class="eq-col" data-col="equity" role="group" aria-labelledby="s4-equity-lbl">
+                  <p class="eq-col-label" id="s4-equity-lbl">Stockholders&rsquo; Equity</p>
+                  <div class="eq-row">
+                    <input type="text" class="req-input eq-acct" placeholder="Account" aria-label="Stockholders&rsquo; Equity, row 1: account name" autocomplete="off" spellcheck="false">
+                    <div class="amt-line">
+                      <input type="text" class="req-input eq-amt" placeholder="$" aria-label="Stockholders&rsquo; Equity, row 1: amount ($)" autocomplete="off" spellcheck="false">
+                      <span class="row-mark" id="s4-m5"><span aria-hidden="true">&#10007;</span><span class="sr-only">Incorrect: this row does not match the solution.</span></span>
+                    </div>
+                  </div>
+                  <div class="eq-row">
+                    <input type="text" class="req-input eq-acct" placeholder="Account" aria-label="Stockholders&rsquo; Equity, row 2: account name" autocomplete="off" spellcheck="false">
+                    <div class="amt-line">
+                      <input type="text" class="req-input eq-amt" placeholder="$" aria-label="Stockholders&rsquo; Equity, row 2: amount ($)" autocomplete="off" spellcheck="false">
+                      <span class="row-mark" id="s4-m6"><span aria-hidden="true">&#10007;</span><span class="sr-only">Incorrect: this row does not match the solution.</span></span>
                     </div>
                   </div>
                 </div>
               </div>
-              <p class="eq-hint">Use a plus sign for an increase and a minus sign for a decrease (e.g. +180,000 or &minus;95,000). Each column has two rows in case a transaction affects two accounts in the same category (for example, buying equipment with cash affects two asset accounts) &mdash; if only one account in a category changes, leave its second row blank. Fill in at least two complete rows total.</p>
+              <p class="eq-hint" id="s4-hint">Use a plus sign for an increase and a minus sign for a decrease (e.g. +180,000 or &minus;95,000). Each column has two rows in case a transaction affects two accounts in the same category (for example, buying equipment with cash affects two asset accounts) &mdash; if only one account in a category changes, leave its second row blank. Fill in at least two complete rows total.</p>
             </div>
-            <button class="reveal-btn" onclick="checkAndReveal(this)">Reveal Solution</button>
-            <p class="reveal-warning">Fill in your answer above before revealing the solution.</p>
-            <div class="solution">
+            <button type="button" class="reveal-btn" aria-expanded="false" aria-controls="s4-t1-sol">Reveal Solution</button>
+            <p class="task-feedback" role="status" aria-atomic="true"></p>
+            <div class="solution" id="s4-t1-sol">
               <p class="solution-label">Solution</p>
-              <div class="eq-effect">
+              <div class="eq-effect" role="group" aria-label="Effect on the accounting equation">
                 <div class="cell"><div class="acct-label">Asset</div><div class="acct">Equipment</div><div class="amt-up">+$14,000</div></div>
-                <div class="op">=</div>
+                <div class="op"><span aria-hidden="true">=</span><span class="sr-only">equals</span></div>
                 <div class="cell"><div class="acct-label">Liabilities</div><div class="acct">Accounts Payable</div><div class="amt-up">+$14,000</div></div>
-                <div class="op">+</div>
-                <div class="cell"><div class="acct-label">Stockholders&rsquo; Equity</div><div class="acct">&mdash;</div><div>no change</div></div>
+                <div class="op"><span aria-hidden="true">+</span><span class="sr-only">plus</span></div>
+                <div class="cell"><div class="acct-label">Stockholders&rsquo; Equity</div><div class="acct" aria-hidden="true">&mdash;</div><div>no change</div></div>
               </div>
               <p class="why"><strong>Let Me Explain:</strong> &ldquo;On account&rdquo; means the shop has the equipment in hand but hasn&rsquo;t paid for it yet &mdash; so, just like the supplies purchase back in November, the other side of the entry is a liability rather than cash.</p>
             </div>
           </div>
 
-          <div class="task">
-            <span class="task-label">Step 2</span>
+          <div class="task" role="group" aria-labelledby="s4-t2-h">
+            <h3 class="task-label" id="s4-t2-h">Step 2<span class="sr-only">: journal entry</span></h3>
             <p class="task-q">Write the journal entry for this transaction.</p>
             <table class="journal-input">
-              <tr><th>Account</th><th>Debit</th><th>Credit</th></tr>
+              <caption class="sr-only">Journal entry for stop 4: the account and amount debited, then the account and amount credited</caption>
+              <thead><tr><th scope="col">Account</th><th scope="col">Debit</th><th scope="col">Credit</th></tr></thead>
+              <tbody>
               <tr data-role="debit">
-                <td><input type="text" class="req-input je-acct" placeholder="Account debited"></td>
-                <td><div class="amt-line"><input type="text" class="req-input je-amt" placeholder="$"><span class="row-mark">&#10007;</span></div></td>
+                <td data-label="Debit account"><input type="text" class="req-input je-acct" placeholder="Account debited" aria-label="Account debited" autocomplete="off" spellcheck="false"></td>
+                <td data-label="Debit amount"><div class="amt-line"><input type="text" class="req-input je-amt" placeholder="$" aria-label="Debit amount ($)" autocomplete="off" spellcheck="false"><span class="row-mark" id="s4-m7"><span aria-hidden="true">&#10007;</span><span class="sr-only">Incorrect: this row does not match the solution.</span></span></div></td>
                 <td></td>
               </tr>
               <tr data-role="credit">
-                <td class="indent"><input type="text" class="req-input je-acct" placeholder="Account credited"></td>
+                <td class="indent" data-label="Credit account"><input type="text" class="req-input je-acct" placeholder="Account credited" aria-label="Account credited" autocomplete="off" spellcheck="false"></td>
                 <td></td>
-                <td><div class="amt-line"><input type="text" class="req-input je-amt" placeholder="$"><span class="row-mark">&#10007;</span></div></td>
+                <td data-label="Credit amount"><div class="amt-line"><input type="text" class="req-input je-amt" placeholder="$" aria-label="Credit amount ($)" autocomplete="off" spellcheck="false"><span class="row-mark" id="s4-m8"><span aria-hidden="true">&#10007;</span><span class="sr-only">Incorrect: this row does not match the solution.</span></span></div></td>
               </tr>
+              </tbody>
             </table>
-            <button class="reveal-btn" onclick="checkAndReveal(this)">Reveal Solution</button>
-            <p class="reveal-warning">Fill in your answer above before revealing the solution.</p>
-            <div class="solution">
+            <button type="button" class="reveal-btn" aria-expanded="false" aria-controls="s4-t2-sol">Reveal Solution</button>
+            <p class="task-feedback" role="status" aria-atomic="true"></p>
+            <div class="solution" id="s4-t2-sol">
               <p class="solution-label">Solution</p>
+              <div class="table-scroll">
               <table class="journal">
-                <tr><td>Equipment</td><td class="num">14,000</td><td></td></tr>
-                <tr><td class="credit-acct">Accounts Payable</td><td></td><td class="num">14,000</td></tr>
+                <caption class="sr-only">Solution: journal entry for stop 4</caption>
+                <thead><tr><th scope="col">Account</th><th scope="col" class="num">Debit</th><th scope="col" class="num">Credit</th></tr></thead>
+                <tbody>
+                <tr><th scope="row">Equipment</th><td class="num">14,000</td><td></td></tr>
+                <tr><th scope="row" class="credit-acct">Accounts Payable</th><td></td><td class="num">14,000</td></tr>
+                </tbody>
               </table>
+              </div>
               <p class="why"><strong>Let Me Explain:</strong> Equipment (an asset) increases, so it&rsquo;s debited. Accounts Payable (a liability) increases, so it&rsquo;s credited.</p>
             </div>
           </div>
-        </div>
+        </article>
       </div>
     </div>
 
     <!-- Stop 5 -->
     <div class="stop" data-stop="5">
-      <div class="stop-rail"><div class="stop-dot">5</div><div class="stop-line"></div></div>
+      <div class="stop-rail" aria-hidden="true"><div class="stop-dot">5</div><div class="stop-line"></div></div>
       <div class="stop-content">
-        <div class="stop-card">
-          <div class="stop-head"><span class="stop-title">Receive Cash in Advance</span><span class="stop-date">Dec 14</span></div>
+        <article class="stop-card" aria-labelledby="stop5-h">
+          <h2 class="stop-head" id="stop5-h"><span class="sr-only">Stop 5: </span><span class="stop-title">Receive Cash in Advance</span><span class="stop-date">Dec 14</span></h2>
           <p class="stop-desc">Receives <strong>$11,000</strong> cash from a scout troop booking a multi-day guided trip for next spring.</p>
 
-          <div class="task">
-            <span class="task-label">Step 1</span>
+          <div class="task" role="group" aria-labelledby="s5-t1-h">
+            <h3 class="task-label" id="s5-t1-h">Step 1<span class="sr-only">: effect on the accounting equation</span></h3>
             <p class="task-q">What two accounts are affected? Enter each amount with a + for an increase or &minus; for a decrease.</p>
-            <div class="input-template eq-template">
+            <div class="input-template eq-template" role="group" aria-label="Accounting equation: Assets equals Liabilities plus Stockholders' Equity" aria-describedby="s5-hint">
               <div class="eq-cols">
-                <div class="eq-col" data-col="assets">
-                  <p class="eq-col-label">Assets</p>
+                <div class="eq-col" data-col="assets" role="group" aria-labelledby="s5-assets-lbl">
+                  <p class="eq-col-label" id="s5-assets-lbl">Assets</p>
                   <div class="eq-row">
-                    <input type="text" class="req-input eq-acct" placeholder="Account">
+                    <input type="text" class="req-input eq-acct" placeholder="Account" aria-label="Assets, row 1: account name" autocomplete="off" spellcheck="false">
                     <div class="amt-line">
-                      <input type="text" class="req-input eq-amt" placeholder="$">
-                      <span class="row-mark">&#10007;</span>
+                      <input type="text" class="req-input eq-amt" placeholder="$" aria-label="Assets, row 1: amount ($)" autocomplete="off" spellcheck="false">
+                      <span class="row-mark" id="s5-m1"><span aria-hidden="true">&#10007;</span><span class="sr-only">Incorrect: this row does not match the solution.</span></span>
                     </div>
                   </div>
                   <div class="eq-row">
-                    <input type="text" class="req-input eq-acct" placeholder="Account">
+                    <input type="text" class="req-input eq-acct" placeholder="Account" aria-label="Assets, row 2: account name" autocomplete="off" spellcheck="false">
                     <div class="amt-line">
-                      <input type="text" class="req-input eq-amt" placeholder="$">
-                      <span class="row-mark">&#10007;</span>
-                    </div>
-                  </div>
-                </div>
-                <div class="eq-op">=</div>
-                <div class="eq-col" data-col="liabilities">
-                  <p class="eq-col-label">Liabilities</p>
-                  <div class="eq-row">
-                    <input type="text" class="req-input eq-acct" placeholder="Account">
-                    <div class="amt-line">
-                      <input type="text" class="req-input eq-amt" placeholder="$">
-                      <span class="row-mark">&#10007;</span>
-                    </div>
-                  </div>
-                  <div class="eq-row">
-                    <input type="text" class="req-input eq-acct" placeholder="Account">
-                    <div class="amt-line">
-                      <input type="text" class="req-input eq-amt" placeholder="$">
-                      <span class="row-mark">&#10007;</span>
+                      <input type="text" class="req-input eq-amt" placeholder="$" aria-label="Assets, row 2: amount ($)" autocomplete="off" spellcheck="false">
+                      <span class="row-mark" id="s5-m2"><span aria-hidden="true">&#10007;</span><span class="sr-only">Incorrect: this row does not match the solution.</span></span>
                     </div>
                   </div>
                 </div>
-                <div class="eq-op">+</div>
-                <div class="eq-col" data-col="equity">
-                  <p class="eq-col-label">Stockholders&rsquo; Equity</p>
+                <div class="eq-op" aria-hidden="true">=</div>
+                <div class="eq-col" data-col="liabilities" role="group" aria-labelledby="s5-liabilities-lbl">
+                  <p class="eq-col-label" id="s5-liabilities-lbl">Liabilities</p>
                   <div class="eq-row">
-                    <input type="text" class="req-input eq-acct" placeholder="Account">
+                    <input type="text" class="req-input eq-acct" placeholder="Account" aria-label="Liabilities, row 1: account name" autocomplete="off" spellcheck="false">
                     <div class="amt-line">
-                      <input type="text" class="req-input eq-amt" placeholder="$">
-                      <span class="row-mark">&#10007;</span>
+                      <input type="text" class="req-input eq-amt" placeholder="$" aria-label="Liabilities, row 1: amount ($)" autocomplete="off" spellcheck="false">
+                      <span class="row-mark" id="s5-m3"><span aria-hidden="true">&#10007;</span><span class="sr-only">Incorrect: this row does not match the solution.</span></span>
                     </div>
                   </div>
                   <div class="eq-row">
-                    <input type="text" class="req-input eq-acct" placeholder="Account">
+                    <input type="text" class="req-input eq-acct" placeholder="Account" aria-label="Liabilities, row 2: account name" autocomplete="off" spellcheck="false">
                     <div class="amt-line">
-                      <input type="text" class="req-input eq-amt" placeholder="$">
-                      <span class="row-mark">&#10007;</span>
+                      <input type="text" class="req-input eq-amt" placeholder="$" aria-label="Liabilities, row 2: amount ($)" autocomplete="off" spellcheck="false">
+                      <span class="row-mark" id="s5-m4"><span aria-hidden="true">&#10007;</span><span class="sr-only">Incorrect: this row does not match the solution.</span></span>
+                    </div>
+                  </div>
+                </div>
+                <div class="eq-op" aria-hidden="true">+</div>
+                <div class="eq-col" data-col="equity" role="group" aria-labelledby="s5-equity-lbl">
+                  <p class="eq-col-label" id="s5-equity-lbl">Stockholders&rsquo; Equity</p>
+                  <div class="eq-row">
+                    <input type="text" class="req-input eq-acct" placeholder="Account" aria-label="Stockholders&rsquo; Equity, row 1: account name" autocomplete="off" spellcheck="false">
+                    <div class="amt-line">
+                      <input type="text" class="req-input eq-amt" placeholder="$" aria-label="Stockholders&rsquo; Equity, row 1: amount ($)" autocomplete="off" spellcheck="false">
+                      <span class="row-mark" id="s5-m5"><span aria-hidden="true">&#10007;</span><span class="sr-only">Incorrect: this row does not match the solution.</span></span>
+                    </div>
+                  </div>
+                  <div class="eq-row">
+                    <input type="text" class="req-input eq-acct" placeholder="Account" aria-label="Stockholders&rsquo; Equity, row 2: account name" autocomplete="off" spellcheck="false">
+                    <div class="amt-line">
+                      <input type="text" class="req-input eq-amt" placeholder="$" aria-label="Stockholders&rsquo; Equity, row 2: amount ($)" autocomplete="off" spellcheck="false">
+                      <span class="row-mark" id="s5-m6"><span aria-hidden="true">&#10007;</span><span class="sr-only">Incorrect: this row does not match the solution.</span></span>
                     </div>
                   </div>
                 </div>
               </div>
-              <p class="eq-hint">Use a plus sign for an increase and a minus sign for a decrease (e.g. +180,000 or &minus;95,000). Each column has two rows in case a transaction affects two accounts in the same category (for example, buying equipment with cash affects two asset accounts) &mdash; if only one account in a category changes, leave its second row blank. Fill in at least two complete rows total.</p>
+              <p class="eq-hint" id="s5-hint">Use a plus sign for an increase and a minus sign for a decrease (e.g. +180,000 or &minus;95,000). Each column has two rows in case a transaction affects two accounts in the same category (for example, buying equipment with cash affects two asset accounts) &mdash; if only one account in a category changes, leave its second row blank. Fill in at least two complete rows total.</p>
             </div>
-            <button class="reveal-btn" onclick="checkAndReveal(this)">Reveal Solution</button>
-            <p class="reveal-warning">Fill in your answer above before revealing the solution.</p>
-            <div class="solution">
+            <button type="button" class="reveal-btn" aria-expanded="false" aria-controls="s5-t1-sol">Reveal Solution</button>
+            <p class="task-feedback" role="status" aria-atomic="true"></p>
+            <div class="solution" id="s5-t1-sol">
               <p class="solution-label">Solution</p>
-              <div class="eq-effect">
+              <div class="eq-effect" role="group" aria-label="Effect on the accounting equation">
                 <div class="cell"><div class="acct-label">Asset</div><div class="acct">Cash</div><div class="amt-up">+$11,000</div></div>
-                <div class="op">=</div>
+                <div class="op"><span aria-hidden="true">=</span><span class="sr-only">equals</span></div>
                 <div class="cell"><div class="acct-label">Liabilities</div><div class="acct">Deferred Revenue</div><div class="amt-up">+$11,000</div></div>
-                <div class="op">+</div>
-                <div class="cell"><div class="acct-label">Stockholders&rsquo; Equity</div><div class="acct">&mdash;</div><div>no change</div></div>
+                <div class="op"><span aria-hidden="true">+</span><span class="sr-only">plus</span></div>
+                <div class="cell"><div class="acct-label">Stockholders&rsquo; Equity</div><div class="acct" aria-hidden="true">&mdash;</div><div>no change</div></div>
               </div>
               <p class="why"><strong>Let Me Explain:</strong> The cash is in hand, but the trip hasn&rsquo;t happened yet &mdash; the shop still owes the service. That makes this a liability (an obligation to deliver the trip later), not revenue, until the trip actually takes place.</p>
             </div>
           </div>
 
-          <div class="task">
-            <span class="task-label">Step 2</span>
+          <div class="task" role="group" aria-labelledby="s5-t2-h">
+            <h3 class="task-label" id="s5-t2-h">Step 2<span class="sr-only">: journal entry</span></h3>
             <p class="task-q">Write the journal entry for this transaction.</p>
             <table class="journal-input">
-              <tr><th>Account</th><th>Debit</th><th>Credit</th></tr>
+              <caption class="sr-only">Journal entry for stop 5: the account and amount debited, then the account and amount credited</caption>
+              <thead><tr><th scope="col">Account</th><th scope="col">Debit</th><th scope="col">Credit</th></tr></thead>
+              <tbody>
               <tr data-role="debit">
-                <td><input type="text" class="req-input je-acct" placeholder="Account debited"></td>
-                <td><div class="amt-line"><input type="text" class="req-input je-amt" placeholder="$"><span class="row-mark">&#10007;</span></div></td>
+                <td data-label="Debit account"><input type="text" class="req-input je-acct" placeholder="Account debited" aria-label="Account debited" autocomplete="off" spellcheck="false"></td>
+                <td data-label="Debit amount"><div class="amt-line"><input type="text" class="req-input je-amt" placeholder="$" aria-label="Debit amount ($)" autocomplete="off" spellcheck="false"><span class="row-mark" id="s5-m7"><span aria-hidden="true">&#10007;</span><span class="sr-only">Incorrect: this row does not match the solution.</span></span></div></td>
                 <td></td>
               </tr>
               <tr data-role="credit">
-                <td class="indent"><input type="text" class="req-input je-acct" placeholder="Account credited"></td>
+                <td class="indent" data-label="Credit account"><input type="text" class="req-input je-acct" placeholder="Account credited" aria-label="Account credited" autocomplete="off" spellcheck="false"></td>
                 <td></td>
-                <td><div class="amt-line"><input type="text" class="req-input je-amt" placeholder="$"><span class="row-mark">&#10007;</span></div></td>
+                <td data-label="Credit amount"><div class="amt-line"><input type="text" class="req-input je-amt" placeholder="$" aria-label="Credit amount ($)" autocomplete="off" spellcheck="false"><span class="row-mark" id="s5-m8"><span aria-hidden="true">&#10007;</span><span class="sr-only">Incorrect: this row does not match the solution.</span></span></div></td>
               </tr>
+              </tbody>
             </table>
-            <button class="reveal-btn" onclick="checkAndReveal(this)">Reveal Solution</button>
-            <p class="reveal-warning">Fill in your answer above before revealing the solution.</p>
-            <div class="solution">
+            <button type="button" class="reveal-btn" aria-expanded="false" aria-controls="s5-t2-sol">Reveal Solution</button>
+            <p class="task-feedback" role="status" aria-atomic="true"></p>
+            <div class="solution" id="s5-t2-sol">
               <p class="solution-label">Solution</p>
+              <div class="table-scroll">
               <table class="journal">
-                <tr><td>Cash</td><td class="num">11,000</td><td></td></tr>
-                <tr><td class="credit-acct">Deferred Revenue</td><td></td><td class="num">11,000</td></tr>
+                <caption class="sr-only">Solution: journal entry for stop 5</caption>
+                <thead><tr><th scope="col">Account</th><th scope="col" class="num">Debit</th><th scope="col" class="num">Credit</th></tr></thead>
+                <tbody>
+                <tr><th scope="row">Cash</th><td class="num">11,000</td><td></td></tr>
+                <tr><th scope="row" class="credit-acct">Deferred Revenue</th><td></td><td class="num">11,000</td></tr>
+                </tbody>
               </table>
+              </div>
               <p class="why"><strong>Let Me Explain:</strong> Cash (an asset) increases, so it&rsquo;s debited. Deferred Revenue (a liability) increases, so it&rsquo;s credited.</p>
             </div>
           </div>
-        </div>
+        </article>
       </div>
     </div>
 
     <!-- Stop 6 -->
     <div class="stop" data-stop="6">
-      <div class="stop-rail"><div class="stop-dot">6</div><div class="stop-line"></div></div>
+      <div class="stop-rail" aria-hidden="true"><div class="stop-dot">6</div><div class="stop-line"></div></div>
       <div class="stop-content">
-        <div class="stop-card">
-          <div class="stop-head"><span class="stop-title">Guide Holiday Tours for Cash</span><span class="stop-date">Dec 18</span></div>
+        <article class="stop-card" aria-labelledby="stop6-h">
+          <h2 class="stop-head" id="stop6-h"><span class="sr-only">Stop 6: </span><span class="stop-title">Guide Holiday Tours for Cash</span><span class="stop-date">Dec 18</span></h2>
           <p class="stop-desc">Guides a week of holiday season tours for cash, <strong>$29,000</strong>.</p>
 
-          <div class="task">
-            <span class="task-label">Step 1</span>
+          <div class="task" role="group" aria-labelledby="s6-t1-h">
+            <h3 class="task-label" id="s6-t1-h">Step 1<span class="sr-only">: effect on the accounting equation</span></h3>
             <p class="task-q">What two accounts are affected? Enter each amount with a + for an increase or &minus; for a decrease.</p>
-            <div class="input-template eq-template">
+            <div class="input-template eq-template" role="group" aria-label="Accounting equation: Assets equals Liabilities plus Stockholders' Equity" aria-describedby="s6-hint">
               <div class="eq-cols">
-                <div class="eq-col" data-col="assets">
-                  <p class="eq-col-label">Assets</p>
+                <div class="eq-col" data-col="assets" role="group" aria-labelledby="s6-assets-lbl">
+                  <p class="eq-col-label" id="s6-assets-lbl">Assets</p>
                   <div class="eq-row">
-                    <input type="text" class="req-input eq-acct" placeholder="Account">
+                    <input type="text" class="req-input eq-acct" placeholder="Account" aria-label="Assets, row 1: account name" autocomplete="off" spellcheck="false">
                     <div class="amt-line">
-                      <input type="text" class="req-input eq-amt" placeholder="$">
-                      <span class="row-mark">&#10007;</span>
+                      <input type="text" class="req-input eq-amt" placeholder="$" aria-label="Assets, row 1: amount ($)" autocomplete="off" spellcheck="false">
+                      <span class="row-mark" id="s6-m1"><span aria-hidden="true">&#10007;</span><span class="sr-only">Incorrect: this row does not match the solution.</span></span>
                     </div>
                   </div>
                   <div class="eq-row">
-                    <input type="text" class="req-input eq-acct" placeholder="Account">
+                    <input type="text" class="req-input eq-acct" placeholder="Account" aria-label="Assets, row 2: account name" autocomplete="off" spellcheck="false">
                     <div class="amt-line">
-                      <input type="text" class="req-input eq-amt" placeholder="$">
-                      <span class="row-mark">&#10007;</span>
-                    </div>
-                  </div>
-                </div>
-                <div class="eq-op">=</div>
-                <div class="eq-col" data-col="liabilities">
-                  <p class="eq-col-label">Liabilities</p>
-                  <div class="eq-row">
-                    <input type="text" class="req-input eq-acct" placeholder="Account">
-                    <div class="amt-line">
-                      <input type="text" class="req-input eq-amt" placeholder="$">
-                      <span class="row-mark">&#10007;</span>
-                    </div>
-                  </div>
-                  <div class="eq-row">
-                    <input type="text" class="req-input eq-acct" placeholder="Account">
-                    <div class="amt-line">
-                      <input type="text" class="req-input eq-amt" placeholder="$">
-                      <span class="row-mark">&#10007;</span>
+                      <input type="text" class="req-input eq-amt" placeholder="$" aria-label="Assets, row 2: amount ($)" autocomplete="off" spellcheck="false">
+                      <span class="row-mark" id="s6-m2"><span aria-hidden="true">&#10007;</span><span class="sr-only">Incorrect: this row does not match the solution.</span></span>
                     </div>
                   </div>
                 </div>
-                <div class="eq-op">+</div>
-                <div class="eq-col" data-col="equity">
-                  <p class="eq-col-label">Stockholders&rsquo; Equity</p>
+                <div class="eq-op" aria-hidden="true">=</div>
+                <div class="eq-col" data-col="liabilities" role="group" aria-labelledby="s6-liabilities-lbl">
+                  <p class="eq-col-label" id="s6-liabilities-lbl">Liabilities</p>
                   <div class="eq-row">
-                    <input type="text" class="req-input eq-acct" placeholder="Account">
+                    <input type="text" class="req-input eq-acct" placeholder="Account" aria-label="Liabilities, row 1: account name" autocomplete="off" spellcheck="false">
                     <div class="amt-line">
-                      <input type="text" class="req-input eq-amt" placeholder="$">
-                      <span class="row-mark">&#10007;</span>
+                      <input type="text" class="req-input eq-amt" placeholder="$" aria-label="Liabilities, row 1: amount ($)" autocomplete="off" spellcheck="false">
+                      <span class="row-mark" id="s6-m3"><span aria-hidden="true">&#10007;</span><span class="sr-only">Incorrect: this row does not match the solution.</span></span>
                     </div>
                   </div>
                   <div class="eq-row">
-                    <input type="text" class="req-input eq-acct" placeholder="Account">
+                    <input type="text" class="req-input eq-acct" placeholder="Account" aria-label="Liabilities, row 2: account name" autocomplete="off" spellcheck="false">
                     <div class="amt-line">
-                      <input type="text" class="req-input eq-amt" placeholder="$">
-                      <span class="row-mark">&#10007;</span>
+                      <input type="text" class="req-input eq-amt" placeholder="$" aria-label="Liabilities, row 2: amount ($)" autocomplete="off" spellcheck="false">
+                      <span class="row-mark" id="s6-m4"><span aria-hidden="true">&#10007;</span><span class="sr-only">Incorrect: this row does not match the solution.</span></span>
+                    </div>
+                  </div>
+                </div>
+                <div class="eq-op" aria-hidden="true">+</div>
+                <div class="eq-col" data-col="equity" role="group" aria-labelledby="s6-equity-lbl">
+                  <p class="eq-col-label" id="s6-equity-lbl">Stockholders&rsquo; Equity</p>
+                  <div class="eq-row">
+                    <input type="text" class="req-input eq-acct" placeholder="Account" aria-label="Stockholders&rsquo; Equity, row 1: account name" autocomplete="off" spellcheck="false">
+                    <div class="amt-line">
+                      <input type="text" class="req-input eq-amt" placeholder="$" aria-label="Stockholders&rsquo; Equity, row 1: amount ($)" autocomplete="off" spellcheck="false">
+                      <span class="row-mark" id="s6-m5"><span aria-hidden="true">&#10007;</span><span class="sr-only">Incorrect: this row does not match the solution.</span></span>
+                    </div>
+                  </div>
+                  <div class="eq-row">
+                    <input type="text" class="req-input eq-acct" placeholder="Account" aria-label="Stockholders&rsquo; Equity, row 2: account name" autocomplete="off" spellcheck="false">
+                    <div class="amt-line">
+                      <input type="text" class="req-input eq-amt" placeholder="$" aria-label="Stockholders&rsquo; Equity, row 2: amount ($)" autocomplete="off" spellcheck="false">
+                      <span class="row-mark" id="s6-m6"><span aria-hidden="true">&#10007;</span><span class="sr-only">Incorrect: this row does not match the solution.</span></span>
                     </div>
                   </div>
                 </div>
               </div>
-              <p class="eq-hint">Use a plus sign for an increase and a minus sign for a decrease (e.g. +180,000 or &minus;95,000). Each column has two rows in case a transaction affects two accounts in the same category (for example, buying equipment with cash affects two asset accounts) &mdash; if only one account in a category changes, leave its second row blank. Fill in at least two complete rows total.</p>
+              <p class="eq-hint" id="s6-hint">Use a plus sign for an increase and a minus sign for a decrease (e.g. +180,000 or &minus;95,000). Each column has two rows in case a transaction affects two accounts in the same category (for example, buying equipment with cash affects two asset accounts) &mdash; if only one account in a category changes, leave its second row blank. Fill in at least two complete rows total.</p>
             </div>
-            <button class="reveal-btn" onclick="checkAndReveal(this)">Reveal Solution</button>
-            <p class="reveal-warning">Fill in your answer above before revealing the solution.</p>
-            <div class="solution">
+            <button type="button" class="reveal-btn" aria-expanded="false" aria-controls="s6-t1-sol">Reveal Solution</button>
+            <p class="task-feedback" role="status" aria-atomic="true"></p>
+            <div class="solution" id="s6-t1-sol">
               <p class="solution-label">Solution</p>
-              <div class="eq-effect">
+              <div class="eq-effect" role="group" aria-label="Effect on the accounting equation">
                 <div class="cell"><div class="acct-label">Asset</div><div class="acct">Cash</div><div class="amt-up">+$29,000</div></div>
-                <div class="op">=</div>
-                <div class="cell"><div class="acct-label">Liabilities</div><div class="acct">&mdash;</div><div>no change</div></div>
-                <div class="op">+</div>
+                <div class="op"><span aria-hidden="true">=</span><span class="sr-only">equals</span></div>
+                <div class="cell"><div class="acct-label">Liabilities</div><div class="acct" aria-hidden="true">&mdash;</div><div>no change</div></div>
+                <div class="op"><span aria-hidden="true">+</span><span class="sr-only">plus</span></div>
                 <div class="cell"><div class="acct-label">Stockholders&rsquo; Equity</div><div class="acct">Service Revenue</div><div class="amt-up">+$29,000</div></div>
               </div>
               <p class="why"><strong>Let Me Explain:</strong> The shop did the work and got paid on the spot, so revenue is recognized immediately. Revenue flows into retained earnings, which is part of stockholders&rsquo; equity.</p>
             </div>
           </div>
 
-          <div class="task">
-            <span class="task-label">Step 2</span>
+          <div class="task" role="group" aria-labelledby="s6-t2-h">
+            <h3 class="task-label" id="s6-t2-h">Step 2<span class="sr-only">: journal entry</span></h3>
             <p class="task-q">Write the journal entry for this transaction.</p>
             <table class="journal-input">
-              <tr><th>Account</th><th>Debit</th><th>Credit</th></tr>
+              <caption class="sr-only">Journal entry for stop 6: the account and amount debited, then the account and amount credited</caption>
+              <thead><tr><th scope="col">Account</th><th scope="col">Debit</th><th scope="col">Credit</th></tr></thead>
+              <tbody>
               <tr data-role="debit">
-                <td><input type="text" class="req-input je-acct" placeholder="Account debited"></td>
-                <td><div class="amt-line"><input type="text" class="req-input je-amt" placeholder="$"><span class="row-mark">&#10007;</span></div></td>
+                <td data-label="Debit account"><input type="text" class="req-input je-acct" placeholder="Account debited" aria-label="Account debited" autocomplete="off" spellcheck="false"></td>
+                <td data-label="Debit amount"><div class="amt-line"><input type="text" class="req-input je-amt" placeholder="$" aria-label="Debit amount ($)" autocomplete="off" spellcheck="false"><span class="row-mark" id="s6-m7"><span aria-hidden="true">&#10007;</span><span class="sr-only">Incorrect: this row does not match the solution.</span></span></div></td>
                 <td></td>
               </tr>
               <tr data-role="credit">
-                <td class="indent"><input type="text" class="req-input je-acct" placeholder="Account credited"></td>
+                <td class="indent" data-label="Credit account"><input type="text" class="req-input je-acct" placeholder="Account credited" aria-label="Account credited" autocomplete="off" spellcheck="false"></td>
                 <td></td>
-                <td><div class="amt-line"><input type="text" class="req-input je-amt" placeholder="$"><span class="row-mark">&#10007;</span></div></td>
+                <td data-label="Credit amount"><div class="amt-line"><input type="text" class="req-input je-amt" placeholder="$" aria-label="Credit amount ($)" autocomplete="off" spellcheck="false"><span class="row-mark" id="s6-m8"><span aria-hidden="true">&#10007;</span><span class="sr-only">Incorrect: this row does not match the solution.</span></span></div></td>
               </tr>
+              </tbody>
             </table>
-            <button class="reveal-btn" onclick="checkAndReveal(this)">Reveal Solution</button>
-            <p class="reveal-warning">Fill in your answer above before revealing the solution.</p>
-            <div class="solution">
+            <button type="button" class="reveal-btn" aria-expanded="false" aria-controls="s6-t2-sol">Reveal Solution</button>
+            <p class="task-feedback" role="status" aria-atomic="true"></p>
+            <div class="solution" id="s6-t2-sol">
               <p class="solution-label">Solution</p>
+              <div class="table-scroll">
               <table class="journal">
-                <tr><td>Cash</td><td class="num">29,000</td><td></td></tr>
-                <tr><td class="credit-acct">Service Revenue</td><td></td><td class="num">29,000</td></tr>
+                <caption class="sr-only">Solution: journal entry for stop 6</caption>
+                <thead><tr><th scope="col">Account</th><th scope="col" class="num">Debit</th><th scope="col" class="num">Credit</th></tr></thead>
+                <tbody>
+                <tr><th scope="row">Cash</th><td class="num">29,000</td><td></td></tr>
+                <tr><th scope="row" class="credit-acct">Service Revenue</th><td></td><td class="num">29,000</td></tr>
+                </tbody>
               </table>
+              </div>
               <p class="why"><strong>Let Me Explain:</strong> Cash (an asset) increases, so it&rsquo;s debited. Service Revenue increases equity, and equity-side accounts increase with a credit.</p>
             </div>
           </div>
-        </div>
+        </article>
       </div>
     </div>
 
     <!-- Stop 7 -->
     <div class="stop" data-stop="7">
-      <div class="stop-rail"><div class="stop-dot">7</div><div class="stop-line"></div></div>
+      <div class="stop-rail" aria-hidden="true"><div class="stop-dot">7</div><div class="stop-line"></div></div>
       <div class="stop-content">
-        <div class="stop-card">
-          <div class="stop-head"><span class="stop-title">Pay Cash Dividend</span><span class="stop-date">Dec 22</span></div>
+        <article class="stop-card" aria-labelledby="stop7-h">
+          <h2 class="stop-head" id="stop7-h"><span class="sr-only">Stop 7: </span><span class="stop-title">Pay Cash Dividend</span><span class="stop-date">Dec 22</span></h2>
           <p class="stop-desc">Pays a <strong>$7,000</strong> cash dividend to stockholders.</p>
 
-          <div class="task">
-            <span class="task-label">Step 1</span>
+          <div class="task" role="group" aria-labelledby="s7-t1-h">
+            <h3 class="task-label" id="s7-t1-h">Step 1<span class="sr-only">: effect on the accounting equation</span></h3>
             <p class="task-q">What two accounts are affected? Enter each amount with a + for an increase or &minus; for a decrease.</p>
-            <div class="input-template eq-template">
+            <div class="input-template eq-template" role="group" aria-label="Accounting equation: Assets equals Liabilities plus Stockholders' Equity" aria-describedby="s7-hint">
               <div class="eq-cols">
-                <div class="eq-col" data-col="assets">
-                  <p class="eq-col-label">Assets</p>
+                <div class="eq-col" data-col="assets" role="group" aria-labelledby="s7-assets-lbl">
+                  <p class="eq-col-label" id="s7-assets-lbl">Assets</p>
                   <div class="eq-row">
-                    <input type="text" class="req-input eq-acct" placeholder="Account">
+                    <input type="text" class="req-input eq-acct" placeholder="Account" aria-label="Assets, row 1: account name" autocomplete="off" spellcheck="false">
                     <div class="amt-line">
-                      <input type="text" class="req-input eq-amt" placeholder="$">
-                      <span class="row-mark">&#10007;</span>
+                      <input type="text" class="req-input eq-amt" placeholder="$" aria-label="Assets, row 1: amount ($)" autocomplete="off" spellcheck="false">
+                      <span class="row-mark" id="s7-m1"><span aria-hidden="true">&#10007;</span><span class="sr-only">Incorrect: this row does not match the solution.</span></span>
                     </div>
                   </div>
                   <div class="eq-row">
-                    <input type="text" class="req-input eq-acct" placeholder="Account">
+                    <input type="text" class="req-input eq-acct" placeholder="Account" aria-label="Assets, row 2: account name" autocomplete="off" spellcheck="false">
                     <div class="amt-line">
-                      <input type="text" class="req-input eq-amt" placeholder="$">
-                      <span class="row-mark">&#10007;</span>
-                    </div>
-                  </div>
-                </div>
-                <div class="eq-op">=</div>
-                <div class="eq-col" data-col="liabilities">
-                  <p class="eq-col-label">Liabilities</p>
-                  <div class="eq-row">
-                    <input type="text" class="req-input eq-acct" placeholder="Account">
-                    <div class="amt-line">
-                      <input type="text" class="req-input eq-amt" placeholder="$">
-                      <span class="row-mark">&#10007;</span>
-                    </div>
-                  </div>
-                  <div class="eq-row">
-                    <input type="text" class="req-input eq-acct" placeholder="Account">
-                    <div class="amt-line">
-                      <input type="text" class="req-input eq-amt" placeholder="$">
-                      <span class="row-mark">&#10007;</span>
+                      <input type="text" class="req-input eq-amt" placeholder="$" aria-label="Assets, row 2: amount ($)" autocomplete="off" spellcheck="false">
+                      <span class="row-mark" id="s7-m2"><span aria-hidden="true">&#10007;</span><span class="sr-only">Incorrect: this row does not match the solution.</span></span>
                     </div>
                   </div>
                 </div>
-                <div class="eq-op">+</div>
-                <div class="eq-col" data-col="equity">
-                  <p class="eq-col-label">Stockholders&rsquo; Equity</p>
+                <div class="eq-op" aria-hidden="true">=</div>
+                <div class="eq-col" data-col="liabilities" role="group" aria-labelledby="s7-liabilities-lbl">
+                  <p class="eq-col-label" id="s7-liabilities-lbl">Liabilities</p>
                   <div class="eq-row">
-                    <input type="text" class="req-input eq-acct" placeholder="Account">
+                    <input type="text" class="req-input eq-acct" placeholder="Account" aria-label="Liabilities, row 1: account name" autocomplete="off" spellcheck="false">
                     <div class="amt-line">
-                      <input type="text" class="req-input eq-amt" placeholder="$">
-                      <span class="row-mark">&#10007;</span>
+                      <input type="text" class="req-input eq-amt" placeholder="$" aria-label="Liabilities, row 1: amount ($)" autocomplete="off" spellcheck="false">
+                      <span class="row-mark" id="s7-m3"><span aria-hidden="true">&#10007;</span><span class="sr-only">Incorrect: this row does not match the solution.</span></span>
                     </div>
                   </div>
                   <div class="eq-row">
-                    <input type="text" class="req-input eq-acct" placeholder="Account">
+                    <input type="text" class="req-input eq-acct" placeholder="Account" aria-label="Liabilities, row 2: account name" autocomplete="off" spellcheck="false">
                     <div class="amt-line">
-                      <input type="text" class="req-input eq-amt" placeholder="$">
-                      <span class="row-mark">&#10007;</span>
+                      <input type="text" class="req-input eq-amt" placeholder="$" aria-label="Liabilities, row 2: amount ($)" autocomplete="off" spellcheck="false">
+                      <span class="row-mark" id="s7-m4"><span aria-hidden="true">&#10007;</span><span class="sr-only">Incorrect: this row does not match the solution.</span></span>
+                    </div>
+                  </div>
+                </div>
+                <div class="eq-op" aria-hidden="true">+</div>
+                <div class="eq-col" data-col="equity" role="group" aria-labelledby="s7-equity-lbl">
+                  <p class="eq-col-label" id="s7-equity-lbl">Stockholders&rsquo; Equity</p>
+                  <div class="eq-row">
+                    <input type="text" class="req-input eq-acct" placeholder="Account" aria-label="Stockholders&rsquo; Equity, row 1: account name" autocomplete="off" spellcheck="false">
+                    <div class="amt-line">
+                      <input type="text" class="req-input eq-amt" placeholder="$" aria-label="Stockholders&rsquo; Equity, row 1: amount ($)" autocomplete="off" spellcheck="false">
+                      <span class="row-mark" id="s7-m5"><span aria-hidden="true">&#10007;</span><span class="sr-only">Incorrect: this row does not match the solution.</span></span>
+                    </div>
+                  </div>
+                  <div class="eq-row">
+                    <input type="text" class="req-input eq-acct" placeholder="Account" aria-label="Stockholders&rsquo; Equity, row 2: account name" autocomplete="off" spellcheck="false">
+                    <div class="amt-line">
+                      <input type="text" class="req-input eq-amt" placeholder="$" aria-label="Stockholders&rsquo; Equity, row 2: amount ($)" autocomplete="off" spellcheck="false">
+                      <span class="row-mark" id="s7-m6"><span aria-hidden="true">&#10007;</span><span class="sr-only">Incorrect: this row does not match the solution.</span></span>
                     </div>
                   </div>
                 </div>
               </div>
-              <p class="eq-hint">Use a plus sign for an increase and a minus sign for a decrease (e.g. +180,000 or &minus;95,000). Each column has two rows in case a transaction affects two accounts in the same category (for example, buying equipment with cash affects two asset accounts) &mdash; if only one account in a category changes, leave its second row blank. Fill in at least two complete rows total.</p>
+              <p class="eq-hint" id="s7-hint">Use a plus sign for an increase and a minus sign for a decrease (e.g. +180,000 or &minus;95,000). Each column has two rows in case a transaction affects two accounts in the same category (for example, buying equipment with cash affects two asset accounts) &mdash; if only one account in a category changes, leave its second row blank. Fill in at least two complete rows total.</p>
             </div>
-            <button class="reveal-btn" onclick="checkAndReveal(this)">Reveal Solution</button>
-            <p class="reveal-warning">Fill in your answer above before revealing the solution.</p>
-            <div class="solution">
+            <button type="button" class="reveal-btn" aria-expanded="false" aria-controls="s7-t1-sol">Reveal Solution</button>
+            <p class="task-feedback" role="status" aria-atomic="true"></p>
+            <div class="solution" id="s7-t1-sol">
               <p class="solution-label">Solution</p>
-              <div class="eq-effect">
+              <div class="eq-effect" role="group" aria-label="Effect on the accounting equation">
                 <div class="cell"><div class="acct-label">Asset</div><div class="acct">Cash</div><div class="amt-down">&minus;$7,000</div></div>
-                <div class="op">=</div>
-                <div class="cell"><div class="acct-label">Liabilities</div><div class="acct">&mdash;</div><div>no change</div></div>
-                <div class="op">+</div>
+                <div class="op"><span aria-hidden="true">=</span><span class="sr-only">equals</span></div>
+                <div class="cell"><div class="acct-label">Liabilities</div><div class="acct" aria-hidden="true">&mdash;</div><div>no change</div></div>
+                <div class="op"><span aria-hidden="true">+</span><span class="sr-only">plus</span></div>
                 <div class="cell"><div class="acct-label">Stockholders&rsquo; Equity</div><div class="acct">Dividends</div><div class="amt-down">&minus;$7,000</div></div>
               </div>
               <p class="why"><strong>Let Me Explain:</strong> A dividend doesn&rsquo;t pay for anything the shop used to run its business &mdash; it&rsquo;s a distribution of profit back to the owners. It directly reduces retained earnings (and therefore equity), and cash goes down to fund it.</p>
             </div>
           </div>
 
-          <div class="task">
-            <span class="task-label">Step 2</span>
+          <div class="task" role="group" aria-labelledby="s7-t2-h">
+            <h3 class="task-label" id="s7-t2-h">Step 2<span class="sr-only">: journal entry</span></h3>
             <p class="task-q">Write the journal entry for this transaction.</p>
             <table class="journal-input">
-              <tr><th>Account</th><th>Debit</th><th>Credit</th></tr>
+              <caption class="sr-only">Journal entry for stop 7: the account and amount debited, then the account and amount credited</caption>
+              <thead><tr><th scope="col">Account</th><th scope="col">Debit</th><th scope="col">Credit</th></tr></thead>
+              <tbody>
               <tr data-role="debit">
-                <td><input type="text" class="req-input je-acct" placeholder="Account debited"></td>
-                <td><div class="amt-line"><input type="text" class="req-input je-amt" placeholder="$"><span class="row-mark">&#10007;</span></div></td>
+                <td data-label="Debit account"><input type="text" class="req-input je-acct" placeholder="Account debited" aria-label="Account debited" autocomplete="off" spellcheck="false"></td>
+                <td data-label="Debit amount"><div class="amt-line"><input type="text" class="req-input je-amt" placeholder="$" aria-label="Debit amount ($)" autocomplete="off" spellcheck="false"><span class="row-mark" id="s7-m7"><span aria-hidden="true">&#10007;</span><span class="sr-only">Incorrect: this row does not match the solution.</span></span></div></td>
                 <td></td>
               </tr>
               <tr data-role="credit">
-                <td class="indent"><input type="text" class="req-input je-acct" placeholder="Account credited"></td>
+                <td class="indent" data-label="Credit account"><input type="text" class="req-input je-acct" placeholder="Account credited" aria-label="Account credited" autocomplete="off" spellcheck="false"></td>
                 <td></td>
-                <td><div class="amt-line"><input type="text" class="req-input je-amt" placeholder="$"><span class="row-mark">&#10007;</span></div></td>
+                <td data-label="Credit amount"><div class="amt-line"><input type="text" class="req-input je-amt" placeholder="$" aria-label="Credit amount ($)" autocomplete="off" spellcheck="false"><span class="row-mark" id="s7-m8"><span aria-hidden="true">&#10007;</span><span class="sr-only">Incorrect: this row does not match the solution.</span></span></div></td>
               </tr>
+              </tbody>
             </table>
-            <button class="reveal-btn" onclick="checkAndReveal(this)">Reveal Solution</button>
-            <p class="reveal-warning">Fill in your answer above before revealing the solution.</p>
-            <div class="solution">
+            <button type="button" class="reveal-btn" aria-expanded="false" aria-controls="s7-t2-sol">Reveal Solution</button>
+            <p class="task-feedback" role="status" aria-atomic="true"></p>
+            <div class="solution" id="s7-t2-sol">
               <p class="solution-label">Solution</p>
+              <div class="table-scroll">
               <table class="journal">
-                <tr><td>Dividends</td><td class="num">7,000</td><td></td></tr>
-                <tr><td class="credit-acct">Cash</td><td></td><td class="num">7,000</td></tr>
+                <caption class="sr-only">Solution: journal entry for stop 7</caption>
+                <thead><tr><th scope="col">Account</th><th scope="col" class="num">Debit</th><th scope="col" class="num">Credit</th></tr></thead>
+                <tbody>
+                <tr><th scope="row">Dividends</th><td class="num">7,000</td><td></td></tr>
+                <tr><th scope="row" class="credit-acct">Cash</th><td></td><td class="num">7,000</td></tr>
+                </tbody>
               </table>
+              </div>
               <p class="why"><strong>Let Me Explain:</strong> Dividends increase with a debit &mdash; the same side as expenses and assets. Cash (an asset) decreases, so it&rsquo;s credited.</p>
             </div>
           </div>
-        </div>
+        </article>
       </div>
     </div>
 
     <!-- Stop 8 -->
     <div class="stop" data-stop="8">
-      <div class="stop-rail"><div class="stop-dot">8</div></div>
+      <div class="stop-rail" aria-hidden="true"><div class="stop-dot">8</div></div>
       <div class="stop-content">
-        <div class="stop-card">
-          <div class="stop-head"><span class="stop-title">Purchase Supplies for Cash</span><span class="stop-date">Dec 27</span></div>
+        <article class="stop-card" aria-labelledby="stop8-h">
+          <h2 class="stop-head" id="stop8-h"><span class="sr-only">Stop 8: </span><span class="stop-title">Purchase Supplies for Cash</span><span class="stop-date">Dec 27</span></h2>
           <p class="stop-desc">Buys repair supplies &mdash; tubes, chains, patch kits &mdash; for <strong>$5,000 cash</strong> this time, rather than on account.</p>
 
-          <div class="task">
-            <span class="task-label">Step 1</span>
+          <div class="task" role="group" aria-labelledby="s8-t1-h">
+            <h3 class="task-label" id="s8-t1-h">Step 1<span class="sr-only">: effect on the accounting equation</span></h3>
             <p class="task-q">What two accounts are affected? Enter each amount with a + for an increase or &minus; for a decrease.</p>
-            <div class="input-template eq-template">
+            <div class="input-template eq-template" role="group" aria-label="Accounting equation: Assets equals Liabilities plus Stockholders' Equity" aria-describedby="s8-hint">
               <div class="eq-cols">
-                <div class="eq-col" data-col="assets">
-                  <p class="eq-col-label">Assets</p>
+                <div class="eq-col" data-col="assets" role="group" aria-labelledby="s8-assets-lbl">
+                  <p class="eq-col-label" id="s8-assets-lbl">Assets</p>
                   <div class="eq-row">
-                    <input type="text" class="req-input eq-acct" placeholder="Account">
+                    <input type="text" class="req-input eq-acct" placeholder="Account" aria-label="Assets, row 1: account name" autocomplete="off" spellcheck="false">
                     <div class="amt-line">
-                      <input type="text" class="req-input eq-amt" placeholder="$">
-                      <span class="row-mark">&#10007;</span>
+                      <input type="text" class="req-input eq-amt" placeholder="$" aria-label="Assets, row 1: amount ($)" autocomplete="off" spellcheck="false">
+                      <span class="row-mark" id="s8-m1"><span aria-hidden="true">&#10007;</span><span class="sr-only">Incorrect: this row does not match the solution.</span></span>
                     </div>
                   </div>
                   <div class="eq-row">
-                    <input type="text" class="req-input eq-acct" placeholder="Account">
+                    <input type="text" class="req-input eq-acct" placeholder="Account" aria-label="Assets, row 2: account name" autocomplete="off" spellcheck="false">
                     <div class="amt-line">
-                      <input type="text" class="req-input eq-amt" placeholder="$">
-                      <span class="row-mark">&#10007;</span>
-                    </div>
-                  </div>
-                </div>
-                <div class="eq-op">=</div>
-                <div class="eq-col" data-col="liabilities">
-                  <p class="eq-col-label">Liabilities</p>
-                  <div class="eq-row">
-                    <input type="text" class="req-input eq-acct" placeholder="Account">
-                    <div class="amt-line">
-                      <input type="text" class="req-input eq-amt" placeholder="$">
-                      <span class="row-mark">&#10007;</span>
-                    </div>
-                  </div>
-                  <div class="eq-row">
-                    <input type="text" class="req-input eq-acct" placeholder="Account">
-                    <div class="amt-line">
-                      <input type="text" class="req-input eq-amt" placeholder="$">
-                      <span class="row-mark">&#10007;</span>
+                      <input type="text" class="req-input eq-amt" placeholder="$" aria-label="Assets, row 2: amount ($)" autocomplete="off" spellcheck="false">
+                      <span class="row-mark" id="s8-m2"><span aria-hidden="true">&#10007;</span><span class="sr-only">Incorrect: this row does not match the solution.</span></span>
                     </div>
                   </div>
                 </div>
-                <div class="eq-op">+</div>
-                <div class="eq-col" data-col="equity">
-                  <p class="eq-col-label">Stockholders&rsquo; Equity</p>
+                <div class="eq-op" aria-hidden="true">=</div>
+                <div class="eq-col" data-col="liabilities" role="group" aria-labelledby="s8-liabilities-lbl">
+                  <p class="eq-col-label" id="s8-liabilities-lbl">Liabilities</p>
                   <div class="eq-row">
-                    <input type="text" class="req-input eq-acct" placeholder="Account">
+                    <input type="text" class="req-input eq-acct" placeholder="Account" aria-label="Liabilities, row 1: account name" autocomplete="off" spellcheck="false">
                     <div class="amt-line">
-                      <input type="text" class="req-input eq-amt" placeholder="$">
-                      <span class="row-mark">&#10007;</span>
+                      <input type="text" class="req-input eq-amt" placeholder="$" aria-label="Liabilities, row 1: amount ($)" autocomplete="off" spellcheck="false">
+                      <span class="row-mark" id="s8-m3"><span aria-hidden="true">&#10007;</span><span class="sr-only">Incorrect: this row does not match the solution.</span></span>
                     </div>
                   </div>
                   <div class="eq-row">
-                    <input type="text" class="req-input eq-acct" placeholder="Account">
+                    <input type="text" class="req-input eq-acct" placeholder="Account" aria-label="Liabilities, row 2: account name" autocomplete="off" spellcheck="false">
                     <div class="amt-line">
-                      <input type="text" class="req-input eq-amt" placeholder="$">
-                      <span class="row-mark">&#10007;</span>
+                      <input type="text" class="req-input eq-amt" placeholder="$" aria-label="Liabilities, row 2: amount ($)" autocomplete="off" spellcheck="false">
+                      <span class="row-mark" id="s8-m4"><span aria-hidden="true">&#10007;</span><span class="sr-only">Incorrect: this row does not match the solution.</span></span>
+                    </div>
+                  </div>
+                </div>
+                <div class="eq-op" aria-hidden="true">+</div>
+                <div class="eq-col" data-col="equity" role="group" aria-labelledby="s8-equity-lbl">
+                  <p class="eq-col-label" id="s8-equity-lbl">Stockholders&rsquo; Equity</p>
+                  <div class="eq-row">
+                    <input type="text" class="req-input eq-acct" placeholder="Account" aria-label="Stockholders&rsquo; Equity, row 1: account name" autocomplete="off" spellcheck="false">
+                    <div class="amt-line">
+                      <input type="text" class="req-input eq-amt" placeholder="$" aria-label="Stockholders&rsquo; Equity, row 1: amount ($)" autocomplete="off" spellcheck="false">
+                      <span class="row-mark" id="s8-m5"><span aria-hidden="true">&#10007;</span><span class="sr-only">Incorrect: this row does not match the solution.</span></span>
+                    </div>
+                  </div>
+                  <div class="eq-row">
+                    <input type="text" class="req-input eq-acct" placeholder="Account" aria-label="Stockholders&rsquo; Equity, row 2: account name" autocomplete="off" spellcheck="false">
+                    <div class="amt-line">
+                      <input type="text" class="req-input eq-amt" placeholder="$" aria-label="Stockholders&rsquo; Equity, row 2: amount ($)" autocomplete="off" spellcheck="false">
+                      <span class="row-mark" id="s8-m6"><span aria-hidden="true">&#10007;</span><span class="sr-only">Incorrect: this row does not match the solution.</span></span>
                     </div>
                   </div>
                 </div>
               </div>
-              <p class="eq-hint">Use a plus sign for an increase and a minus sign for a decrease (e.g. +180,000 or &minus;95,000). Each column has two rows in case a transaction affects two accounts in the same category (for example, buying equipment with cash affects two asset accounts) &mdash; if only one account in a category changes, leave its second row blank. Fill in at least two complete rows total.</p>
+              <p class="eq-hint" id="s8-hint">Use a plus sign for an increase and a minus sign for a decrease (e.g. +180,000 or &minus;95,000). Each column has two rows in case a transaction affects two accounts in the same category (for example, buying equipment with cash affects two asset accounts) &mdash; if only one account in a category changes, leave its second row blank. Fill in at least two complete rows total.</p>
             </div>
-            <button class="reveal-btn" onclick="checkAndReveal(this)">Reveal Solution</button>
-            <p class="reveal-warning">Fill in your answer above before revealing the solution.</p>
-            <div class="solution">
+            <button type="button" class="reveal-btn" aria-expanded="false" aria-controls="s8-t1-sol">Reveal Solution</button>
+            <p class="task-feedback" role="status" aria-atomic="true"></p>
+            <div class="solution" id="s8-t1-sol">
               <p class="solution-label">Solution</p>
-              <div class="eq-effect">
+              <div class="eq-effect" role="group" aria-label="Effect on the accounting equation">
                 <div class="cell"><div class="acct-label">Asset</div><div class="acct">Supplies</div><div class="amt-up">+$5,000</div></div>
-                <div class="op">&amp;</div>
+                <div class="op"><span aria-hidden="true">&amp;</span><span class="sr-only">and</span></div>
                 <div class="cell"><div class="acct-label">Asset</div><div class="acct">Cash</div><div class="amt-down">&minus;$5,000</div></div>
-                <div class="op">=</div>
-                <div class="cell"><div class="acct-label">No Net Change</div><div class="acct">&mdash;</div><div>$0</div></div>
+                <div class="op"><span aria-hidden="true">=</span><span class="sr-only">equals</span></div>
+                <div class="cell"><div class="acct-label">No Net Change</div><div class="acct" aria-hidden="true">&mdash;</div><div>$0</div></div>
               </div>
               <p class="why"><strong>Let Me Explain:</strong> Unlike the November supplies purchase, this one is paid for immediately &mdash; so it&rsquo;s a straight trade of one asset (cash) for another (supplies), with no liability involved at all.</p>
             </div>
           </div>
 
-          <div class="task">
-            <span class="task-label">Step 2</span>
+          <div class="task" role="group" aria-labelledby="s8-t2-h">
+            <h3 class="task-label" id="s8-t2-h">Step 2<span class="sr-only">: journal entry</span></h3>
             <p class="task-q">Write the journal entry for this transaction.</p>
             <table class="journal-input">
-              <tr><th>Account</th><th>Debit</th><th>Credit</th></tr>
+              <caption class="sr-only">Journal entry for stop 8: the account and amount debited, then the account and amount credited</caption>
+              <thead><tr><th scope="col">Account</th><th scope="col">Debit</th><th scope="col">Credit</th></tr></thead>
+              <tbody>
               <tr data-role="debit">
-                <td><input type="text" class="req-input je-acct" placeholder="Account debited"></td>
-                <td><div class="amt-line"><input type="text" class="req-input je-amt" placeholder="$"><span class="row-mark">&#10007;</span></div></td>
+                <td data-label="Debit account"><input type="text" class="req-input je-acct" placeholder="Account debited" aria-label="Account debited" autocomplete="off" spellcheck="false"></td>
+                <td data-label="Debit amount"><div class="amt-line"><input type="text" class="req-input je-amt" placeholder="$" aria-label="Debit amount ($)" autocomplete="off" spellcheck="false"><span class="row-mark" id="s8-m7"><span aria-hidden="true">&#10007;</span><span class="sr-only">Incorrect: this row does not match the solution.</span></span></div></td>
                 <td></td>
               </tr>
               <tr data-role="credit">
-                <td class="indent"><input type="text" class="req-input je-acct" placeholder="Account credited"></td>
+                <td class="indent" data-label="Credit account"><input type="text" class="req-input je-acct" placeholder="Account credited" aria-label="Account credited" autocomplete="off" spellcheck="false"></td>
                 <td></td>
-                <td><div class="amt-line"><input type="text" class="req-input je-amt" placeholder="$"><span class="row-mark">&#10007;</span></div></td>
+                <td data-label="Credit amount"><div class="amt-line"><input type="text" class="req-input je-amt" placeholder="$" aria-label="Credit amount ($)" autocomplete="off" spellcheck="false"><span class="row-mark" id="s8-m8"><span aria-hidden="true">&#10007;</span><span class="sr-only">Incorrect: this row does not match the solution.</span></span></div></td>
               </tr>
+              </tbody>
             </table>
-            <button class="reveal-btn" onclick="checkAndReveal(this)">Reveal Solution</button>
-            <p class="reveal-warning">Fill in your answer above before revealing the solution.</p>
-            <div class="solution">
+            <button type="button" class="reveal-btn" aria-expanded="false" aria-controls="s8-t2-sol">Reveal Solution</button>
+            <p class="task-feedback" role="status" aria-atomic="true"></p>
+            <div class="solution" id="s8-t2-sol">
               <p class="solution-label">Solution</p>
+              <div class="table-scroll">
               <table class="journal">
-                <tr><td>Supplies</td><td class="num">5,000</td><td></td></tr>
-                <tr><td class="credit-acct">Cash</td><td></td><td class="num">5,000</td></tr>
+                <caption class="sr-only">Solution: journal entry for stop 8</caption>
+                <thead><tr><th scope="col">Account</th><th scope="col" class="num">Debit</th><th scope="col" class="num">Credit</th></tr></thead>
+                <tbody>
+                <tr><th scope="row">Supplies</th><td class="num">5,000</td><td></td></tr>
+                <tr><th scope="row" class="credit-acct">Cash</th><td></td><td class="num">5,000</td></tr>
+                </tbody>
               </table>
+              </div>
               <p class="why"><strong>Let Me Explain:</strong> Supplies (an asset) increases, so it&rsquo;s debited. Cash (an asset) decreases, so it&rsquo;s credited.</p>
             </div>
           </div>
-        </div>
+        </article>
       </div>
     </div>
 
   </div>
 
-  <div class="pagefoot">
-    <a href="ch2-transactions-walkthrough.html">&larr; Back to the November walkthrough</a>
-    <a href="../index.html">All course materials &rarr;</a>
-  </div>
+  <nav class="pagefoot" aria-label="Page navigation">
+    <a href="ch2-transactions-walkthrough.html"><span aria-hidden="true">&larr;</span> Back to the November walkthrough</a>
+    <a href="../index.html">All course materials<span aria-hidden="true">&rarr;</span></a>
+  </nav>
 
 </main>
 
@@ -1306,92 +1433,123 @@
     return val !== null && Math.abs(val - expectedAmount) < 0.5;
   }
 
+  // ---------- feedback, marks and accessibility state ----------
+  function say(task, kind, text) {
+    var el = task.querySelector('.task-feedback');
+    el.className = 'task-feedback' + (kind ? ' ' + kind : '');
+    el.textContent = '';
+    if (text) setTimeout(function () { el.textContent = text; }, 60);   // brief gap so repeat messages are re-announced
+  }
+
+  function setRowWrong(row, wrong) {
+    var mark = row.querySelector('.row-mark');
+    mark.classList.toggle('show', wrong);
+    row.querySelectorAll('input').forEach(function (inp) {
+      if (wrong) { inp.setAttribute('aria-invalid', 'true'); inp.setAttribute('aria-describedby', mark.id); }
+      else { inp.removeAttribute('aria-invalid'); inp.removeAttribute('aria-describedby'); }
+    });
+  }
+
   function clearMarks(task) {
-    task.querySelectorAll('.row-mark').forEach(m => m.classList.remove('show'));
+    task.querySelectorAll('.eq-row, tr[data-role]').forEach(function (row) { setRowWrong(row, false); });
   }
 
-  function markRow(acctInput, amtInput, mark, expected) {
-    const acctVal = acctInput.value.trim();
-    const amtVal = amtInput.value.trim();
-    if (!acctVal && !amtVal) return; // blank row — nothing attempted, no mark
-    const ok = expected && matchAccount(acctVal, expected) && matchAmount(amtVal, expected.amount);
-    mark.classList.toggle('show', !ok);
-  }
-
+  // Returns how many filled rows there were and how many of them were wrong
   function gradeTask(task, stopId) {
-    const data = STOPS[stopId];
-    if (!data) return;
+    var data = STOPS[stopId], attempted = 0, wrong = 0;
+    if (!data) return { attempted: 0, wrong: 0 };
 
-    const eqCols = task.querySelectorAll('.eq-col');
+    var eqCols = task.querySelectorAll('.eq-col');
     if (eqCols.length > 0) {
-      eqCols.forEach(col => {
-        const colKey = col.dataset.col;
-        const expected = (data.eq[colKey] || []).slice();
-        col.querySelectorAll('.eq-row').forEach(row => {
-          const acctInput = row.querySelector('.eq-acct');
-          const amtInput = row.querySelector('.eq-amt');
-          const mark = row.querySelector('.row-mark');
-          const acctVal = acctInput.value.trim();
-          const amtVal = amtInput.value.trim();
-          if (!acctVal && !amtVal) { mark.classList.remove('show'); return; }
-          const idx = expected.findIndex(e => matchAccount(acctVal, e) && matchAmount(amtVal, e.amount));
-          if (idx >= 0) {
-            expected.splice(idx, 1);
-            mark.classList.remove('show');
-          } else {
-            mark.classList.add('show');
-          }
+      eqCols.forEach(function (col) {
+        var expected = (data.eq[col.dataset.col] || []).slice();
+        col.querySelectorAll('.eq-row').forEach(function (row) {
+          var acctVal = row.querySelector('.eq-acct').value.trim();
+          var amtVal = row.querySelector('.eq-amt').value.trim();
+          if (!acctVal && !amtVal) { setRowWrong(row, false); return; }   // blank row: nothing attempted
+          attempted++;
+          var idx = expected.findIndex(function (e) { return matchAccount(acctVal, e) && matchAmount(amtVal, e.amount); });
+          if (idx >= 0) { expected.splice(idx, 1); setRowWrong(row, false); }
+          else { wrong++; setRowWrong(row, true); }
         });
       });
-      return;
+      return { attempted: attempted, wrong: wrong };
     }
 
-    const debitRow = task.querySelector('tr[data-role="debit"]');
-    const creditRow = task.querySelector('tr[data-role="credit"]');
-    if (debitRow && creditRow) {
-      markRow(debitRow.querySelector('.je-acct'), debitRow.querySelector('.je-amt'), debitRow.querySelector('.row-mark'), data.journal.debit);
-      markRow(creditRow.querySelector('.je-acct'), creditRow.querySelector('.je-amt'), creditRow.querySelector('.row-mark'), data.journal.credit);
-    }
+    [['debit', data.journal.debit], ['credit', data.journal.credit]].forEach(function (pair) {
+      var row = task.querySelector('tr[data-role="' + pair[0] + '"]');
+      var acctVal = row.querySelector('.je-acct').value.trim();
+      var amtVal = row.querySelector('.je-amt').value.trim();
+      if (!acctVal && !amtVal) { setRowWrong(row, false); return; }
+      attempted++;
+      var ok = matchAccount(acctVal, pair[1]) && matchAmount(amtVal, pair[1].amount);
+      if (!ok) wrong++;
+      setRowWrong(row, !ok);
+    });
+    return { attempted: attempted, wrong: wrong };
   }
 
   function checkAndReveal(btn) {
-    const task = btn.closest('.task');
-    const stopEl = btn.closest('.stop');
-    const stopId = stopEl ? stopEl.dataset.stop : null;
-    const solution = task.querySelector('.solution');
-    const warning = task.querySelector('.reveal-warning');
-    const isShowing = solution.classList.contains('show');
+    var task = btn.closest('.task');
+    var stopEl = btn.closest('.stop');
+    var stopId = stopEl ? stopEl.dataset.stop : null;
+    var solution = document.getElementById(btn.getAttribute('aria-controls'));
+    var isShowing = solution.classList.contains('show');
 
     if (!isShowing) {
-      const eqRows = task.querySelectorAll('.eq-row');
-      let ready;
+      var eqRows = task.querySelectorAll('.eq-row');
+      var ready, msg;
       if (eqRows.length > 0) {
-        // Equation template: at least two fully-filled rows across the
-        // Assets / Liabilities / Equity columns (unused rows stay blank).
-        let completeRows = 0;
-        eqRows.forEach(row => {
-          const rowInputs = row.querySelectorAll('input, select');
-          if (Array.from(rowInputs).every(inp => inp.value.trim() !== '')) completeRows++;
+        // Equation template: at least two fully-filled rows across the columns (unused rows stay blank)
+        var complete = 0;
+        eqRows.forEach(function (row) {
+          var inputs = row.querySelectorAll('input');
+          if (Array.prototype.every.call(inputs, function (inp) { return inp.value.trim() !== ''; })) complete++;
         });
-        ready = completeRows >= 2;
+        ready = complete >= 2;
+        msg = 'Fill in at least two complete rows (an account and an amount in each) before revealing the solution. You have ' + complete + ' so far.';
       } else {
-        // Journal entry template: every field is required.
-        const inputs = task.querySelectorAll('.req-input');
-        ready = Array.from(inputs).every(inp => inp.value.trim() !== '');
+        // Journal entry template: every field is required
+        var empty = Array.prototype.filter.call(task.querySelectorAll('.req-input'), function (inp) { return inp.value.trim() === ''; }).length;
+        ready = empty === 0;
+        msg = 'Fill in all four fields before revealing the solution. ' + empty + (empty === 1 ? ' is' : ' are') + ' still empty.';
       }
-      if (!ready) {
-        if (warning) warning.classList.add('show');
-        return;
+      if (!ready) { say(task, 'warn', '\u26A0 ' + msg); return; }
+
+      var r = gradeTask(task, stopId);
+      var unit = eqRows.length > 0 ? 'rows' : 'lines';
+      if (r.wrong === 0) {
+        say(task, 'good', '\u2713 Every ' + (unit === 'rows' ? 'row' : 'line') + ' you entered matches the solution, which is shown below.');
+      } else {
+        say(task, 'bad', '\u2717 ' + r.wrong + ' of ' + r.attempted + ' ' + unit + ' you entered ' + (r.wrong === 1 ? "doesn't" : "don't") + ' match the solution and ' + (r.wrong === 1 ? 'is' : 'are') + ' marked \u2717. Compare ' + (r.wrong === 1 ? 'it' : 'them') + ' with the solution shown below.');
       }
-      gradeTask(task, stopId);
     } else {
       clearMarks(task);
+      say(task, '', '');
     }
 
-    if (warning) warning.classList.remove('show');
-    solution.classList.toggle('show');
-    btn.textContent = solution.classList.contains('show') ? 'Hide Solution' : 'Reveal Solution';
+    var open = solution.classList.toggle('show');
+    btn.setAttribute('aria-expanded', open ? 'true' : 'false');
+    btn.textContent = open ? 'Hide Solution' : 'Reveal Solution';
   }
+
+  document.querySelectorAll('.reveal-btn').forEach(function (btn) {
+    btn.addEventListener('click', function () { checkAndReveal(btn); });
+  });
+
+  // Only tables that actually overflow become keyboard-scrollable
+  function updateScrollBoxes() {
+    document.querySelectorAll('.table-scroll').forEach(function (box) {
+      var caption = box.querySelector('caption');
+      if (box.scrollWidth > box.clientWidth + 1) {
+        box.setAttribute('tabindex', '0'); box.setAttribute('role', 'region');
+        box.setAttribute('aria-label', (caption ? caption.textContent + ' ' : '') + '(scrolls sideways)');
+      } else { box.removeAttribute('tabindex'); box.removeAttribute('role'); box.removeAttribute('aria-label'); }
+    });
+  }
+  updateScrollBoxes();
+  window.addEventListener('resize', updateScrollBoxes);
+  window.addEventListener('load', updateScrollBoxes);
 </script>
 
 <footer>
