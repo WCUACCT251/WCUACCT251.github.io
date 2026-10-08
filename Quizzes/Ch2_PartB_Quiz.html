@@ -115,7 +115,7 @@
       cursor: pointer;
     }
 
-    /* Visible Focus Indicators for Keyboard Users (WCAG 2.4.7) */
+    /* Visible Focus Indicators for Keyboard Users */
     input[type="radio"]:focus-visible,
     button:focus-visible {
       outline: 3px solid var(--focus-ring);
@@ -467,26 +467,25 @@
         if (!selected) {
           allAnswered = false;
           feedbackDiv.className = "feedback is-incorrect";
-          feedbackDiv.innerHTML = `<strong>Unanswered:</strong> Please select an option for this question.`;
+          feedbackDiv.innerHTML = "<strong>Unanswered:</strong> Please select an option for this question.";
           continue;
         }
 
         if (selected.value === qData.correct) {
           score++;
           feedbackDiv.className = "feedback is-correct";
-          feedbackDiv.innerHTML = `<strong>Correct:</strong> ${qData.explanation}`;
+          feedbackDiv.innerHTML = "<strong>Correct:</strong> " + qData.explanation;
         } else {
           feedbackDiv.className = "feedback is-incorrect";
-          feedbackDiv.innerHTML = `<strong>Incorrect:</strong> The correct answer is Option ${qData.correct}. ${qData.explanation}`;
+          feedbackDiv.innerHTML = "<strong>Incorrect:</strong> The correct answer is Option " + qData.correct + ". " + qData.explanation;
         }
       }
 
       const summaryDiv = document.getElementById("score-summary");
       summaryDiv.className = "active";
       const percentage = Math.round((score / totalQuestions) * 100);
-      summaryDiv.innerHTML = `Your Score: ${score} out of ${totalQuestions} (${percentage}%). Review the specific feedback above for each question.`;
+      summaryDiv.innerHTML = "Your Score: " + score + " out of " + totalQuestions + " (" + percentage + "%). Review the specific feedback above for each question.";
 
-      // Set focus to the summary container so screen readers announce it immediately
       summaryDiv.setAttribute("tabindex", "-1");
       summaryDiv.focus();
     });
