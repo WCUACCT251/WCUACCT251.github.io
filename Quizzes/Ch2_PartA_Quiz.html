@@ -98,7 +98,7 @@
       cursor: pointer;
       font-size: 1rem;
       transition: background-color 0.15s ease, border-color 0.15s ease;
-      min-height: 44px; /* Accessible target size */
+      min-height: 44px; /* Accessible Touch Target */
     }
 
     .option-label:hover {
@@ -115,7 +115,7 @@
       cursor: pointer;
     }
 
-    /* Visible Focus Indicators for Keyboard Users (WCAG 2.4.7) */
+    /* Visible Focus Indicators for Keyboard Users */
     input[type="radio"]:focus-visible,
     button:focus-visible {
       outline: 3px solid var(--focus-ring);
@@ -255,7 +255,7 @@
           </label>
           <label class="option-label" for="q2_opt3">
             <input type="radio" id="q2_opt3" name="q2" value="C">
-            <span>C. Purchasing \$18,000 of rafting equipment and supplies on account</span>
+            <span>C. Purchasing $18,000 of rafting equipment and supplies on account</span>
           </label>
           <label class="option-label" for="q2_opt4">
             <input type="radio" id="q2_opt4" name="q2" value="D">
@@ -267,15 +267,15 @@
 
       <!-- Question 3 -->
       <fieldset class="question-card" id="q3-card">
-        <legend>3. What is the net effect on total assets when Nantahala Paddling Academy purchases \$140,000 of equipment for cash?</legend>
+        <legend>3. What is the net effect on total assets when Nantahala Paddling Academy purchases $140,000 of equipment for cash?</legend>
         <div class="options-group">
           <label class="option-label" for="q3_opt1">
             <input type="radio" id="q3_opt1" name="q3" value="A">
-            <span>A. Total assets decrease by \$140,000 because cash was paid.</span>
+            <span>A. Total assets decrease by $140,000 because cash was paid.</span>
           </label>
           <label class="option-label" for="q3_opt2">
             <input type="radio" id="q3_opt2" name="q3" value="B">
-            <span>B. Total assets increase by \$140,000 because new equipment was added.</span>
+            <span>B. Total assets increase by $140,000 because new equipment was added.</span>
           </label>
           <label class="option-label" for="q3_opt3">
             <input type="radio" id="q3_opt3" name="q3" value="C">
@@ -283,7 +283,7 @@
           </label>
           <label class="option-label" for="q3_opt4">
             <input type="radio" id="q3_opt4" name="q3" value="D">
-            <span>D. Total liabilities increase by \$140,000 to offset the equipment.</span>
+            <span>D. Total liabilities increase by $140,000 to offset the equipment.</span>
           </label>
         </div>
         <div id="feedback-q3" class="feedback" role="status" aria-live="polite"></div>
@@ -291,7 +291,7 @@
 
       <!-- Question 4 -->
       <fieldset class="question-card" id="q4-card">
-        <legend>4. When a company pays \$48,000 in advance for one full year of boathouse rent, how is this expenditure classified on the balance sheet?</legend>
+        <legend>4. When a company pays $48,000 in advance for one full year of boathouse rent, how is this expenditure classified on the balance sheet?</legend>
         <div class="options-group">
           <label class="option-label" for="q4_opt1">
             <input type="radio" id="q4_opt1" name="q4" value="A">
@@ -315,7 +315,7 @@
 
       <!-- Question 5 -->
       <fieldset class="question-card" id="q5-card">
-        <legend>5. Nantahala guides a corporate team-building trip for \$15,000 on account (billed to the client, but not yet collected in cash). Why is this recorded as revenue immediately?</legend>
+        <legend>5. Nantahala guides a corporate team-building trip for $15,000 on account (billed to the client, but not yet collected in cash). Why is this recorded as revenue immediately?</legend>
         <div class="options-group">
           <label class="option-label" for="q5_opt1">
             <input type="radio" id="q5_opt1" name="q5" value="A">
@@ -339,15 +339,15 @@
 
       <!-- Question 6 -->
       <fieldset class="question-card" id="q6-card">
-        <legend>6. A scout troop pays \$9,000 cash in advance for summer rafting trips that will occur next year. How must the company record this transaction?</legend>
+        <legend>6. A scout troop pays $9,000 cash in advance for summer rafting trips that will occur next year. How must the company record this transaction?</legend>
         <div class="options-group">
           <label class="option-label" for="q6_opt1">
             <input type="radio" id="q6_opt1" name="q6" value="A">
-            <span>A. Increase Cash (+\$9,000) and increase Service Revenue (+\$9,000)</span>
+            <span>A. Increase Cash (+$9,000) and increase Service Revenue (+$9,000)</span>
           </label>
           <label class="option-label" for="q6_opt2">
             <input type="radio" id="q6_opt2" name="q6" value="B">
-            <span>B. Increase Cash (+\$9,000) and increase Deferred Revenue (+\$9,000, a Liability)</span>
+            <span>B. Increase Cash (+$9,000) and increase Deferred Revenue (+\$9,000, a Liability)</span>
           </label>
           <label class="option-label" for="q6_opt3">
             <input type="radio" id="q6_opt3" name="q6" value="C">
@@ -467,26 +467,25 @@
         if (!selected) {
           allAnswered = false;
           feedbackDiv.className = "feedback is-incorrect";
-          feedbackDiv.innerHTML = `<strong>Unanswered:</strong> Please select an option for this question.`;
+          feedbackDiv.innerHTML = "<strong>Unanswered:</strong> Please select an option for this question.";
           continue;
         }
 
         if (selected.value === qData.correct) {
           score++;
           feedbackDiv.className = "feedback is-correct";
-          feedbackDiv.innerHTML = `<strong>Correct:</strong> ${qData.explanation}`;
+          feedbackDiv.innerHTML = "<strong>Correct:</strong> " + qData.explanation;
         } else {
           feedbackDiv.className = "feedback is-incorrect";
-          feedbackDiv.innerHTML = `<strong>Incorrect:</strong> The correct answer is Option ${qData.correct}. ${qData.explanation}`;
+          feedbackDiv.innerHTML = "<strong>Incorrect:</strong> The correct answer is Option " + qData.correct + ". " + qData.explanation;
         }
       }
 
       const summaryDiv = document.getElementById("score-summary");
       summaryDiv.className = "active";
       const percentage = Math.round((score / totalQuestions) * 100);
-      summaryDiv.innerHTML = `Your Score: ${score} out of ${totalQuestions} (${percentage}%). Review the specific feedback above for each question.`;
+      summaryDiv.innerHTML = "Your Score: " + score + " out of " + totalQuestions + " (" + percentage + "%). Review the specific feedback above for each question.";
 
-      // Set focus to the summary message for screen readers
       summaryDiv.setAttribute("tabindex", "-1");
       summaryDiv.focus();
     });
