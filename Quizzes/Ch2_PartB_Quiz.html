@@ -1,0 +1,508 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Quiz: Debits, Credits, Journal Entries, and the Trial Balance</title>
+  <style>
+    /* WCAG 2.1 AA Compliant Color Palette & Typography */
+    :root {
+      --primary-color: #1b365d;       /* Deep Navy - Contrast > 10:1 */
+      --primary-hover: #10243e;
+      --text-color: #212529;          /* Charcoal Body Text */
+      --bg-color: #f8f9fa;            /* Soft Neutral Background */
+      --card-bg: #ffffff;
+      --border-color: #cbd5e1;
+      --focus-ring: #005a9c;          /* High-Contrast Blue Focus */
+      --correct-border: #15803d;      /* Accessible Forest Green */
+      --correct-bg: #f0fdf4;
+      --correct-text: #14532d;
+      --incorrect-border: #b91c1c;    /* Accessible Crimson Red */
+      --incorrect-bg: #fef2f2;
+      --incorrect-text: #7f1d1d;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      line-height: 1.6;
+      color: var(--text-color);
+      background-color: var(--bg-color);
+      padding: 1.5rem 1rem;
+    }
+
+    .container {
+      max-width: 820px;
+      margin: 0 auto;
+      background: var(--card-bg);
+      border-radius: 8px;
+      padding: 2rem;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+      border: 1px solid var(--border-color);
+    }
+
+    header {
+      border-bottom: 2px solid var(--primary-color);
+      padding-bottom: 1.25rem;
+      margin-bottom: 1.5rem;
+    }
+
+    h1 {
+      font-size: 1.75rem;
+      color: var(--primary-color);
+      line-height: 1.3;
+      margin-bottom: 0.5rem;
+    }
+
+    .quiz-instructions {
+      font-size: 1rem;
+      color: #334155;
+    }
+
+    /* Fieldset & Question Card Styling */
+    fieldset.question-card {
+      border: 1px solid var(--border-color);
+      border-radius: 6px;
+      padding: 1.25rem 1.5rem;
+      margin-bottom: 1.5rem;
+      background-color: #ffffff;
+    }
+
+    legend {
+      font-weight: 700;
+      font-size: 1.1rem;
+      color: var(--primary-color);
+      padding: 0 0.5rem;
+      line-height: 1.4;
+    }
+
+    .options-group {
+      display: flex;
+      flex-direction: column;
+      gap: 0.6rem;
+      margin-top: 0.75rem;
+    }
+
+    .option-label {
+      display: flex;
+      align-items: flex-start;
+      gap: 0.75rem;
+      padding: 0.65rem 0.85rem;
+      border: 1px solid #e2e8f0;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 1rem;
+      transition: background-color 0.15s ease, border-color 0.15s ease;
+      min-height: 44px; /* Accessible Touch Target */
+    }
+
+    .option-label:hover {
+      background-color: #f1f5f9;
+      border-color: #94a3b8;
+    }
+
+    input[type="radio"] {
+      appearance: auto;
+      width: 1.25rem;
+      height: 1.25rem;
+      margin-top: 0.15rem;
+      accent-color: var(--primary-color);
+      cursor: pointer;
+    }
+
+    /* Visible Focus Indicators for Keyboard Users (WCAG 2.4.7) */
+    input[type="radio"]:focus-visible,
+    button:focus-visible {
+      outline: 3px solid var(--focus-ring);
+      outline-offset: 3px;
+    }
+
+    /* Feedback Box */
+    .feedback {
+      margin-top: 0.85rem;
+      padding: 0.85rem 1rem;
+      border-radius: 6px;
+      font-size: 0.95rem;
+      display: none;
+    }
+
+    .feedback.is-correct {
+      display: block;
+      background-color: var(--correct-bg);
+      border: 1px solid var(--correct-border);
+      color: var(--correct-text);
+    }
+
+    .feedback.is-incorrect {
+      display: block;
+      background-color: var(--incorrect-bg);
+      border: 1px solid var(--incorrect-border);
+      color: var(--incorrect-text);
+    }
+
+    .feedback strong {
+      display: inline-block;
+      margin-bottom: 0.25rem;
+    }
+
+    /* Action Buttons */
+    .btn-group {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1rem;
+      margin-top: 1.5rem;
+    }
+
+    .btn {
+      padding: 0.75rem 1.75rem;
+      font-size: 1rem;
+      font-weight: 600;
+      border-radius: 6px;
+      cursor: pointer;
+      border: none;
+      min-height: 48px;
+      transition: background-color 0.2s ease;
+    }
+
+    .btn-primary {
+      background-color: var(--primary-color);
+      color: #ffffff;
+    }
+
+    .btn-primary:hover {
+      background-color: var(--primary-hover);
+    }
+
+    .btn-secondary {
+      background-color: #e2e8f0;
+      color: #1e293b;
+      border: 1px solid #cbd5e1;
+    }
+
+    .btn-secondary:hover {
+      background-color: #cbd5e1;
+    }
+
+    /* Live Summary Card */
+    #score-summary {
+      margin-top: 1.5rem;
+      padding: 1.25rem;
+      border-radius: 6px;
+      font-size: 1.1rem;
+      font-weight: 600;
+      display: none;
+    }
+
+    #score-summary.active {
+      display: block;
+      background-color: #eff6ff;
+      border: 2px solid #3b82f6;
+      color: #1e3a8a;
+    }
+  </style>
+</head>
+<body>
+  <main class="container" id="main-content">
+    <header>
+      <h1>ACCT 251: Debits and Credits Review Quiz</h1>
+      <p class="quiz-instructions">
+        Select the best answer for each question. When you are finished, select <strong>Submit Quiz</strong> to grade your answers and review the explanations.
+      </p>
+    </header>
+
+    <form id="quiz-form" aria-label="Accounting Chapter 2 Part B Quiz">
+
+      <!-- Question 1 -->
+      <fieldset class="question-card" id="q1-card">
+        <legend>1. In accounting terminology, what is the literal meaning of the word &ldquo;debit&rdquo;?</legend>
+        <div class="options-group">
+          <label class="option-label" for="q1_opt1">
+            <input type="radio" id="q1_opt1" name="q1" value="A">
+            <span>A. An increase in an account</span>
+          </label>
+          <label class="option-label" for="q1_opt2">
+            <input type="radio" id="q1_opt2" name="q1" value="B">
+            <span>B. The left side of an account</span>
+          </label>
+          <label class="option-label" for="q1_opt3">
+            <input type="radio" id="q1_opt3" name="q1" value="C">
+            <span>C. A decrease in an account</span>
+          </label>
+          <label class="option-label" for="q1_opt4">
+            <input type="radio" id="q1_opt4" name="q1" value="D">
+            <span>D. The right side of an account</span>
+          </label>
+        </div>
+        <div id="feedback-q1" class="feedback" role="status" aria-live="polite"></div>
+      </fieldset>
+
+      <!-- Question 2 -->
+      <fieldset class="question-card" id="q2-card">
+        <legend>2. According to the DEALOR framework, which three types of accounts increase with a debit?</legend>
+        <div class="options-group">
+          <label class="option-label" for="q2_opt1">
+            <input type="radio" id="q2_opt1" name="q2" value="A">
+            <span>A. Liabilities, Owners&rsquo; Equity, and Revenues</span>
+          </label>
+          <label class="option-label" for="q2_opt2">
+            <input type="radio" id="q2_opt2" name="q2" value="B">
+            <span>B. Dividends, Expenses, and Assets</span>
+          </label>
+          <label class="option-label" for="q2_opt3">
+            <input type="radio" id="q2_opt3" name="q2" value="C">
+            <span>C. Assets, Liabilities, and Retained Earnings</span>
+          </label>
+          <label class="option-label" for="q2_opt4">
+            <input type="radio" id="q2_opt4" name="q2" value="D">
+            <span>D. Revenues, Expenses, and Common Stock</span>
+          </label>
+        </div>
+        <div id="feedback-q2" class="feedback" role="status" aria-live="polite"></div>
+      </fieldset>
+
+      <!-- Question 3 -->
+      <fieldset class="question-card" id="q3-card">
+        <legend>3. Which of the following provides a chronological record of all transactions affecting a company?</legend>
+        <div class="options-group">
+          <label class="option-label" for="q3_opt1">
+            <input type="radio" id="q3_opt1" name="q3" value="A">
+            <span>A. The general ledger</span>
+          </label>
+          <label class="option-label" for="q3_opt2">
+            <input type="radio" id="q3_opt2" name="q3" value="B">
+            <span>B. The trial balance</span>
+          </label>
+          <label class="option-label" for="q3_opt3">
+            <input type="radio" id="q3_opt3" name="q3" value="C">
+            <span>C. The journal</span>
+          </label>
+          <label class="option-label" for="q3_opt4">
+            <input type="radio" id="q3_opt4" name="q3" value="D">
+            <span>D. The balance sheet</span>
+          </label>
+        </div>
+        <div id="feedback-q3" class="feedback" role="status" aria-live="polite"></div>
+      </fieldset>
+
+      <!-- Question 4 -->
+      <fieldset class="question-card" id="q4-card">
+        <legend>4. What are the formatting rules when recording a formal general journal entry?</legend>
+        <div class="options-group">
+          <label class="option-label" for="q4_opt1">
+            <input type="radio" id="q4_opt1" name="q4" value="A">
+            <span>A. The credit account is written first flush left, and the debit account is indented underneath.</span>
+          </label>
+          <label class="option-label" for="q4_opt2">
+            <input type="radio" id="q4_opt2" name="q4" value="B">
+            <span>B. Accounts are listed in alphabetical order regardless of debits or credits.</span>
+          </label>
+          <label class="option-label" for="q4_opt3">
+            <input type="radio" id="q4_opt3" name="q4" value="C">
+            <span>C. The debit account is written first flush left, and both the credit account title and amount are indented to the right.</span>
+          </label>
+          <label class="option-label" for="q4_opt4">
+            <input type="radio" id="q4_opt4" name="q4" value="D">
+            <span>D. Debits and credits are recorded on alternating lines without indentation.</span>
+          </label>
+        </div>
+        <div id="feedback-q4" class="feedback" role="status" aria-live="polite"></div>
+      </fieldset>
+
+      <!-- Question 5 -->
+      <fieldset class="question-card" id="q5-card">
+        <legend>5. When a company pays \$48,000 cash in advance for one year of rent, which account is debited?</legend>
+        <div class="options-group">
+          <label class="option-label" for="q5_opt1">
+            <input type="radio" id="q5_opt1" name="q5" value="A">
+            <span>A. Cash</span>
+          </label>
+          <label class="option-label" for="q5_opt2">
+            <input type="radio" id="q5_opt2" name="q5" value="B">
+            <span>B. Rent Expense</span>
+          </label>
+          <label class="option-label" for="q5_opt3">
+            <input type="radio" id="q5_opt3" name="q5" value="C">
+            <span>C. Prepaid Rent</span>
+          </label>
+          <label class="option-label" for="q5_opt4">
+            <input type="radio" id="q5_opt4" name="q5" value="D">
+            <span>D. Accounts Payable</span>
+          </label>
+        </div>
+        <div id="feedback-q5" class="feedback" role="status" aria-live="polite"></div>
+      </fieldset>
+
+      <!-- Question 6 -->
+      <fieldset class="question-card" id="q6-card">
+        <legend>6. What is the primary purpose of posting journal entries to the general ledger?</legend>
+        <div class="options-group">
+          <label class="option-label" for="q6_opt1">
+            <input type="radio" id="q6_opt1" name="q6" value="A">
+            <span>A. To summarize and accumulate transactions into individual account balances</span>
+          </label>
+          <label class="option-label" for="q6_opt2">
+            <input type="radio" id="q6_opt2" name="q6" value="B">
+            <span>B. To verify external compliance for public external reporting</span>
+          </label>
+          <label class="option-label" for="q6_opt3">
+            <input type="radio" id="q6_opt3" name="q6" value="C">
+            <span>C. To calculate federal income tax liabilities before year-end</span>
+          </label>
+          <label class="option-label" for="q6_opt4">
+            <input type="radio" id="q6_opt4" name="q6" value="D">
+            <span>D. To replace the need for source documents</span>
+          </label>
+        </div>
+        <div id="feedback-q6" class="feedback" role="status" aria-live="polite"></div>
+      </fieldset>
+
+      <!-- Question 7 -->
+      <fieldset class="question-card" id="q7-card">
+        <legend>7. Which of the following accounts normally appears in the credit column of a trial balance?</legend>
+        <div class="options-group">
+          <label class="option-label" for="q7_opt1">
+            <input type="radio" id="q7_opt1" name="q7" value="A">
+            <span>A. Prepaid Rent</span>
+          </label>
+          <label class="option-label" for="q7_opt2">
+            <input type="radio" id="q7_opt2" name="q7" value="B">
+            <span>B. Common Stock</span>
+          </label>
+          <label class="option-label" for="q7_opt3">
+            <input type="radio" id="q7_opt3" name="q7" value="C">
+            <span>C. Dividends</span>
+          </label>
+          <label class="option-label" for="q7_opt4">
+            <input type="radio" id="q7_opt4" name="q7" value="D">
+            <span>D. Salaries Expense</span>
+          </label>
+        </div>
+        <div id="feedback-q7" class="feedback" role="status" aria-live="polite"></div>
+      </fieldset>
+
+      <!-- Question 8 -->
+      <fieldset class="question-card" id="q8-card">
+        <legend>8. If a company&rsquo;s trial balance totals balance evenly, what does this mathematically prove?</legend>
+        <div class="options-group">
+          <label class="option-label" for="q8_opt1">
+            <input type="radio" id="q8_opt1" name="q8" value="A">
+            <span>A. All transactions were recorded in the correct accounts without error.</span>
+          </label>
+          <label class="option-label" for="q8_opt2">
+            <input type="radio" id="q8_opt2" name="q8" value="B">
+            <span>B. No external business transactions were omitted during the period.</span>
+          </label>
+          <label class="option-label" for="q8_opt3">
+            <input type="radio" id="q8_opt3" name="q8" value="C">
+            <span>C. Total debits equal total credits, though offsetting or misclassification errors may still exist.</span>
+          </label>
+          <label class="option-label" for="q8_opt4">
+            <input type="radio" id="q8_opt4" name="q8" value="D">
+            <span>D. Net income has been verified and is ready for public distribution.</span>
+          </label>
+        </div>
+        <div id="feedback-q8" class="feedback" role="status" aria-live="polite"></div>
+      </fieldset>
+
+      <div class="btn-group">
+        <button type="button" id="submit-btn" class="btn btn-primary">Submit Quiz</button>
+        <button type="button" id="reset-btn" class="btn btn-secondary">Reset Answers</button>
+      </div>
+    </form>
+
+    <div id="score-summary" role="status" aria-live="polite"></div>
+  </main>
+
+  <script>
+    // Quiz Answer Key & Pedagogical Explanations
+    const quizKey = {
+      q1: {
+        correct: "B",
+        explanation: "In accounting, debit simply means the left side of an account, and credit means the right side. Whether a debit represents an increase or a decrease depends on the account type."
+      },
+      q2: {
+        correct: "B",
+        explanation: "Under the DEALOR framework: Dividends, Expenses, and Assets (D-E-A) increase with a debit. Liabilities, Owners' Equity, and Revenues (L-O-R) increase with a credit."
+      },
+      q3: {
+        correct: "C",
+        explanation: "The journal provides a chronological diary of all transactions as they occur. The general ledger accumulates running account balances, and the trial balance summarizes them."
+      },
+      q4: {
+        correct: "C",
+        explanation: "By convention, debit accounts are listed first flush against the left margin. Credit accounts are indented to the right for both the account name and dollar amount, and total debits must equal total credits."
+      },
+      q5: {
+        correct: "C",
+        explanation: "Prepaid Rent is an asset account representing future economic benefit. Because assets increase with a debit, Prepaid Rent is debited for \$48,000, and Cash is credited for \$48,000."
+      },
+      q6: {
+        correct: "A",
+        explanation: "Posting transfers debits and credits from chronological journal entries into individual accounts in the general ledger (often visualized as T-accounts) to maintain cumulative running balances."
+      },
+      q7: {
+        correct: "B",
+        explanation: "Common Stock is a stockholders' equity account and carries a normal credit balance. Prepaid Rent, Dividends, and Salaries Expense all have normal debit balances."
+      },
+      q8: {
+        correct: "C",
+        explanation: "A balanced trial balance proves that debits equal credits. However, it does not guarantee accuracy because omitted transactions, wrong-account postings, or offsetting errors will still allow both columns to balance."
+      }
+    };
+
+    document.getElementById("submit-btn").addEventListener("click", function () {
+      let score = 0;
+      const totalQuestions = Object.keys(quizKey).length;
+      let allAnswered = true;
+
+      for (const [qId, qData] of Object.entries(quizKey)) {
+        const selected = document.querySelector(`input[name="${qId}"]:checked`);
+        const feedbackDiv = document.getElementById(`feedback-${qId}`);
+
+        if (!selected) {
+          allAnswered = false;
+          feedbackDiv.className = "feedback is-incorrect";
+          feedbackDiv.innerHTML = `<strong>Unanswered:</strong> Please select an option for this question.`;
+          continue;
+        }
+
+        if (selected.value === qData.correct) {
+          score++;
+          feedbackDiv.className = "feedback is-correct";
+          feedbackDiv.innerHTML = `<strong>Correct:</strong> ${qData.explanation}`;
+        } else {
+          feedbackDiv.className = "feedback is-incorrect";
+          feedbackDiv.innerHTML = `<strong>Incorrect:</strong> The correct answer is Option ${qData.correct}. ${qData.explanation}`;
+        }
+      }
+
+      const summaryDiv = document.getElementById("score-summary");
+      summaryDiv.className = "active";
+      const percentage = Math.round((score / totalQuestions) * 100);
+      summaryDiv.innerHTML = `Your Score: ${score} out of ${totalQuestions} (${percentage}%). Review the specific feedback above for each question.`;
+
+      // Set focus to the summary container so screen readers announce it immediately
+      summaryDiv.setAttribute("tabindex", "-1");
+      summaryDiv.focus();
+    });
+
+    document.getElementById("reset-btn").addEventListener("click", function () {
+      document.getElementById("quiz-form").reset();
+      const feedbacks = document.querySelectorAll(".feedback");
+      feedbacks.forEach(fb => {
+        fb.className = "feedback";
+        fb.innerHTML = "";
+      });
+      const summaryDiv = document.getElementById("score-summary");
+      summaryDiv.className = "";
+      summaryDiv.innerHTML = "";
+      document.getElementById("q1_opt1").focus();
+    });
+  </script>
+</body>
+</html>
