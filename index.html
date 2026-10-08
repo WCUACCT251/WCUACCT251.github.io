@@ -15,11 +15,13 @@
     --purple-mid:#7A4CA8;
     --gold:#C9A24B;
     --gold-soft:#E6CE93;
+    --gold-text:#8A6A2E;   /* gold darkened for text on white: 5.0:1 (AA needs 4.5:1) */
     --bg:#F7F5F0;
     --paper:#FFFFFF;
     --ink:#211D2E;
     --slate:#5C5768;
-    --line:#E4E0D6;
+    --line:#E4E0D6;        /* decorative dividers only */
+    --line-ui:#8F8059;     /* borders of inputs, buttons, cards: 3.6:1+ on white and page bg (WCAG 1.4.11) */
     --shadow: 0 1px 2px rgba(33,29,46,0.05), 0 12px 28px rgba(33,29,46,0.08);
   }
   *{box-sizing:border-box;}
@@ -34,6 +36,31 @@
   a{ color:inherit; }
   .wrap{ max-width:1080px; margin:0 auto; padding:0 32px; }
 
+  /* Visually hidden, still read by screen readers */
+  .sr-only{
+    position:absolute !important; width:1px; height:1px; padding:0; margin:-1px;
+    overflow:hidden; clip:rect(0,0,0,0); clip-path:inset(50%); white-space:nowrap; border:0;
+  }
+
+  /* Skip link: first thing keyboard users reach (WCAG 2.4.1) */
+  .skip-link{
+    position:absolute; left:12px; top:-80px; z-index:100;
+    background:#FFFFFF; color:var(--panel); font-weight:600; font-size:15px;
+    padding:12px 18px; border:2px solid var(--panel); border-radius:8px; text-decoration:none;
+  }
+  .skip-link:focus{ top:12px; }
+
+  /* One clear, high-contrast focus indicator everywhere (WCAG 2.4.7, 1.4.11) */
+  a:focus-visible, button:focus-visible, input:focus-visible{
+    outline:3px solid var(--panel); outline-offset:3px;
+  }
+  main:focus{ outline:none; }
+
+  @media (prefers-reduced-motion: reduce){
+    *{ transition:none !important; animation:none !important; scroll-behavior:auto !important; }
+    .assign-card:hover{ transform:none !important; }
+  }
+
   .topbar{
     height:5px;
     background:linear-gradient(90deg, var(--purple) 0%, var(--gold) 100%);
@@ -46,6 +73,7 @@
   /* ---------- Header: full-bleed photo, purple spotlight behind text ---------- */
   header{
     position:relative;
+    overflow:hidden;
     min-height:480px;
     display:flex;
     align-items:center;
@@ -64,6 +92,12 @@
     margin:0 auto;
     padding:64px 32px;
     text-align:left;
+    /* Solid-enough purple behind the text at every screen size and zoom level,
+       so contrast never depends on which part of the photo is underneath
+       (worst case is 5.4:1 for the smallest text). */
+    background:rgba(89,44,136,0.92);
+    border-radius:32px;
+    box-shadow:0 0 70px 34px rgba(89,44,136,0.92);
   }
   .eyebrow{
     font-family:'IBM Plex Mono',monospace;
@@ -96,19 +130,19 @@
     font-family:'Inter',sans-serif;
     font-size:14.5px;
     padding:11px 14px;
-    border:1px solid var(--line);
+    border:1px solid var(--line-ui);
     border-radius:8px;
     background:var(--paper);
     color:var(--ink);
   }
-  .search-row input[type="text"]:focus{ outline:2px solid var(--purple-mid); outline-offset:1px; }
+  .search-row input[type="text"]::placeholder{ color:var(--slate); opacity:1; }
   .type-tabs{ display:flex; gap:8px; flex-wrap:wrap; }
   .type-tab{
     font-family:'IBM Plex Mono',monospace;
     font-size:12.5px;
     padding:9px 16px;
     border-radius:999px;
-    border:1px solid var(--line);
+    border:1px solid var(--line-ui);
     background:var(--paper);
     color:var(--slate);
     cursor:pointer;
@@ -119,9 +153,12 @@
     border-color:var(--panel);
     color:#FBF8F1;
   }
+  /* A check mark so the selected filter isn't shown by color alone (WCAG 1.4.1) */
+  .type-tab.active::before{ content:"\2713\00a0"; content:"\2713\00a0" / ""; }
 
   /* ---------- Materials ---------- */
-  main{ padding:30px 0 64px; }
+  main{ padding:0 0 64px; }
+  .results{ padding-top:30px; }
 
   .empty-state{
     background:var(--paper);
@@ -140,14 +177,16 @@
     display:flex;
     flex-direction:column;
     gap:14px;
-    margin-top:24px;
+    margin:24px 0 0;
+    padding:0;
+    list-style:none;
   }
   .assign-card{
     display:flex;
     flex-direction:row;
     align-items:stretch;
     background:var(--paper);
-    border:1px solid var(--line);
+    border:1px solid var(--line-ui);
     border-radius:12px;
     overflow:hidden;
     text-decoration:none;
@@ -169,16 +208,17 @@
   }
   .assign-body{ padding:16px 20px; flex:1; min-width:0; display:flex; flex-direction:column; justify-content:center; }
   .assign-meta{
-    display:flex; align-items:center; gap:8px;
+    display:flex; align-items:center; flex-wrap:wrap;
     font-family:'IBM Plex Mono',monospace;
-    font-size:11px;
-    color:var(--gold);
+    font-size:12px;
+    color:var(--gold-text);
     margin:0 0 6px;
     text-transform:uppercase;
     letter-spacing:.03em;
   }
-  .assign-title{ font-weight:600; font-size:15.5px; color:var(--ink); margin:0 0 6px; }
-  .assign-desc{ font-size:13.5px; color:var(--slate); margin:0; }
+  .assign-meta [aria-hidden="true"]{ margin:0 8px; }
+  .assign-title{ font-weight:600; font-size:16px; line-height:1.35; color:var(--ink); margin:0 0 6px; overflow-wrap:anywhere; }
+  .assign-desc{ font-size:14px; color:var(--slate); margin:0; overflow-wrap:anywhere; }
 
   @media (max-width:560px){
     .assign-cover{ flex-basis:76px; width:76px; font-size:12px; padding:10px 6px; }
@@ -205,13 +245,15 @@
       background-position:center, center, center 55%;
       background-repeat:no-repeat;
     }
-    .header-inner{ padding:44px 24px; max-width:none; }
+    .header-inner{ padding:44px 24px; max-width:none; width:100%; border-radius:0; box-shadow:0 0 40px 20px rgba(89,44,136,0.92); }
   }
 </style>
 </head>
 <body>
 
-<div class="topbar"></div>
+<a class="skip-link" href="#main-content">Skip to main content</a>
+
+<div class="topbar" aria-hidden="true"></div>
 
 <header>
   <div class="header-inner">
@@ -221,21 +263,26 @@
   </div>
 </header>
 
-<div class="goldbar"></div>
+<div class="goldbar" aria-hidden="true"></div>
 
-<div class="wrap controls">
+<main id="main-content" tabindex="-1">
+
+<div class="wrap controls" role="search" aria-labelledby="controlsHeading">
+  <h2 id="controlsHeading" class="sr-only">Search and filter course materials</h2>
   <div class="search-row">
-    <input type="text" id="searchInput" placeholder="Search by title or chapter&hellip;">
+    <label for="searchInput" class="sr-only">Search by title or chapter</label>
+    <input type="text" id="searchInput" placeholder="Search by title or chapter&hellip;" autocomplete="off">
   </div>
-  <div class="type-tabs" id="typeTabs">
-    <button class="type-tab active" data-type="all">All</button>
-    <button class="type-tab" data-type="notes">Notes</button>
-    <button class="type-tab" data-type="walkthrough">Walkthroughs</button>
-    <button class="type-tab" data-type="homework">Homework</button>
+  <div class="type-tabs" id="typeTabs" role="group" aria-label="Filter by material type">
+    <button type="button" class="type-tab active" data-type="all" aria-pressed="true">All</button>
+    <button type="button" class="type-tab" data-type="notes" aria-pressed="false">Notes</button>
+    <button type="button" class="type-tab" data-type="walkthrough" aria-pressed="false">Walkthroughs</button>
+    <button type="button" class="type-tab" data-type="homework" aria-pressed="false">Homework</button>
   </div>
 </div>
 
-<main class="wrap">
+<section class="wrap results" aria-labelledby="resultsHeading">
+  <h2 id="resultsHeading" class="sr-only">Course materials</h2>
   <!--
     Add items to the MATERIALS array below. Each entry:
 
@@ -247,7 +294,12 @@
     The empty state disappears automatically once MATERIALS has entries.
   -->
   <div id="materialsRoot"></div>
+</section>
+
 </main>
+
+<!-- Announces result counts to screen readers when searching or filtering (WCAG 4.1.3) -->
+<div id="resultStatus" class="sr-only" role="status" aria-live="polite" aria-atomic="true"></div>
 
 <footer>
   <div class="wrap">
@@ -320,8 +372,31 @@
   });
 
   const TYPE_LABELS = { notes: 'Notes', walkthrough: 'Walkthrough', homework: 'Homework' };
+  const TYPE_FILTER_NAMES = { all: 'all types', notes: 'notes', walkthrough: 'walkthroughs', homework: 'homework' };
 
   let activeType = 'all';
+  let userHasInteracted = false;   // don't announce anything on first page load
+  let announceTimer = null;
+
+  function el(tag, className, text) {
+    const node = document.createElement(tag);
+    if (className) node.className = className;
+    if (text !== undefined) node.textContent = text;
+    return node;
+  }
+
+  function announce(message) {
+    const status = document.getElementById('resultStatus');
+    clearTimeout(announceTimer);
+    announceTimer = setTimeout(() => { status.textContent = ''; status.textContent = message; }, 400);
+  }
+
+  function emptyState(title, message) {
+    const box = el('div', 'empty-state');
+    box.appendChild(el('h3', 'empty-title', title));
+    box.appendChild(el('p', '', message));
+    return box;
+  }
 
   function render() {
     const root = document.getElementById('materialsRoot');
@@ -334,53 +409,77 @@
       return matchesType && matchesQuery;
     });
 
+    root.textContent = '';
+
     if (MATERIALS.length === 0) {
-      root.innerHTML = `
-        <div class="empty-state">
-          <p class="empty-title">Nothing posted yet</p>
-          <p>Notes, walkthroughs, and homework will appear here as they're built &mdash; check back soon.</p>
-        </div>`;
+      root.appendChild(emptyState('Nothing posted yet', "Notes, walkthroughs, and homework will appear here as they're built \u2014 check back soon."));
       return;
     }
 
     if (filtered.length === 0) {
-      root.innerHTML = `
-        <div class="empty-state">
-          <p class="empty-title">No matches</p>
-          <p>Try a different search term or filter.</p>
-        </div>`;
+      root.appendChild(emptyState('No matches', 'Try a different search term or filter.'));
+      if (userHasInteracted) announce('No materials match your search or filter.');
       return;
     }
 
-    const grid = document.createElement('div');
-    grid.className = 'assign-grid';
-    filtered.forEach(m => {
-      const card = document.createElement('a');
-      card.className = 'assign-card';
+    const list = el('ul', 'assign-grid');
+    list.setAttribute('role', 'list');
+    filtered.forEach((m, i) => {
+      const item = el('li');
+      const card = el('a', 'assign-card');
       card.href = m.link;
-      const label = TYPE_LABELS[m.type] || '';
-      card.innerHTML = `
-        <div class="assign-cover">${m.chapter || ''}</div>
-        <div class="assign-body">
-          <p class="assign-meta">${[label, m.chapter].filter(Boolean).join(' &middot; ')}</p>
-          <p class="assign-title">${m.title}</p>
-          <p class="assign-desc">${m.description || ''}</p>
-        </div>`;
-      grid.appendChild(card);
+
+      // The chapter block is decorative repeat of the chapter in the label below
+      const cover = el('div', 'assign-cover', m.chapter || '');
+      cover.setAttribute('aria-hidden', 'true');
+
+      const body = el('div', 'assign-body');
+      const meta = el('p', 'assign-meta');
+      meta.id = `mat-${i}-meta`;
+      meta.appendChild(el('span', '', TYPE_LABELS[m.type] || ''));
+      if (m.chapter) {
+        const sep = el('span', '', '\u00B7');
+        sep.setAttribute('aria-hidden', 'true');
+        meta.appendChild(sep);
+        meta.appendChild(el('span', '', m.chapter));
+      }
+      const title = el('h3', 'assign-title', m.title);
+      title.id = `mat-${i}-title`;
+      const desc = el('p', 'assign-desc', m.description || '');
+      desc.id = `mat-${i}-desc`;
+
+      // Link name = the title; type/chapter and description are read as its description
+      card.setAttribute('aria-labelledby', title.id);
+      card.setAttribute('aria-describedby', `${meta.id} ${desc.id}`);
+
+      body.append(meta, title, desc);
+      card.append(cover, body);
+      item.appendChild(card);
+      list.appendChild(item);
     });
-    root.innerHTML = '';
-    root.appendChild(grid);
+    root.appendChild(list);
+
+    if (userHasInteracted) {
+      announce(`Showing ${filtered.length} of ${MATERIALS.length} materials, filtered to ${TYPE_FILTER_NAMES[activeType]}.`);
+    }
   }
 
   document.getElementById('typeTabs').addEventListener('click', (e) => {
     const btn = e.target.closest('.type-tab');
     if (!btn) return;
-    document.querySelectorAll('.type-tab').forEach(t => t.classList.remove('active'));
-    btn.classList.add('active');
+    userHasInteracted = true;
+    document.querySelectorAll('.type-tab').forEach(t => {
+      const isActive = t === btn;
+      t.classList.toggle('active', isActive);
+      t.setAttribute('aria-pressed', isActive ? 'true' : 'false');
+    });
     activeType = btn.dataset.type;
     render();
   });
-  document.getElementById('searchInput').addEventListener('input', render);
+  document.getElementById('searchInput').addEventListener('input', () => {
+    userHasInteracted = true;
+    render();
+  });
 
   render();
 </script>
