@@ -1,0 +1,674 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="color-scheme" content="light dark">
+<meta name="description" content="ACCT 251 notes: preparing the income statement, statement of stockholders' equity, and classified balance sheet.">
+<title>Preparing the Financial Statements, Part B | ACCT 251</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,700;12..96,800&family=Figtree:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{
+  color-scheme: light dark;
+  --bg:#F7F4FC; --paper:#FFFFFF; --ink:#1D1730; --muted:#574F6E;
+  --brand:#592C88; --gold:#C9A24B; --gold-text:#735410; --line:#E3DCF0;
+  --btn:#592C88; --btn-ink:#FFFFFF; --btn-hover:#3F1E66;
+  --assets-bg:#FBF3DC; --assets-line:#E2C66F;
+  --liab-bg:#E9ECF8;   --liab-line:#B7C0E6;
+  --eq-bg:#F0E6FA;     --eq-line:#C9AEE8;
+  --up:#1B6B3D; --down:#A3302A;
+  --key-bg:#F0E6FA; --key-icon:#592C88;
+  --warn-bg:#FBEDE9; --warn-ink:#8E2F22;
+  --ok-bg:#E4F4EA; --ok-ink:#1B6B3D; --no-bg:#FBEDE9; --no-ink:#8E2F22;
+  --badge:#E9C46A; --badge-ink:#1D1730;
+  --focus:#592C88;
+  --shadow:0 1px 2px rgba(43,18,80,.06), 0 14px 34px rgba(43,18,80,.09);
+}
+@media (prefers-color-scheme: dark){
+  :root{
+    --bg:#130C20; --paper:#1D1430; --ink:#F2EDFB; --muted:#BDB3D4;
+    --brand:#D2B9F5; --gold:#EBCB7F; --gold-text:#EBCB7F; --line:#342650;
+    --btn:#CDB1F2; --btn-ink:#1A0E2E; --btn-hover:#E1CDF8;
+    --assets-bg:#2B2410; --assets-line:#6B5A25;
+    --liab-bg:#1B2038;   --liab-line:#3F4A7E;
+    --eq-bg:#2E1C4A;     --eq-line:#5F4090;
+    --up:#86DBA6; --down:#FFA295;
+    --key-bg:#2E1C4A; --key-icon:#D2B9F5;
+    --warn-bg:#3A1D1A; --warn-ink:#FFB4A8;
+    --ok-bg:#16301F; --ok-ink:#86DBA6; --no-bg:#3A1D1A; --no-ink:#FFB4A8;
+    --focus:#D2B9F5;
+    --shadow:0 1px 2px rgba(0,0,0,.4), 0 14px 34px rgba(0,0,0,.35);
+  }
+}
+*{box-sizing:border-box;}
+html{ -webkit-text-size-adjust:100%; }
+@media (prefers-reduced-motion:no-preference){ html{ scroll-behavior:smooth; } }
+body{
+  margin:0; background:var(--bg); color:var(--ink);
+  font-family:'Figtree', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+  font-size:17px; line-height:1.65; font-variant-numeric:tabular-nums;
+}
+a{ color:var(--brand); text-underline-offset:3px; }
+p{ margin:0 0 16px; max-width:68ch; }
+strong{ font-weight:700; }
+:focus-visible{ outline:3px solid var(--focus); outline-offset:3px; border-radius:4px; }
+.sr-only{
+  position:absolute !important; width:1px; height:1px; padding:0; margin:-1px; overflow:hidden;
+  clip:rect(0,0,0,0); clip-path:inset(50%); white-space:nowrap; border:0;
+}
+.skip-link{
+  position:absolute; left:12px; top:-80px; z-index:100; background:#fff; color:#592C88;
+  font-weight:700; padding:12px 18px; border:3px solid #592C88; border-radius:10px; text-decoration:none;
+}
+.skip-link:focus{ top:12px; }
+
+/* ---------- Hero ---------- */
+.hero{
+  position:relative; color:#fff; overflow:hidden;
+  background:
+    radial-gradient(900px 380px at 88% -8%, rgba(235,203,127,.30), transparent 62%),
+    linear-gradient(165deg, #6A35A0 0%, #3B1D5C 55%, #2B1250 100%);
+}
+.hero :focus-visible{ outline-color:#FFFFFF; }
+.hero-inner{ max-width:1120px; margin:0 auto; padding:30px 24px clamp(120px,19vw,230px); position:relative; z-index:2; }
+.crumb{ margin:0 0 34px; font-size:15px; }
+.crumb ol{ list-style:none; margin:0; padding:0; display:flex; flex-wrap:wrap; gap:6px 10px; }
+.crumb li+li::before{ content:"/"; content:"/" / ""; margin-right:10px; color:#D9C9EE; }
+.crumb a{ color:#fff; text-decoration:underline; text-decoration-color:rgba(255,255,255,.45); }
+.crumb a:hover{ text-decoration-color:#fff; }
+.pill{
+  display:inline-block; background:#EBCB7F; color:#2B1250; font-weight:700; font-size:14px;
+  padding:4px 14px; border-radius:999px; margin:0 0 18px;
+}
+h1{
+  font-family:'Bricolage Grotesque','Figtree',system-ui,sans-serif; font-weight:800;
+  font-size:clamp(2.5rem,6.4vw,4.4rem); line-height:1.02; letter-spacing:-.025em;
+  margin:0 0 18px; max-width:15ch; text-wrap:balance;
+}
+.subtitle{ font-size:clamp(1.05rem,2vw,1.3rem); color:#E8DEF5; max-width:46ch; margin:0 0 30px; line-height:1.5; }
+.goals{
+  max-width:540px; padding:18px 22px; border-radius:20px;
+  background:rgba(255,255,255,.10); border:1px solid rgba(255,255,255,.28);
+  -webkit-backdrop-filter:blur(8px); backdrop-filter:blur(8px);
+}
+.goals-title{ margin:0 0 10px; font-weight:700; }
+.goals ul{ list-style:none; padding:0; margin:0; }
+.goals li{ display:flex; gap:10px; align-items:flex-start; margin:0 0 8px; font-size:16px; line-height:1.5; }
+.goals li:last-child{ margin-bottom:0; }
+.goals svg{ flex:0 0 20px; margin-top:2px; color:#EBCB7F; }
+.ridge{ position:absolute; left:0; right:0; bottom:-1px; width:100%; height:clamp(110px,18vw,220px); z-index:1; }
+.ridge .r1{ fill:#7A45B3; opacity:.55; }
+.ridge .r2{ fill:#4A2475; opacity:.9; }
+.ridge .r3{ fill:var(--bg); }
+.ridge .crest{ fill:none; stroke:#EBCB7F; stroke-width:2.2; stroke-linejoin:round; opacity:.9; }
+
+/* ---------- Layout ---------- */
+.layout{
+  max-width:1120px; margin:0 auto; padding:24px 24px 90px;
+  display:grid; grid-template-columns:210px minmax(0,1fr); gap:56px;
+}
+.toc{ position:sticky; top:28px; align-self:start; font-size:15px; }
+.toc-title{ margin:0 0 10px; font-weight:700; color:var(--muted); font-size:14px; }
+.toc ul{ list-style:none; margin:0; padding:0; border-left:3px solid var(--line); }
+.toc li{ margin:0; }
+.toc a{
+  display:block; padding:7px 14px; margin-left:-3px; border-left:3px solid transparent;
+  color:var(--muted); text-decoration:none; line-height:1.35;
+}
+.toc a:hover{ color:var(--ink); }
+.toc a[aria-current="location"]{ color:var(--brand); font-weight:700; border-left-color:var(--gold); }
+article.content, .content{ min-width:0; max-width:720px; }
+section.block{ margin:0 0 72px; }
+section.block:last-of-type{ margin-bottom:0; }
+h2{
+  font-family:'Bricolage Grotesque','Figtree',system-ui,sans-serif; font-weight:700;
+  font-size:clamp(1.7rem,3.4vw,2.25rem); line-height:1.1; letter-spacing:-.02em;
+  margin:0 0 20px; color:var(--ink); scroll-margin-top:24px; text-wrap:balance;
+}
+h3{
+  font-family:'Bricolage Grotesque','Figtree',system-ui,sans-serif; font-weight:700;
+  font-size:1.3rem; line-height:1.2; letter-spacing:-.01em; margin:40px 0 14px; color:var(--ink);
+}
+.lede{ font-size:1.12rem; line-height:1.6; }
+
+/* ---------- Steps ---------- */
+.steps{
+  list-style:none; padding:0; margin:0 0 28px; counter-reset:s;
+  display:grid; grid-template-columns:repeat(auto-fit,minmax(200px,1fr)); gap:14px;
+}
+.steps li{
+  counter-increment:s; background:var(--paper); border-radius:18px; padding:16px 18px 18px;
+  box-shadow:var(--shadow); margin:0; font-size:16px; line-height:1.5;
+}
+.steps li::before{
+  content:counter(s); display:grid; place-items:center; width:32px; height:32px; border-radius:50%;
+  background:var(--badge); color:var(--badge-ink); font-weight:800; margin-bottom:10px;
+}
+.split{ display:grid; grid-template-columns:1fr 1fr; gap:14px; margin:0 0 28px; }
+.split > div{ border-radius:18px; padding:18px 20px; }
+.split p{ margin:0; font-size:16px; line-height:1.55; }
+.split h4{ margin:0 0 6px; font-size:1.05rem; font-family:'Bricolage Grotesque','Figtree',sans-serif; }
+.split .rec{ background:var(--assets-bg); border:1px solid var(--assets-line); }
+.split .wait{ background:var(--liab-bg); border:1px solid var(--liab-line); }
+
+/* ---------- Callouts ---------- */
+.callout{
+  display:flex; gap:14px; align-items:flex-start; border-radius:18px; padding:18px 20px; margin:26px 0;
+}
+.callout .callout-icon{
+  flex:0 0 40px; height:40px; border-radius:12px; display:grid; place-items:center;
+}
+.callout p{ margin:0 0 8px; font-size:16px; line-height:1.55; }
+.callout p:last-child{ margin-bottom:0; }
+.callout .callout-title{ font-weight:800; font-size:1.02rem; margin-bottom:4px; }
+.callout.key{ background:var(--key-bg); }
+.callout.key .callout-icon{ background:var(--key-icon); color:#fff; }
+@media (prefers-color-scheme: dark){ .callout.key .callout-icon{ color:#1A0E2E; } }
+.callout.mistake{ background:var(--warn-bg); }
+.callout.mistake .callout-title{ color:var(--warn-ink); }
+.callout.mistake .callout-icon{ color:var(--warn-ink); }
+
+/* ---------- Transactions ---------- */
+.txn{
+  background:var(--paper); border-radius:22px; padding:22px 22px 24px; margin:0 0 20px; box-shadow:var(--shadow);
+}
+.txn-head{ display:flex; align-items:center; gap:12px; margin:0 0 8px; }
+.txn-num{
+  flex:0 0 38px; height:38px; border-radius:50%; display:grid; place-items:center;
+  background:var(--badge); color:var(--badge-ink); font-weight:800; font-size:16px;
+}
+.txn-title{ margin:0; font-size:1.2rem; flex:1 1 auto; font-family:'Bricolage Grotesque','Figtree',sans-serif; font-weight:700; letter-spacing:-.01em; }
+.txn-date{
+  font-size:14px; font-weight:600; color:var(--muted); background:var(--bg); border-radius:999px; padding:3px 12px; white-space:nowrap;
+}
+.txn-desc{ margin:0 0 16px; color:var(--muted); font-size:16px; line-height:1.55; }
+.eq{ display:grid; grid-template-columns:minmax(0,1fr) auto minmax(0,1fr) auto minmax(0,1fr); gap:8px; align-items:stretch; }
+.op{
+  align-self:center; width:26px; text-align:center; font-weight:800; font-size:20px; color:var(--muted);
+}
+.tile{ border-radius:14px; padding:12px 14px 12px; border:1px solid; min-width:0; }
+.t-assets{ background:var(--assets-bg); border-color:var(--assets-line); }
+.t-liab{ background:var(--liab-bg); border-color:var(--liab-line); }
+.t-equity{ background:var(--eq-bg); border-color:var(--eq-line); }
+.tile-label{ margin:0 0 8px; font-weight:800; font-size:14px; max-width:none; color:var(--ink); }
+.lines{ list-style:none; margin:0; padding:0; }
+.lines li{ display:flex; flex-direction:column; margin:0 0 6px; font-size:15px; line-height:1.3; }
+.lines li:last-child{ margin-bottom:0; }
+.acct{ font-weight:600; }
+.amt{ font-weight:700; }
+.amt.up{ color:var(--up); }
+.amt.down{ color:var(--down); }
+.lines .net{
+  margin-top:8px; padding-top:8px; border-top:1px dashed var(--muted); color:var(--muted); font-size:14px;
+}
+.lines .net span:last-child{ font-weight:700; color:var(--ink); }
+.none{ margin:0; color:var(--muted); font-size:15px; max-width:none; }
+
+/* ---------- Expanded equation ---------- */
+.expanded{ background:var(--paper); border-radius:22px; padding:22px; margin:8px 0 26px; box-shadow:var(--shadow); }
+.ex-row{ display:flex; flex-wrap:wrap; align-items:center; gap:10px; margin:0 0 18px; font-weight:700; }
+.chip{ border-radius:999px; padding:6px 16px; border:1px solid var(--eq-line); background:var(--eq-bg); }
+.ex-row .eqop{ color:var(--muted); font-weight:800; }
+.ex-sub{ margin:0 0 12px; color:var(--muted); font-weight:600; font-size:15px; max-width:none; }
+.drivers{ list-style:none; margin:0; padding:0; display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:12px; }
+.drivers li{ border-radius:16px; padding:14px 16px; margin:0; background:var(--bg); font-size:15px; line-height:1.4; }
+.drivers strong{ display:block; font-size:1.05rem; margin-bottom:4px; }
+.drivers .up{ color:var(--up); font-weight:700; }
+.drivers .down{ color:var(--down); font-weight:700; }
+
+/* ---------- Quick check ---------- */
+.check{ background:var(--paper); border-radius:22px; padding:22px; margin:32px 0; box-shadow:var(--shadow); }
+.check-title{ margin:0 0 12px; font-size:1.05rem; color:var(--gold-text); }
+.check fieldset{ border:0; padding:0; margin:0 0 16px; min-width:0; }
+.check legend{ font-weight:700; font-size:1.08rem; line-height:1.4; padding:0; margin:0 0 12px; }
+.opt{
+  display:flex; gap:12px; align-items:flex-start; padding:12px 14px; margin:0 0 8px; cursor:pointer;
+  border:1.5px solid var(--line); border-radius:14px; font-size:16px; line-height:1.45;
+}
+.opt:hover{ border-color:var(--brand); }
+.opt:has(input:checked){ border-color:var(--brand); background:var(--key-bg); }
+.opt input{ margin-top:4px; width:18px; height:18px; accent-color:var(--brand); flex:0 0 auto; }
+.btn{
+  font:inherit; font-weight:700; font-size:16px; background:var(--btn); color:var(--btn-ink); border:0;
+  border-radius:999px; padding:11px 24px; cursor:pointer; text-decoration:none; display:inline-block;
+  transition:background-color .15s;
+}
+.btn:hover{ background:var(--btn-hover); }
+.feedback{ margin:14px 0 0; padding:0; border-radius:14px; font-size:16px; line-height:1.5; max-width:none; }
+.feedback.ok, .feedback.no, .feedback.info{ padding:12px 16px; }
+.feedback.ok{ background:var(--ok-bg); color:var(--ok-ink); }
+.feedback.no{ background:var(--no-bg); color:var(--no-ink); }
+.feedback.info{ background:var(--bg); color:var(--ink); }
+.feedback strong{ margin-right:4px; }
+
+/* ---------- Summary ---------- */
+.balance{
+  display:grid; grid-template-columns:minmax(0,1fr) auto minmax(0,1fr) auto minmax(0,1fr); gap:10px; align-items:center;
+  margin:0 0 20px;
+}
+.bal{ border-radius:18px; padding:14px 16px; border:1px solid; text-align:left; }
+.bal.t-assets{ background:var(--assets-bg); border-color:var(--assets-line); }
+.bal.t-liab{ background:var(--liab-bg); border-color:var(--liab-line); }
+.bal.t-equity{ background:var(--eq-bg); border-color:var(--eq-line); }
+.bal .lab{ margin:0; font-size:14px; font-weight:700; color:var(--muted); max-width:none; }
+.bal .num{ margin:0; font-family:'Bricolage Grotesque','Figtree',sans-serif; font-weight:800; font-size:clamp(1.3rem,3vw,1.8rem); letter-spacing:-.02em; max-width:none; line-height:1.15; }
+.bento{ display:grid; grid-template-columns:1fr 1fr; gap:16px; margin:0 0 22px; align-items:start; }
+.bento .b-assets{ grid-row:span 2; }
+.sumcard{ background:var(--paper); border-radius:20px; box-shadow:var(--shadow); overflow:hidden; padding-top:16px; }
+.sum{ width:100%; border-collapse:collapse; font-size:16px; }
+.sum caption{
+  text-align:left; font-family:'Bricolage Grotesque','Figtree',sans-serif; font-weight:700; font-size:1.1rem;
+  padding:0 16px 8px; color:var(--ink);
+}
+.sum th, .sum td{ padding:10px 16px; border-bottom:1px solid var(--line); }
+.sum th[scope="row"]{ text-align:left; font-weight:500; }
+.sum td{ text-align:right; font-weight:600; }
+.sum tfoot th[scope="row"], .sum tfoot td{ font-weight:800; border-bottom:0; }
+.s-assets tfoot th, .s-assets tfoot td{ background:var(--assets-bg); }
+.s-liab tfoot th, .s-liab tfoot td{ background:var(--liab-bg); }
+.s-equity tfoot th, .s-equity tfoot td{ background:var(--eq-bg); }
+
+.pagefoot{ margin-top:48px; display:flex; flex-wrap:wrap; gap:18px; align-items:center; justify-content:space-between; }
+.pagefoot p{ margin:0; flex:1 1 320px; }
+footer{ padding:26px 24px 46px; text-align:center; color:var(--muted); font-size:14px; border-top:1px solid var(--line); }
+footer p{ margin:0 auto; max-width:none; }
+
+/* ---------- Responsive ---------- */
+@media (max-width:960px){
+  .layout{ grid-template-columns:minmax(0,1fr); gap:28px; padding-top:20px; }
+  .toc{ position:static; }
+  .toc ul{ display:flex; flex-wrap:wrap; gap:8px; border-left:0; }
+  .toc a{ border:1.5px solid var(--line); border-radius:999px; padding:6px 14px; margin:0; background:var(--paper); }
+  .toc a[aria-current="location"]{ border-color:var(--gold); }
+}
+@media (max-width:640px){
+  body{ font-size:16.5px; }
+  .eq, .balance{ grid-template-columns:minmax(0,1fr); gap:6px; }
+  .op{ width:auto; justify-self:center; }
+  .drivers{ grid-template-columns:minmax(0,1fr); }
+  .split, .bento{ grid-template-columns:minmax(0,1fr); }
+  .bento .b-assets{ grid-row:auto; }
+  .txn-head{ flex-wrap:wrap; }
+  .txn-date{ margin-left:50px; }
+}
+@media print{
+  .toc, .skip-link, .check .btn{ display:none; }
+  .layout{ display:block; }
+  .hero{ background:#fff; color:#000; }
+}
+
+
+/* ---------- Chapter 3 additions ---------- */
+ul.plain{ margin:0 0 18px; padding-left:22px; max-width:68ch; }
+ul.plain li{ margin:0 0 8px; }
+.tablewrap{
+  position:relative; overflow-x:auto; margin:0 0 26px; border-radius:20px; background:var(--paper); box-shadow:var(--shadow);
+}
+.data{ width:100%; border-collapse:collapse; font-size:15.5px; min-width:540px; }
+.data caption{
+  text-align:left; font-family:'Bricolage Grotesque','Figtree',sans-serif; font-weight:700; font-size:1.1rem;
+  padding:16px 16px 8px; color:var(--ink);
+}
+.data th, .data td{ padding:10px 14px; border-bottom:1px solid var(--line); text-align:left; vertical-align:top; line-height:1.45; }
+.data thead th{ font-size:14px; color:var(--muted); font-weight:700; background:var(--bg); }
+.data tbody th[scope="row"]{ font-weight:600; }
+.data .num{ text-align:right; white-space:nowrap; }
+.data tfoot th, .data tfoot td{ font-weight:800; border-bottom:0; background:var(--eq-bg); }
+.data .note{ display:block; font-size:14px; color:var(--muted); font-weight:500; }
+.yes{ color:var(--ok-ink); font-weight:700; }
+.nope{ color:var(--no-ink); font-weight:700; }
+.chg-up{ color:var(--up); font-weight:700; }
+.chg-down{ color:var(--down); font-weight:700; }
+.dim{ color:var(--muted); }
+
+/* Four types grid */
+.types{ display:grid; grid-template-columns:1fr 1fr; gap:14px; margin:0 0 28px; }
+.typegroup{ grid-column:1 / -1; margin:10px 0 0; font-weight:800; font-size:15px; color:var(--gold-text); max-width:none; }
+.typegroup:first-child{ margin-top:0; }
+.type{ border-radius:18px; padding:16px 18px 18px; border:1px solid; }
+.type.pre{ background:var(--assets-bg); border-color:var(--assets-line); }
+.type.acc{ background:var(--liab-bg); border-color:var(--liab-line); }
+.type h4{ margin:0 0 6px; font-size:1.08rem; font-family:'Bricolage Grotesque','Figtree',sans-serif; }
+.type p{ margin:0 0 10px; font-size:15.5px; line-height:1.5; }
+.type .pattern{ margin:0; font-size:15px; font-weight:600; padding-top:10px; border-top:1px dashed var(--muted); }
+
+/* Adjustment cards */
+.tag{
+  display:inline-block; font-size:13px; font-weight:700; border-radius:999px; padding:2px 10px; margin:0 0 12px;
+  background:var(--eq-bg); color:var(--brand); border:1px solid var(--eq-line);
+}
+.je{ width:100%; border-collapse:collapse; font-size:15.5px; margin:0 0 14px; background:var(--bg); border-radius:14px; overflow:hidden; }
+.je caption{ text-align:left; font-weight:800; font-size:14px; color:var(--muted); padding:0 0 6px; }
+.je th, .je td{ padding:9px 14px; text-align:left; border-bottom:1px solid var(--line); }
+.je thead th{ font-size:13px; color:var(--muted); font-weight:700; }
+.je tbody tr:last-child th, .je tbody tr:last-child td{ border-bottom:0; }
+.je tbody th{ font-weight:600; }
+.je .num{ text-align:right; width:100px; white-space:nowrap; font-weight:700; }
+.je .cr{ padding-left:40px; }
+.fx{ list-style:none; margin:0; padding:0; display:flex; flex-wrap:wrap; gap:8px; }
+.fx li{ margin:0; font-size:14.5px; line-height:1.35; padding:6px 12px; border-radius:999px; border:1px solid var(--line); background:var(--paper); }
+.fx .is{ border-color:var(--eq-line); background:var(--eq-bg); }
+.fx .bs{ border-color:var(--assets-line); background:var(--assets-bg); }
+.calc{ background:var(--paper); border-radius:18px; padding:16px 18px; margin:0 0 20px; box-shadow:var(--shadow); }
+.calc p{ margin:0 0 6px; font-size:16px; max-width:none; }
+.calc p:last-child{ margin:0; }
+.calc .formula{ font-weight:700; font-size:1.05rem; }
+
+/* Think-about-it callout */
+.callout.think{ background:var(--assets-bg); border:1px solid var(--assets-line); }
+.callout.think .callout-icon{ background:var(--gold); color:#2B1250; }
+
+/* Financial statements */
+.stmt{ width:100%; border-collapse:collapse; font-size:16px; min-width:0; }
+.stmt caption{ padding:18px 16px 12px; text-align:center; line-height:1.35; }
+.stmt caption .co{ display:block; font-family:'Bricolage Grotesque','Figtree',sans-serif; font-weight:800; font-size:1.15rem; color:var(--ink); }
+.stmt caption .st{ display:block; font-weight:700; color:var(--ink); }
+.stmt caption .dt{ display:block; font-size:14px; color:var(--muted); font-weight:600; }
+.stmt th, .stmt td{ padding:8px 16px; border:0; text-align:left; }
+.stmt td{ text-align:right; white-space:nowrap; font-weight:600; width:130px; }
+.stmt .sec th{ font-weight:800; padding-top:16px; color:var(--brand); }
+.stmt .sub th{ font-weight:700; padding-top:10px; }
+.stmt .ind th{ padding-left:34px; font-weight:500; }
+.stmt .ind2 th{ padding-left:52px; font-weight:500; }
+.stmt .tot th, .stmt .tot td{ font-weight:800; border-top:1px solid var(--muted); }
+.stmt .grand th, .stmt .grand td{ font-weight:800; border-top:1px solid var(--muted); border-bottom:4px double var(--muted); background:var(--eq-bg); }
+.stmt.wide{ min-width:560px; }
+.stmt.wide thead th{ font-size:14px; color:var(--muted); text-align:right; font-weight:700; border-bottom:1px solid var(--line); }
+.stmt.wide thead th:first-child{ text-align:left; }
+.stmt.wide td{ width:auto; }
+.flowmap{ list-style:none; margin:0 0 28px; padding:0; display:grid; gap:12px; }
+.flowmap li{ margin:0; background:var(--paper); border-radius:18px; padding:14px 18px; box-shadow:var(--shadow); font-size:16px; line-height:1.5; border-left:6px solid var(--gold); }
+.flowmap strong{ display:block; font-family:'Bricolage Grotesque','Figtree',sans-serif; font-size:1.08rem; }
+@media (max-width:640px){
+  .types{ grid-template-columns:minmax(0,1fr); }
+  .je .cr{ padding-left:26px; }
+  .stmt td{ width:auto; }
+}
+.drivers.two{ grid-template-columns:repeat(2,minmax(0,1fr)); }
+@media (max-width:640px){ .drivers.two{ grid-template-columns:minmax(0,1fr); } }
+
+</style>
+</head>
+<body>
+
+<a class="skip-link" href="#main-content">Skip to main content</a>
+
+<header class="hero">
+  <div class="hero-inner">
+    <nav class="crumb" aria-label="Breadcrumb">
+      <ol>
+        <li><a href="../index.html">All course materials</a></li>
+        <li>ACCT 251</li>
+        <li><span aria-current="page">The accounting cycle: end of the period</span></li>
+      </ol>
+    </nav>
+    <p class="pill">Part B</p>
+    <h1>Preparing the financial statements</h1>
+    <p class="subtitle">Turning the adjusted trial balance into the reports that investors, lenders, and managers actually read.</p>
+    <div class="goals"><p class="goals-title">By the end of this page, you can:</p><ul><li><svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true" focusable="false"><path d="M5 12.5l4.5 4.5L19 7.5" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Prepare an income statement, a statement of stockholders&rsquo; equity, and a classified balance sheet from an adjusted trial balance.</span></li><li><svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true" focusable="false"><path d="M5 12.5l4.5 4.5L19 7.5" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Classify assets and liabilities as current or long-term.</span></li><li><svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true" focusable="false"><path d="M5 12.5l4.5 4.5L19 7.5" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Explain how the statements connect to one another.</span></li></ul></div>
+  </div>
+  <svg class="ridge" viewBox="0 0 1440 220" preserveAspectRatio="none" aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg">
+    <path class="r1" d="M0,150 L110,96 L190,128 L320,52 L430,120 L540,78 L660,138 L790,60 L900,118 L1030,70 L1150,126 L1290,58 L1440,110 L1440,220 L0,220 Z"/>
+    <path class="r2" d="M0,176 L140,122 L250,158 L390,96 L520,152 L640,112 L770,168 L910,104 L1040,150 L1180,100 L1320,152 L1440,128 L1440,220 L0,220 Z"/>
+    <polyline class="crest" points="0,176 140,122 250,158 390,96 520,152 640,112 770,168 910,104 1040,150 1180,100 1320,152 1440,128"/>
+    <path class="r3" d="M0,204 L170,164 L300,190 L470,148 L610,188 L780,156 L930,192 L1100,152 L1250,190 L1440,166 L1440,220 L0,220 Z"/>
+  </svg>
+</header>
+
+<div class="layout">
+  <nav class="toc" aria-labelledby="toc-title">
+    <p class="toc-title" id="toc-title">On this page</p>
+    <ul><li><a href="#flow">Where each account goes</a></li><li><a href="#income">Income statement</a></li><li><a href="#equity">Stockholders&rsquo; equity</a></li><li><a href="#balance">Classified balance sheet</a></li><li><a href="#cash">Statement of cash flows</a></li></ul>
+  </nav>
+
+  <main class="content" id="main-content" tabindex="-1">
+
+    <section class="block" id="flow" aria-labelledby="h-flow">
+      <h2 id="h-flow">Where each account goes</h2>
+      <p class="lede">Once the adjustments are posted, the hard part is done. The adjusted trial balance has every number the financial statements need. The job now is sorting each account into the right statement, in the right order.</p>
+      <ul class="flowmap" role="list">
+        <li><strong>Income statement</strong>Revenues and expenses. Revenues minus expenses gives net income.</li>
+        <li><strong>Statement of stockholders&rsquo; equity</strong>Common stock, beginning retained earnings, and dividends, plus net income carried over from the income statement.</li>
+        <li><strong>Balance sheet</strong>Assets, liabilities, and the ending stockholders&rsquo; equity balances carried over from the statement of stockholders&rsquo; equity.</li>
+      </ul>
+      <h3>Order matters</h3>
+      <ol class="steps" role="list">
+        <li><strong>Income statement first.</strong> It produces net income.</li>
+        <li><strong>Statement of stockholders&rsquo; equity next.</strong> It needs net income to update retained earnings.</li>
+        <li><strong>Balance sheet last.</strong> It needs the ending retained earnings balance to make the equation balance.</li>
+      </ol>
+      <p>We&rsquo;ll build all three for <strong>Nantahala Paddling Academy</strong> using the adjusted trial balance from Part A.</p>
+    </section>
+    <section class="block" id="income" aria-labelledby="h-income">
+      <h2 id="h-income">The income statement</h2>
+      <p class="lede">The income statement answers one question: did the company make a profit during the period? It lists revenues, subtracts expenses, and lands on net income.</p>
+      <div class="tablewrap" role="region" aria-labelledby="cap-is" tabindex="0" style="max-width:520px;">
+        <table class="stmt">
+          <caption id="cap-is"><span class="co">Nantahala Paddling Academy</span><span class="st">Income Statement</span><span class="dt">For the month ended December 31</span></caption>
+          <tbody>
+            <tr class="sec"><th scope="row" colspan="2">Revenues</th></tr>
+            <tr class="ind"><th scope="row">Service revenue</th><td>$75,000</td></tr>
+            <tr class="sec"><th scope="row" colspan="2">Expenses</th></tr>
+            <tr class="ind"><th scope="row">Rent expense</th><td>4,000</td></tr>
+            <tr class="ind"><th scope="row">Supplies expense</th><td>7,000</td></tr>
+            <tr class="ind"><th scope="row">Depreciation expense</th><td>2,000</td></tr>
+            <tr class="ind"><th scope="row">Salaries expense</th><td>35,000</td></tr>
+            <tr class="ind"><th scope="row">Utilities expense</th><td>6,000</td></tr>
+            <tr class="ind"><th scope="row">Interest expense</th><td>600</td></tr>
+            <tr class="tot"><th scope="row">Total expenses</th><td>54,600</td></tr>
+            <tr class="grand"><th scope="row">Net income</th><td>$20,400</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <h3>Four things to notice</h3>
+      <ul class="plain">
+        <li><strong>Revenues</strong> are the goods and services delivered to customers during the period, whether or not cash has been collected. Nantahala&rsquo;s $75,000 includes the $8,000 added by adjustments (d) and (h).</li>
+        <li><strong>Expenses</strong> are the costs used up to run the business during the period, whether or not they&rsquo;ve been paid.</li>
+        <li><strong>Net income</strong> equals total revenues minus total expenses. Nantahala earned $20,400 for its owners in its first month, a rough gauge of how well management ran things.</li>
+        <li>The statement covers a <strong>span of time</strong>, here December 1 through December 31. Think of it as a video of the month, not a snapshot.</li>
+      </ul>
+
+      <aside class="callout key" role="note">
+        <span class="callout-icon"><svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true" focusable="false"><path d="M12 2.5l2.9 6.1 6.6.8-4.9 4.6 1.3 6.6L12 17.3l-5.9 3.3 1.3-6.6L2.5 9.4l6.6-.8z" fill="currentColor"/></svg></span>
+        <div><p class="callout-title">Why adjustments matter</p><p>Look at what the adjustments did. Before adjusting, revenue was $67,000 and expenses were $31,000, which suggests a $36,000 profit. After adjusting, net income is $20,400. Skipping the adjustments would have overstated profit by <strong>$15,600</strong>.</p></div>
+      </aside>
+    </section>
+    <section class="block" id="equity" aria-labelledby="h-equity">
+      <h2 id="h-equity">The statement of stockholders&rsquo; equity</h2>
+      <p class="lede">This statement tracks how each equity account changed during the period: what owners invested, what the company earned, and what it paid back out.</p>
+      <div class="tablewrap" role="region" aria-labelledby="cap-se" tabindex="0">
+        <table class="stmt wide">
+          <caption id="cap-se"><span class="co">Nantahala Paddling Academy</span><span class="st">Statement of Stockholders&rsquo; Equity</span><span class="dt">For the month ended December 31</span></caption>
+          <thead><tr><th scope="col"><span class="sr-only">Item</span></th><th scope="col">Common stock</th><th scope="col">Retained earnings</th><th scope="col">Total stockholders&rsquo; equity</th></tr></thead>
+          <tbody>
+            <tr><th scope="row">Beginning balance, Dec 1</th><td>$0</td><td>$0</td><td>$0</td></tr>
+            <tr><th scope="row">Issuance of common stock</th><td>250,000</td><td><span class="sr-only">none</span></td><td>250,000</td></tr>
+            <tr><th scope="row">Add: Net income (from the income statement)</th><td><span class="sr-only">none</span></td><td>20,400</td><td>20,400</td></tr>
+            <tr><th scope="row">Less: Dividends</th><td><span class="sr-only">none</span></td><td><span aria-hidden="true">(5,000)</span><span class="sr-only">minus $5,000</span></td><td><span aria-hidden="true">(5,000)</span><span class="sr-only">minus $5,000</span></td></tr>
+            <tr class="grand"><th scope="row">Ending balance, Dec 31</th><td>$250,000</td><td>$15,400</td><td>$265,400</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p>Equity grew from $0 to $265,400 in one month. Most of that ($250,000) came from investors buying stock. The other $15,400 is retained earnings: $20,400 of profit minus the $5,000 paid out as dividends. Dividends hand company resources to owners, so they reduce retained earnings even though they aren&rsquo;t an expense.</p>
+      <p>Remember why the adjusted trial balance showed retained earnings at $0. It lists the <em>beginning</em> balance. This statement is where the beginning balance gets updated for the period&rsquo;s net income and dividends:</p>
+      <div class="calc">
+        <p class="formula">Beginning retained earnings + net income &minus; dividends = ending retained earnings</p>
+        <p>$0 + $20,400 &minus; $5,000 = <strong>$15,400</strong></p>
+      </div>
+
+      <div class="check">
+        <h3 class="check-title">Quick check</h3>
+        <fieldset data-correct="b" data-hint="Start with the beginning balance, add net income, and subtract dividends." data-explain="$40,000 + $25,000 &minus; $10,000 = $55,000.">
+          <legend>Waynesville Bike Works started the year with retained earnings of $40,000. During the year it earned net income of $25,000 and paid dividends of $10,000. What is its ending retained earnings?</legend>
+          <label class="opt"><input type="radio" name="q1" value="a"><span><b>A.</b> $75,000</span></label><label class="opt"><input type="radio" name="q1" value="b"><span><b>B.</b> $55,000</span></label><label class="opt"><input type="radio" name="q1" value="c"><span><b>C.</b> $65,000</span></label><label class="opt"><input type="radio" name="q1" value="d"><span><b>D.</b> $25,000</span></label>
+        </fieldset>
+        <button type="button" class="btn check-btn">Check answer</button>
+        <p class="feedback" role="status"></p>
+      </div>
+    </section>
+    <section class="block" id="balance" aria-labelledby="h-balance">
+      <h2 id="h-balance">The classified balance sheet</h2>
+      <p class="lede">A <strong>classified balance sheet</strong> goes beyond a simple list. It sorts assets and liabilities into <strong>current</strong> and <strong>long-term</strong> groups, so readers can quickly see what&rsquo;s coming due soon and what resources are available to cover it.</p>
+      <div class="tablewrap" role="region" aria-labelledby="cap-bs" tabindex="0" style="max-width:560px;">
+        <table class="stmt">
+          <caption id="cap-bs"><span class="co">Nantahala Paddling Academy</span><span class="st">Balance Sheet</span><span class="dt">December 31</span></caption>
+          <tbody>
+            <tr class="sec"><th scope="row" colspan="2">Assets</th></tr>
+            <tr class="sub"><th scope="row" colspan="2">Current assets</th></tr>
+            <tr class="ind"><th scope="row">Cash</th><td>$207,000</td></tr>
+            <tr class="ind"><th scope="row">Accounts receivable</th><td>20,000</td></tr>
+            <tr class="ind"><th scope="row">Supplies</th><td>11,000</td></tr>
+            <tr class="ind"><th scope="row">Prepaid rent</th><td>44,000</td></tr>
+            <tr class="tot"><th scope="row">Total current assets</th><td>282,000</td></tr>
+            <tr class="sub"><th scope="row" colspan="2">Long-term assets</th></tr>
+            <tr class="ind"><th scope="row">Equipment</th><td>140,000</td></tr>
+            <tr class="ind"><th scope="row">Less: Accumulated depreciation</th><td><span aria-hidden="true">(2,000)</span><span class="sr-only">minus $2,000</span></td></tr>
+            <tr class="tot"><th scope="row">Total long-term assets</th><td>138,000</td></tr>
+            <tr class="grand"><th scope="row">Total assets</th><td>$420,000</td></tr>
+
+            <tr class="sec"><th scope="row" colspan="2">Liabilities</th></tr>
+            <tr class="sub"><th scope="row" colspan="2">Current liabilities</th></tr>
+            <tr class="ind"><th scope="row">Accounts payable</th><td>$18,000</td></tr>
+            <tr class="ind"><th scope="row">Deferred revenue</th><td>6,000</td></tr>
+            <tr class="ind"><th scope="row">Salaries payable</th><td>4,000</td></tr>
+            <tr class="ind"><th scope="row">Utilities payable</th><td>6,000</td></tr>
+            <tr class="ind"><th scope="row">Interest payable</th><td>600</td></tr>
+            <tr class="tot"><th scope="row">Total current liabilities</th><td>34,600</td></tr>
+            <tr class="sub"><th scope="row" colspan="2">Long-term liabilities</th></tr>
+            <tr class="ind"><th scope="row">Notes payable</th><td>120,000</td></tr>
+            <tr class="tot"><th scope="row">Total liabilities</th><td>154,600</td></tr>
+
+            <tr class="sec"><th scope="row" colspan="2">Stockholders&rsquo; equity</th></tr>
+            <tr class="ind"><th scope="row">Common stock</th><td>250,000</td></tr>
+            <tr class="ind"><th scope="row">Retained earnings</th><td>15,400</td></tr>
+            <tr class="tot"><th scope="row">Total stockholders&rsquo; equity</th><td>265,400</td></tr>
+            <tr class="grand"><th scope="row">Total liabilities and stockholders&rsquo; equity</th><td>$420,000</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="balance">
+        <div class="bal t-assets"><p class="lab">Assets</p><p class="num">$420,000</p></div>
+        <div class="op"><span aria-hidden="true">=</span><span class="sr-only">equals</span></div>
+        <div class="bal t-liab"><p class="lab">Liabilities</p><p class="num">$154,600</p></div>
+        <div class="op"><span aria-hidden="true">+</span><span class="sr-only">plus</span></div>
+        <div class="bal t-equity"><p class="lab">Stockholders&rsquo; equity</p><p class="num">$265,400</p></div>
+      </div>
+
+      <h3>Assets: current or long-term?</h3>
+      <div class="split">
+        <div class="rec">
+          <h4>Current assets</h4>
+          <p>Provide a benefit within the next year. Listed in order of <strong>liquidity</strong>, meaning how quickly they turn into cash: cash first, then receivables, then prepaid items like supplies and rent.</p>
+        </div>
+        <div class="wait">
+          <h4>Long-term assets</h4>
+          <p>Provide a benefit for more than a year. Nantahala&rsquo;s rafts and kayaks will be in use for five years, so they belong here.</p>
+        </div>
+      </div>
+      <p>Supplies and prepaid rent will never turn into cash, so why are they current? Because they&rsquo;ll be <em>used up</em> within the year, and that counts. A few businesses with an unusually long <strong>operating cycle</strong> (the time from providing a product or service to collecting the cash) use that cycle instead of one year as the cutoff.</p>
+      <p>Long-term assets usually fall into three groups:</p>
+      <ul class="drivers" role="list">
+        <li><strong>Long-term investments</strong>Stocks or bonds of other companies held for more than a year.</li>
+        <li><strong>Property, plant, and equipment</strong>Land, buildings, equipment, and machinery used to run the business.</li>
+        <li><strong>Intangible assets</strong>Long-lived assets with no physical form, like patents, copyrights, trademarks, and franchises.</li>
+      </ul>
+
+      <h3>Liabilities: current or long-term?</h3>
+      <p><strong>Current liabilities</strong> are due within one year of the balance sheet date; <strong>long-term liabilities</strong> are due after that. A few of Nantahala&rsquo;s deserve a closer look:</p>
+      <ul class="plain">
+        <li><strong>Deferred revenue</strong> won&rsquo;t be paid back in cash. It&rsquo;s settled by guiding the scout troop&rsquo;s remaining trips, which will happen within the year, so it&rsquo;s current.</li>
+        <li><strong>Interest payable</strong> isn&rsquo;t due to the bank for 11 more months. That&rsquo;s still within one year, so it&rsquo;s current.</li>
+        <li><strong>Notes payable</strong> isn&rsquo;t due for nearly four more years, so it&rsquo;s long-term.</li>
+      </ul>
+      <p>Why split them this way? Lenders like Fontana Lake Savings Bank want to know whether the company can pay what&rsquo;s coming due soon. Comparing current assets with current liabilities, a measure called the <strong>current ratio</strong>, gives a quick read. Nantahala has $282,000 &divide; $34,600, or about <strong>$8.15</strong> of current assets for every $1 of current liabilities.</p>
+
+      <h3>Stockholders&rsquo; equity</h3>
+      <p>Both equity balances come straight from the statement of stockholders&rsquo; equity: common stock of $250,000 and retained earnings of $15,400. That updated retained earnings figure is what makes the balance sheet balance.</p>
+
+      <aside class="callout mistake" role="note">
+        <span class="callout-icon"><svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true" focusable="false"><path d="M12 2.8L22 20.5H2z" fill="currentColor"/><rect x="11" y="9" width="2" height="6" style="fill:var(--warn-bg)"/><rect x="11" y="16.4" width="2" height="2" style="fill:var(--warn-bg)"/></svg></span>
+        <div><p class="callout-title">Common mistake</p><p>Don&rsquo;t pull retained earnings from the adjusted trial balance. That $0 is the <em>beginning</em> balance. Use the <em>ending</em> balance from the statement of stockholders&rsquo; equity ($15,400), or total assets won&rsquo;t equal total liabilities plus equity.</p></div>
+      </aside>
+      <p>Finally, the balance sheet reports balances at a <strong>single point in time</strong>, here the close of business on December 31. The day before or the day after, the numbers could look different.</p>
+
+      <aside class="callout think" role="note">
+        <span class="callout-icon"><svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true" focusable="false"><path d="M12 2a7 7 0 0 0-4 12.7V17a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1v-2.3A7 7 0 0 0 12 2z" fill="currentColor"/><rect x="9" y="19.2" width="6" height="2.3" rx="1" fill="currentColor"/></svg></span>
+        <div><p class="callout-title">Snapshot or scan?</p><p>People often say the income statement is a video and the balance sheet is a photograph. A better comparison might be a medical scan. A photo is easy for anyone to read, but a scan takes training to interpret, and it can be a little fuzzy. Balance sheet amounts involve estimates and judgment calls (like depreciation), and getting full value from them takes the kind of accounting know-how this course is building.</p></div>
+      </aside>
+      <div class="check">
+        <h3 class="check-title">Quick check</h3>
+        <fieldset data-correct="a" data-hint="Count the months until it&rsquo;s due. Is that more or less than one year from the balance sheet date?" data-explain="It&rsquo;s due within one year of December 31, so it&rsquo;s a current liability, even though payment is 11 months away.">
+          <legend>The interest Nantahala has built up on its bank loan isn&rsquo;t due until 11 months after the balance sheet date. Where does Interest payable appear on the balance sheet?</legend>
+          <label class="opt"><input type="radio" name="q2" value="a"><span><b>A.</b> Current liabilities</span></label><label class="opt"><input type="radio" name="q2" value="b"><span><b>B.</b> Long-term liabilities</span></label><label class="opt"><input type="radio" name="q2" value="c"><span><b>C.</b> Current assets</span></label><label class="opt"><input type="radio" name="q2" value="d"><span><b>D.</b> Stockholders&rsquo; equity</span></label>
+        </fieldset>
+        <button type="button" class="btn check-btn">Check answer</button>
+        <p class="feedback" role="status"></p>
+      </div>
+      <aside class="callout key" role="note">
+        <span class="callout-icon"><svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true" focusable="false"><path d="M12 2.5l2.9 6.1 6.6.8-4.9 4.6 1.3 6.6L12 17.3l-5.9 3.3 1.3-6.6L2.5 9.4l6.6-.8z" fill="currentColor"/></svg></span>
+        <div><p class="callout-title">Key point</p><p>The income statement, statement of stockholders&rsquo; equity, and balance sheet are all prepared from the adjusted trial balance. The income statement measures profitability (revenues minus expenses). The balance sheet shows that assets equal liabilities plus stockholders&rsquo; equity.</p></div>
+      </aside>
+    </section>
+    <section class="block" id="cash" aria-labelledby="h-cash">
+      <h2 id="h-cash">The statement of cash flows</h2>
+      <p class="lede">One statement is left: the <strong>statement of cash flows</strong>. It reports the cash that came in and went out during the period, grouped into <strong>operating</strong>, <strong>investing</strong>, and <strong>financing</strong> activities.</p>
+      <p>It&rsquo;s built differently from the other three. It explains the change in the Cash balance rather than coming straight from the adjusted trial balance, and you&rsquo;ll learn to prepare it in detail later in the course.</p>
+      <div class="pagefoot">
+        <p>Next up is closing: resetting revenues, expenses, and dividends to zero so January starts with a clean slate.</p>
+        <a class="btn" href="ch3-part-a.html"><span aria-hidden="true">&larr;</span> Back to Part A: Adjusting the accounts</a>
+      </div>
+    </section>
+  </main>
+</div>
+
+<footer>
+  <p>Western Carolina University &middot; Department of Accounting</p>
+</footer>
+
+<script>
+// Quick checks: pick an answer, check it, retry as many times as needed
+document.querySelectorAll('.check').forEach(function (sec) {
+  var fs = sec.querySelector('fieldset');
+  var btn = sec.querySelector('.check-btn');
+  var out = sec.querySelector('.feedback');
+  function say(kind, lead, text) {
+    out.className = 'feedback ' + kind;
+    out.textContent = '';
+    if (lead) { var s = document.createElement('strong'); s.textContent = lead; out.appendChild(s); }
+    out.appendChild(document.createTextNode(text));
+  }
+  btn.addEventListener('click', function () {
+    var sel = fs.querySelector('input:checked');
+    if (!sel) { say('info', '', 'Choose an answer, then select Check answer.'); return; }
+    if (sel.value === fs.dataset.correct) { say('ok', 'Correct. ', fs.dataset.explain); }
+    else { say('no', 'Not quite. ', fs.dataset.hint); }
+  });
+});
+
+// "On this page" list: mark the section currently in view
+(function () {
+  var links = document.querySelectorAll('.toc a');
+  if (!('IntersectionObserver' in window) || !links.length) return;
+  links[0].setAttribute('aria-current', 'location');
+  var map = {};
+  links.forEach(function (a) { map[a.getAttribute('href').slice(1)] = a; });
+  var obs = new IntersectionObserver(function (entries) {
+    entries.forEach(function (e) {
+      if (e.isIntersecting) {
+        links.forEach(function (a) { a.removeAttribute('aria-current'); });
+        var a = map[e.target.id];
+        if (a) a.setAttribute('aria-current', 'location');
+      }
+    });
+  }, { rootMargin: '-15% 0px -70% 0px' });
+  Object.keys(map).forEach(function (id) {
+    var el = document.getElementById(id);
+    if (el) obs.observe(el);
+  });
+})();
+</script>
+
+</body>
+</html>

@@ -1,0 +1,882 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="color-scheme" content="light dark">
+<meta name="description" content="ACCT 251 notes: accrual vs. cash basis, the four types of adjusting entries, and the adjusted trial balance.">
+<title>Adjusting the Accounts, Part A | ACCT 251</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,700;12..96,800&family=Figtree:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{
+  color-scheme: light dark;
+  --bg:#F7F4FC; --paper:#FFFFFF; --ink:#1D1730; --muted:#574F6E;
+  --brand:#592C88; --gold:#C9A24B; --gold-text:#735410; --line:#E3DCF0;
+  --btn:#592C88; --btn-ink:#FFFFFF; --btn-hover:#3F1E66;
+  --assets-bg:#FBF3DC; --assets-line:#E2C66F;
+  --liab-bg:#E9ECF8;   --liab-line:#B7C0E6;
+  --eq-bg:#F0E6FA;     --eq-line:#C9AEE8;
+  --up:#1B6B3D; --down:#A3302A;
+  --key-bg:#F0E6FA; --key-icon:#592C88;
+  --warn-bg:#FBEDE9; --warn-ink:#8E2F22;
+  --ok-bg:#E4F4EA; --ok-ink:#1B6B3D; --no-bg:#FBEDE9; --no-ink:#8E2F22;
+  --badge:#E9C46A; --badge-ink:#1D1730;
+  --focus:#592C88;
+  --shadow:0 1px 2px rgba(43,18,80,.06), 0 14px 34px rgba(43,18,80,.09);
+}
+@media (prefers-color-scheme: dark){
+  :root{
+    --bg:#130C20; --paper:#1D1430; --ink:#F2EDFB; --muted:#BDB3D4;
+    --brand:#D2B9F5; --gold:#EBCB7F; --gold-text:#EBCB7F; --line:#342650;
+    --btn:#CDB1F2; --btn-ink:#1A0E2E; --btn-hover:#E1CDF8;
+    --assets-bg:#2B2410; --assets-line:#6B5A25;
+    --liab-bg:#1B2038;   --liab-line:#3F4A7E;
+    --eq-bg:#2E1C4A;     --eq-line:#5F4090;
+    --up:#86DBA6; --down:#FFA295;
+    --key-bg:#2E1C4A; --key-icon:#D2B9F5;
+    --warn-bg:#3A1D1A; --warn-ink:#FFB4A8;
+    --ok-bg:#16301F; --ok-ink:#86DBA6; --no-bg:#3A1D1A; --no-ink:#FFB4A8;
+    --focus:#D2B9F5;
+    --shadow:0 1px 2px rgba(0,0,0,.4), 0 14px 34px rgba(0,0,0,.35);
+  }
+}
+*{box-sizing:border-box;}
+html{ -webkit-text-size-adjust:100%; }
+@media (prefers-reduced-motion:no-preference){ html{ scroll-behavior:smooth; } }
+body{
+  margin:0; background:var(--bg); color:var(--ink);
+  font-family:'Figtree', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+  font-size:17px; line-height:1.65; font-variant-numeric:tabular-nums;
+}
+a{ color:var(--brand); text-underline-offset:3px; }
+p{ margin:0 0 16px; max-width:68ch; }
+strong{ font-weight:700; }
+:focus-visible{ outline:3px solid var(--focus); outline-offset:3px; border-radius:4px; }
+.sr-only{
+  position:absolute !important; width:1px; height:1px; padding:0; margin:-1px; overflow:hidden;
+  clip:rect(0,0,0,0); clip-path:inset(50%); white-space:nowrap; border:0;
+}
+.skip-link{
+  position:absolute; left:12px; top:-80px; z-index:100; background:#fff; color:#592C88;
+  font-weight:700; padding:12px 18px; border:3px solid #592C88; border-radius:10px; text-decoration:none;
+}
+.skip-link:focus{ top:12px; }
+
+/* ---------- Hero ---------- */
+.hero{
+  position:relative; color:#fff; overflow:hidden;
+  background:
+    radial-gradient(900px 380px at 88% -8%, rgba(235,203,127,.30), transparent 62%),
+    linear-gradient(165deg, #6A35A0 0%, #3B1D5C 55%, #2B1250 100%);
+}
+.hero :focus-visible{ outline-color:#FFFFFF; }
+.hero-inner{ max-width:1120px; margin:0 auto; padding:30px 24px clamp(120px,19vw,230px); position:relative; z-index:2; }
+.crumb{ margin:0 0 34px; font-size:15px; }
+.crumb ol{ list-style:none; margin:0; padding:0; display:flex; flex-wrap:wrap; gap:6px 10px; }
+.crumb li+li::before{ content:"/"; content:"/" / ""; margin-right:10px; color:#D9C9EE; }
+.crumb a{ color:#fff; text-decoration:underline; text-decoration-color:rgba(255,255,255,.45); }
+.crumb a:hover{ text-decoration-color:#fff; }
+.pill{
+  display:inline-block; background:#EBCB7F; color:#2B1250; font-weight:700; font-size:14px;
+  padding:4px 14px; border-radius:999px; margin:0 0 18px;
+}
+h1{
+  font-family:'Bricolage Grotesque','Figtree',system-ui,sans-serif; font-weight:800;
+  font-size:clamp(2.5rem,6.4vw,4.4rem); line-height:1.02; letter-spacing:-.025em;
+  margin:0 0 18px; max-width:15ch; text-wrap:balance;
+}
+.subtitle{ font-size:clamp(1.05rem,2vw,1.3rem); color:#E8DEF5; max-width:46ch; margin:0 0 30px; line-height:1.5; }
+.goals{
+  max-width:540px; padding:18px 22px; border-radius:20px;
+  background:rgba(255,255,255,.10); border:1px solid rgba(255,255,255,.28);
+  -webkit-backdrop-filter:blur(8px); backdrop-filter:blur(8px);
+}
+.goals-title{ margin:0 0 10px; font-weight:700; }
+.goals ul{ list-style:none; padding:0; margin:0; }
+.goals li{ display:flex; gap:10px; align-items:flex-start; margin:0 0 8px; font-size:16px; line-height:1.5; }
+.goals li:last-child{ margin-bottom:0; }
+.goals svg{ flex:0 0 20px; margin-top:2px; color:#EBCB7F; }
+.ridge{ position:absolute; left:0; right:0; bottom:-1px; width:100%; height:clamp(110px,18vw,220px); z-index:1; }
+.ridge .r1{ fill:#7A45B3; opacity:.55; }
+.ridge .r2{ fill:#4A2475; opacity:.9; }
+.ridge .r3{ fill:var(--bg); }
+.ridge .crest{ fill:none; stroke:#EBCB7F; stroke-width:2.2; stroke-linejoin:round; opacity:.9; }
+
+/* ---------- Layout ---------- */
+.layout{
+  max-width:1120px; margin:0 auto; padding:24px 24px 90px;
+  display:grid; grid-template-columns:210px minmax(0,1fr); gap:56px;
+}
+.toc{ position:sticky; top:28px; align-self:start; font-size:15px; }
+.toc-title{ margin:0 0 10px; font-weight:700; color:var(--muted); font-size:14px; }
+.toc ul{ list-style:none; margin:0; padding:0; border-left:3px solid var(--line); }
+.toc li{ margin:0; }
+.toc a{
+  display:block; padding:7px 14px; margin-left:-3px; border-left:3px solid transparent;
+  color:var(--muted); text-decoration:none; line-height:1.35;
+}
+.toc a:hover{ color:var(--ink); }
+.toc a[aria-current="location"]{ color:var(--brand); font-weight:700; border-left-color:var(--gold); }
+article.content, .content{ min-width:0; max-width:720px; }
+section.block{ margin:0 0 72px; }
+section.block:last-of-type{ margin-bottom:0; }
+h2{
+  font-family:'Bricolage Grotesque','Figtree',system-ui,sans-serif; font-weight:700;
+  font-size:clamp(1.7rem,3.4vw,2.25rem); line-height:1.1; letter-spacing:-.02em;
+  margin:0 0 20px; color:var(--ink); scroll-margin-top:24px; text-wrap:balance;
+}
+h3{
+  font-family:'Bricolage Grotesque','Figtree',system-ui,sans-serif; font-weight:700;
+  font-size:1.3rem; line-height:1.2; letter-spacing:-.01em; margin:40px 0 14px; color:var(--ink);
+}
+.lede{ font-size:1.12rem; line-height:1.6; }
+
+/* ---------- Steps ---------- */
+.steps{
+  list-style:none; padding:0; margin:0 0 28px; counter-reset:s;
+  display:grid; grid-template-columns:repeat(auto-fit,minmax(200px,1fr)); gap:14px;
+}
+.steps li{
+  counter-increment:s; background:var(--paper); border-radius:18px; padding:16px 18px 18px;
+  box-shadow:var(--shadow); margin:0; font-size:16px; line-height:1.5;
+}
+.steps li::before{
+  content:counter(s); display:grid; place-items:center; width:32px; height:32px; border-radius:50%;
+  background:var(--badge); color:var(--badge-ink); font-weight:800; margin-bottom:10px;
+}
+.split{ display:grid; grid-template-columns:1fr 1fr; gap:14px; margin:0 0 28px; }
+.split > div{ border-radius:18px; padding:18px 20px; }
+.split p{ margin:0; font-size:16px; line-height:1.55; }
+.split h4{ margin:0 0 6px; font-size:1.05rem; font-family:'Bricolage Grotesque','Figtree',sans-serif; }
+.split .rec{ background:var(--assets-bg); border:1px solid var(--assets-line); }
+.split .wait{ background:var(--liab-bg); border:1px solid var(--liab-line); }
+
+/* ---------- Callouts ---------- */
+.callout{
+  display:flex; gap:14px; align-items:flex-start; border-radius:18px; padding:18px 20px; margin:26px 0;
+}
+.callout .callout-icon{
+  flex:0 0 40px; height:40px; border-radius:12px; display:grid; place-items:center;
+}
+.callout p{ margin:0 0 8px; font-size:16px; line-height:1.55; }
+.callout p:last-child{ margin-bottom:0; }
+.callout .callout-title{ font-weight:800; font-size:1.02rem; margin-bottom:4px; }
+.callout.key{ background:var(--key-bg); }
+.callout.key .callout-icon{ background:var(--key-icon); color:#fff; }
+@media (prefers-color-scheme: dark){ .callout.key .callout-icon{ color:#1A0E2E; } }
+.callout.mistake{ background:var(--warn-bg); }
+.callout.mistake .callout-title{ color:var(--warn-ink); }
+.callout.mistake .callout-icon{ color:var(--warn-ink); }
+
+/* ---------- Transactions ---------- */
+.txn{
+  background:var(--paper); border-radius:22px; padding:22px 22px 24px; margin:0 0 20px; box-shadow:var(--shadow);
+}
+.txn-head{ display:flex; align-items:center; gap:12px; margin:0 0 8px; }
+.txn-num{
+  flex:0 0 38px; height:38px; border-radius:50%; display:grid; place-items:center;
+  background:var(--badge); color:var(--badge-ink); font-weight:800; font-size:16px;
+}
+.txn-title{ margin:0; font-size:1.2rem; flex:1 1 auto; font-family:'Bricolage Grotesque','Figtree',sans-serif; font-weight:700; letter-spacing:-.01em; }
+.txn-date{
+  font-size:14px; font-weight:600; color:var(--muted); background:var(--bg); border-radius:999px; padding:3px 12px; white-space:nowrap;
+}
+.txn-desc{ margin:0 0 16px; color:var(--muted); font-size:16px; line-height:1.55; }
+.eq{ display:grid; grid-template-columns:minmax(0,1fr) auto minmax(0,1fr) auto minmax(0,1fr); gap:8px; align-items:stretch; }
+.op{
+  align-self:center; width:26px; text-align:center; font-weight:800; font-size:20px; color:var(--muted);
+}
+.tile{ border-radius:14px; padding:12px 14px 12px; border:1px solid; min-width:0; }
+.t-assets{ background:var(--assets-bg); border-color:var(--assets-line); }
+.t-liab{ background:var(--liab-bg); border-color:var(--liab-line); }
+.t-equity{ background:var(--eq-bg); border-color:var(--eq-line); }
+.tile-label{ margin:0 0 8px; font-weight:800; font-size:14px; max-width:none; color:var(--ink); }
+.lines{ list-style:none; margin:0; padding:0; }
+.lines li{ display:flex; flex-direction:column; margin:0 0 6px; font-size:15px; line-height:1.3; }
+.lines li:last-child{ margin-bottom:0; }
+.acct{ font-weight:600; }
+.amt{ font-weight:700; }
+.amt.up{ color:var(--up); }
+.amt.down{ color:var(--down); }
+.lines .net{
+  margin-top:8px; padding-top:8px; border-top:1px dashed var(--muted); color:var(--muted); font-size:14px;
+}
+.lines .net span:last-child{ font-weight:700; color:var(--ink); }
+.none{ margin:0; color:var(--muted); font-size:15px; max-width:none; }
+
+/* ---------- Expanded equation ---------- */
+.expanded{ background:var(--paper); border-radius:22px; padding:22px; margin:8px 0 26px; box-shadow:var(--shadow); }
+.ex-row{ display:flex; flex-wrap:wrap; align-items:center; gap:10px; margin:0 0 18px; font-weight:700; }
+.chip{ border-radius:999px; padding:6px 16px; border:1px solid var(--eq-line); background:var(--eq-bg); }
+.ex-row .eqop{ color:var(--muted); font-weight:800; }
+.ex-sub{ margin:0 0 12px; color:var(--muted); font-weight:600; font-size:15px; max-width:none; }
+.drivers{ list-style:none; margin:0; padding:0; display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:12px; }
+.drivers li{ border-radius:16px; padding:14px 16px; margin:0; background:var(--bg); font-size:15px; line-height:1.4; }
+.drivers strong{ display:block; font-size:1.05rem; margin-bottom:4px; }
+.drivers .up{ color:var(--up); font-weight:700; }
+.drivers .down{ color:var(--down); font-weight:700; }
+
+/* ---------- Quick check ---------- */
+.check{ background:var(--paper); border-radius:22px; padding:22px; margin:32px 0; box-shadow:var(--shadow); }
+.check-title{ margin:0 0 12px; font-size:1.05rem; color:var(--gold-text); }
+.check fieldset{ border:0; padding:0; margin:0 0 16px; min-width:0; }
+.check legend{ font-weight:700; font-size:1.08rem; line-height:1.4; padding:0; margin:0 0 12px; }
+.opt{
+  display:flex; gap:12px; align-items:flex-start; padding:12px 14px; margin:0 0 8px; cursor:pointer;
+  border:1.5px solid var(--line); border-radius:14px; font-size:16px; line-height:1.45;
+}
+.opt:hover{ border-color:var(--brand); }
+.opt:has(input:checked){ border-color:var(--brand); background:var(--key-bg); }
+.opt input{ margin-top:4px; width:18px; height:18px; accent-color:var(--brand); flex:0 0 auto; }
+.btn{
+  font:inherit; font-weight:700; font-size:16px; background:var(--btn); color:var(--btn-ink); border:0;
+  border-radius:999px; padding:11px 24px; cursor:pointer; text-decoration:none; display:inline-block;
+  transition:background-color .15s;
+}
+.btn:hover{ background:var(--btn-hover); }
+.feedback{ margin:14px 0 0; padding:0; border-radius:14px; font-size:16px; line-height:1.5; max-width:none; }
+.feedback.ok, .feedback.no, .feedback.info{ padding:12px 16px; }
+.feedback.ok{ background:var(--ok-bg); color:var(--ok-ink); }
+.feedback.no{ background:var(--no-bg); color:var(--no-ink); }
+.feedback.info{ background:var(--bg); color:var(--ink); }
+.feedback strong{ margin-right:4px; }
+
+/* ---------- Summary ---------- */
+.balance{
+  display:grid; grid-template-columns:minmax(0,1fr) auto minmax(0,1fr) auto minmax(0,1fr); gap:10px; align-items:center;
+  margin:0 0 20px;
+}
+.bal{ border-radius:18px; padding:14px 16px; border:1px solid; text-align:left; }
+.bal.t-assets{ background:var(--assets-bg); border-color:var(--assets-line); }
+.bal.t-liab{ background:var(--liab-bg); border-color:var(--liab-line); }
+.bal.t-equity{ background:var(--eq-bg); border-color:var(--eq-line); }
+.bal .lab{ margin:0; font-size:14px; font-weight:700; color:var(--muted); max-width:none; }
+.bal .num{ margin:0; font-family:'Bricolage Grotesque','Figtree',sans-serif; font-weight:800; font-size:clamp(1.3rem,3vw,1.8rem); letter-spacing:-.02em; max-width:none; line-height:1.15; }
+.bento{ display:grid; grid-template-columns:1fr 1fr; gap:16px; margin:0 0 22px; align-items:start; }
+.bento .b-assets{ grid-row:span 2; }
+.sumcard{ background:var(--paper); border-radius:20px; box-shadow:var(--shadow); overflow:hidden; padding-top:16px; }
+.sum{ width:100%; border-collapse:collapse; font-size:16px; }
+.sum caption{
+  text-align:left; font-family:'Bricolage Grotesque','Figtree',sans-serif; font-weight:700; font-size:1.1rem;
+  padding:0 16px 8px; color:var(--ink);
+}
+.sum th, .sum td{ padding:10px 16px; border-bottom:1px solid var(--line); }
+.sum th[scope="row"]{ text-align:left; font-weight:500; }
+.sum td{ text-align:right; font-weight:600; }
+.sum tfoot th[scope="row"], .sum tfoot td{ font-weight:800; border-bottom:0; }
+.s-assets tfoot th, .s-assets tfoot td{ background:var(--assets-bg); }
+.s-liab tfoot th, .s-liab tfoot td{ background:var(--liab-bg); }
+.s-equity tfoot th, .s-equity tfoot td{ background:var(--eq-bg); }
+
+.pagefoot{ margin-top:48px; display:flex; flex-wrap:wrap; gap:18px; align-items:center; justify-content:space-between; }
+.pagefoot p{ margin:0; flex:1 1 320px; }
+footer{ padding:26px 24px 46px; text-align:center; color:var(--muted); font-size:14px; border-top:1px solid var(--line); }
+footer p{ margin:0 auto; max-width:none; }
+
+/* ---------- Responsive ---------- */
+@media (max-width:960px){
+  .layout{ grid-template-columns:minmax(0,1fr); gap:28px; padding-top:20px; }
+  .toc{ position:static; }
+  .toc ul{ display:flex; flex-wrap:wrap; gap:8px; border-left:0; }
+  .toc a{ border:1.5px solid var(--line); border-radius:999px; padding:6px 14px; margin:0; background:var(--paper); }
+  .toc a[aria-current="location"]{ border-color:var(--gold); }
+}
+@media (max-width:640px){
+  body{ font-size:16.5px; }
+  .eq, .balance{ grid-template-columns:minmax(0,1fr); gap:6px; }
+  .op{ width:auto; justify-self:center; }
+  .drivers{ grid-template-columns:minmax(0,1fr); }
+  .split, .bento{ grid-template-columns:minmax(0,1fr); }
+  .bento .b-assets{ grid-row:auto; }
+  .txn-head{ flex-wrap:wrap; }
+  .txn-date{ margin-left:50px; }
+}
+@media print{
+  .toc, .skip-link, .check .btn{ display:none; }
+  .layout{ display:block; }
+  .hero{ background:#fff; color:#000; }
+}
+
+
+/* ---------- Chapter 3 additions ---------- */
+ul.plain{ margin:0 0 18px; padding-left:22px; max-width:68ch; }
+ul.plain li{ margin:0 0 8px; }
+.tablewrap{
+  position:relative; overflow-x:auto; margin:0 0 26px; border-radius:20px; background:var(--paper); box-shadow:var(--shadow);
+}
+.data{ width:100%; border-collapse:collapse; font-size:15.5px; min-width:540px; }
+.data caption{
+  text-align:left; font-family:'Bricolage Grotesque','Figtree',sans-serif; font-weight:700; font-size:1.1rem;
+  padding:16px 16px 8px; color:var(--ink);
+}
+.data th, .data td{ padding:10px 14px; border-bottom:1px solid var(--line); text-align:left; vertical-align:top; line-height:1.45; }
+.data thead th{ font-size:14px; color:var(--muted); font-weight:700; background:var(--bg); }
+.data tbody th[scope="row"]{ font-weight:600; }
+.data .num{ text-align:right; white-space:nowrap; }
+.data tfoot th, .data tfoot td{ font-weight:800; border-bottom:0; background:var(--eq-bg); }
+.data .note{ display:block; font-size:14px; color:var(--muted); font-weight:500; }
+.yes{ color:var(--ok-ink); font-weight:700; }
+.nope{ color:var(--no-ink); font-weight:700; }
+.chg-up{ color:var(--up); font-weight:700; }
+.chg-down{ color:var(--down); font-weight:700; }
+.dim{ color:var(--muted); }
+
+/* Four types grid */
+.types{ display:grid; grid-template-columns:1fr 1fr; gap:14px; margin:0 0 28px; }
+.typegroup{ grid-column:1 / -1; margin:10px 0 0; font-weight:800; font-size:15px; color:var(--gold-text); max-width:none; }
+.typegroup:first-child{ margin-top:0; }
+.type{ border-radius:18px; padding:16px 18px 18px; border:1px solid; }
+.type.pre{ background:var(--assets-bg); border-color:var(--assets-line); }
+.type.acc{ background:var(--liab-bg); border-color:var(--liab-line); }
+.type h4{ margin:0 0 6px; font-size:1.08rem; font-family:'Bricolage Grotesque','Figtree',sans-serif; }
+.type p{ margin:0 0 10px; font-size:15.5px; line-height:1.5; }
+.type .pattern{ margin:0; font-size:15px; font-weight:600; padding-top:10px; border-top:1px dashed var(--muted); }
+
+/* Adjustment cards */
+.tag{
+  display:inline-block; font-size:13px; font-weight:700; border-radius:999px; padding:2px 10px; margin:0 0 12px;
+  background:var(--eq-bg); color:var(--brand); border:1px solid var(--eq-line);
+}
+.je{ width:100%; border-collapse:collapse; font-size:15.5px; margin:0 0 14px; background:var(--bg); border-radius:14px; overflow:hidden; }
+.je caption{ text-align:left; font-weight:800; font-size:14px; color:var(--muted); padding:0 0 6px; }
+.je th, .je td{ padding:9px 14px; text-align:left; border-bottom:1px solid var(--line); }
+.je thead th{ font-size:13px; color:var(--muted); font-weight:700; }
+.je tbody tr:last-child th, .je tbody tr:last-child td{ border-bottom:0; }
+.je tbody th{ font-weight:600; }
+.je .num{ text-align:right; width:100px; white-space:nowrap; font-weight:700; }
+.je .cr{ padding-left:40px; }
+.fx{ list-style:none; margin:0; padding:0; display:flex; flex-wrap:wrap; gap:8px; }
+.fx li{ margin:0; font-size:14.5px; line-height:1.35; padding:6px 12px; border-radius:999px; border:1px solid var(--line); background:var(--paper); }
+.fx .is{ border-color:var(--eq-line); background:var(--eq-bg); }
+.fx .bs{ border-color:var(--assets-line); background:var(--assets-bg); }
+.calc{ background:var(--paper); border-radius:18px; padding:16px 18px; margin:0 0 20px; box-shadow:var(--shadow); }
+.calc p{ margin:0 0 6px; font-size:16px; max-width:none; }
+.calc p:last-child{ margin:0; }
+.calc .formula{ font-weight:700; font-size:1.05rem; }
+
+/* Think-about-it callout */
+.callout.think{ background:var(--assets-bg); border:1px solid var(--assets-line); }
+.callout.think .callout-icon{ background:var(--gold); color:#2B1250; }
+
+/* Financial statements */
+.stmt{ width:100%; border-collapse:collapse; font-size:16px; min-width:0; }
+.stmt caption{ padding:18px 16px 12px; text-align:center; line-height:1.35; }
+.stmt caption .co{ display:block; font-family:'Bricolage Grotesque','Figtree',sans-serif; font-weight:800; font-size:1.15rem; color:var(--ink); }
+.stmt caption .st{ display:block; font-weight:700; color:var(--ink); }
+.stmt caption .dt{ display:block; font-size:14px; color:var(--muted); font-weight:600; }
+.stmt th, .stmt td{ padding:8px 16px; border:0; text-align:left; }
+.stmt td{ text-align:right; white-space:nowrap; font-weight:600; width:130px; }
+.stmt .sec th{ font-weight:800; padding-top:16px; color:var(--brand); }
+.stmt .sub th{ font-weight:700; padding-top:10px; }
+.stmt .ind th{ padding-left:34px; font-weight:500; }
+.stmt .ind2 th{ padding-left:52px; font-weight:500; }
+.stmt .tot th, .stmt .tot td{ font-weight:800; border-top:1px solid var(--muted); }
+.stmt .grand th, .stmt .grand td{ font-weight:800; border-top:1px solid var(--muted); border-bottom:4px double var(--muted); background:var(--eq-bg); }
+.stmt.wide{ min-width:560px; }
+.stmt.wide thead th{ font-size:14px; color:var(--muted); text-align:right; font-weight:700; border-bottom:1px solid var(--line); }
+.stmt.wide thead th:first-child{ text-align:left; }
+.stmt.wide td{ width:auto; }
+.flowmap{ list-style:none; margin:0 0 28px; padding:0; display:grid; gap:12px; }
+.flowmap li{ margin:0; background:var(--paper); border-radius:18px; padding:14px 18px; box-shadow:var(--shadow); font-size:16px; line-height:1.5; border-left:6px solid var(--gold); }
+.flowmap strong{ display:block; font-family:'Bricolage Grotesque','Figtree',sans-serif; font-size:1.08rem; }
+@media (max-width:640px){
+  .types{ grid-template-columns:minmax(0,1fr); }
+  .je .cr{ padding-left:26px; }
+  .stmt td{ width:auto; }
+}
+.drivers.two{ grid-template-columns:repeat(2,minmax(0,1fr)); }
+@media (max-width:640px){ .drivers.two{ grid-template-columns:minmax(0,1fr); } }
+
+</style>
+</head>
+<body>
+
+<a class="skip-link" href="#main-content">Skip to main content</a>
+
+<header class="hero">
+  <div class="hero-inner">
+    <nav class="crumb" aria-label="Breadcrumb">
+      <ol>
+        <li><a href="../index.html">All course materials</a></li>
+        <li>ACCT 251</li>
+        <li><span aria-current="page">The accounting cycle: end of the period</span></li>
+      </ol>
+    </nav>
+    <p class="pill">Part A</p>
+    <h1>Adjusting the accounts</h1>
+    <p class="subtitle">Before any financial statement is ready, the books need one last update. Here&rsquo;s why, and how it&rsquo;s done.</p>
+    <div class="goals"><p class="goals-title">By the end of this page, you can:</p><ul><li><svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true" focusable="false"><path d="M5 12.5l4.5 4.5L19 7.5" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Explain when assets, liabilities, revenues, and expenses get recorded under accrual-basis accounting.</span></li><li><svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true" focusable="false"><path d="M5 12.5l4.5 4.5L19 7.5" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Contrast accrual-basis and cash-basis accounting.</span></li><li><svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true" focusable="false"><path d="M5 12.5l4.5 4.5L19 7.5" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Identify and record the four types of adjusting entries.</span></li><li><svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true" focusable="false"><path d="M5 12.5l4.5 4.5L19 7.5" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Post adjustments and prepare an adjusted trial balance.</span></li></ul></div>
+  </div>
+  <svg class="ridge" viewBox="0 0 1440 220" preserveAspectRatio="none" aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg">
+    <path class="r1" d="M0,150 L110,96 L190,128 L320,52 L430,120 L540,78 L660,138 L790,60 L900,118 L1030,70 L1150,126 L1290,58 L1440,110 L1440,220 L0,220 Z"/>
+    <path class="r2" d="M0,176 L140,122 L250,158 L390,96 L520,152 L640,112 L770,168 L910,104 L1040,150 L1180,100 L1320,152 L1440,128 L1440,220 L0,220 Z"/>
+    <polyline class="crest" points="0,176 140,122 250,158 390,96 520,152 640,112 770,168 910,104 1040,150 1180,100 1320,152 1440,128"/>
+    <path class="r3" d="M0,204 L170,164 L300,190 L470,148 L610,188 L780,156 L930,192 L1100,152 L1250,190 L1440,166 L1440,220 L0,220 Z"/>
+  </svg>
+</header>
+
+<div class="layout">
+  <nav class="toc" aria-labelledby="toc-title">
+    <p class="toc-title" id="toc-title">On this page</p>
+    <ul><li><a href="#cycle">Where we are</a></li><li><a href="#basis">Accrual vs. cash</a></li><li><a href="#types">Four types of adjustments</a></li><li><a href="#adjust">Nantahala&rsquo;s adjustments</a></li><li><a href="#atb">Adjusted trial balance</a></li></ul>
+  </nav>
+
+  <main class="content" id="main-content" tabindex="-1">
+
+    <section class="block" id="cycle" aria-labelledby="h-cycle">
+      <h2 id="h-cycle">Where we are in the accounting cycle</h2>
+      <p class="lede">So far, we&rsquo;ve recorded external transactions as they happened during the period. But the last day of the period brings three more jobs, and the books aren&rsquo;t finished until all three are done.</p>
+      <ol class="steps" role="list">
+        <li><strong>Adjust.</strong> Bring every account up to date for activity that hasn&rsquo;t been recorded yet. This finishes the <em>measurement</em> process.</li>
+        <li><strong>Report.</strong> Use the updated balances to prepare the financial statements. This is the <em>reporting</em> process.</li>
+        <li><strong>Close.</strong> Reset the temporary accounts to zero so the next period starts fresh. This is the <em>closing</em> process.</li>
+      </ol>
+      <p>These notes cover the first job. Part B covers the second, and closing comes after that.</p>
+
+      <h3>Accrual-basis accounting: record it when it happens</h3>
+      <p>Every transaction we&rsquo;ve recorded so far has followed <strong>accrual-basis accounting</strong>. The idea is to capture economic events when they actually occur, not when money happens to change hands, so decision makers get timely and accurate information.</p>
+      <div class="expanded">
+        <p class="ex-sub">Under the accrual basis, we record:</p>
+        <ul class="drivers two" role="list">
+          <li><strong>Assets</strong>when the company acquires the resource.</li>
+          <li><strong>Liabilities</strong>when the company takes on the obligation.</li>
+          <li><strong>Revenues</strong>when the company delivers goods or services to customers.</li>
+          <li><strong>Expenses</strong>when the company uses up a cost to run the business.</li>
+        </ul>
+      </div>
+      <p>A rafting outfitter that guides a trip in December reports that revenue in December, even if the customer pays in January. The fuel, guide wages, and gear used on that trip belong in December too, alongside the revenue they helped create. Some costs, like office rent or advertising, don&rsquo;t tie neatly to one specific sale, so we simply record them in the period they occur.</p>
+
+      <aside class="callout key" role="note">
+        <span class="callout-icon"><svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true" focusable="false"><path d="M12 2.5l2.9 6.1 6.6.8-4.9 4.6 1.3 6.6L12 17.3l-5.9 3.3 1.3-6.6L2.5 9.4l6.6-.8z" fill="currentColor"/></svg></span>
+        <div><p class="callout-title">Key point</p><p>Accrual-basis accounting records events that affect assets, liabilities, revenues, and expenses at the time those events occur.</p></div>
+      </aside>
+    </section>
+    <section class="block" id="basis" aria-labelledby="h-basis">
+      <h2 id="h-basis">Accrual basis versus cash basis</h2>
+      <p class="lede">The easiest way to understand the accrual basis is to compare it with the alternative. Under <strong>cash-basis accounting</strong>, a transaction gets recorded only when cash comes in or goes out. No cash, no entry.</p>
+      <p>Let&rsquo;s return to <strong>Nantahala Paddling Academy</strong>, the whitewater outfitter we followed through its first December. Here&rsquo;s how three of its revenue transactions look under each method.</p>
+
+      <div class="tablewrap" role="region" aria-labelledby="cap-rev" tabindex="0">
+        <table class="data">
+          <caption id="cap-rev">Revenue: accrual basis versus cash basis</caption>
+          <thead><tr><th scope="col">Transaction</th><th scope="col">Service provided?</th><th scope="col" class="num">Accrual-basis revenue</th><th scope="col">Cash received?</th><th scope="col" class="num">Cash-basis revenue</th></tr></thead>
+          <tbody>
+            <tr><th scope="row">Dec 10: Guides trips for cash, $52,000</th><td><span class="yes">Yes</span></td><td class="num">$52,000</td><td><span class="yes">Yes</span></td><td class="num">$52,000</td></tr>
+            <tr><th scope="row">Dec 15: Guides a corporate trip on account, $15,000</th><td><span class="yes">Yes</span></td><td class="num">$15,000</td><td><span class="nope">No</span></td><td class="num">$0<span class="note">Waits until cash arrives</span></td></tr>
+            <tr><th scope="row">Dec 20: Collects $9,000 in advance for future trips</th><td><span class="nope">No</span></td><td class="num">$0<span class="note">Deferred revenue (liability) for now</span></td><td><span class="yes">Yes</span></td><td class="num">$9,000</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p>The accrual question is simple: <em>did we deliver the service?</em> The cash-basis question is just as simple: <em>did we get paid?</em> Different questions, different answers, different months.</p>
+
+      <div class="tablewrap" role="region" aria-labelledby="cap-exp" tabindex="0">
+        <table class="data">
+          <caption id="cap-exp">Expenses: accrual basis versus cash basis</caption>
+          <thead><tr><th scope="col">Transaction</th><th scope="col">Cost used up?</th><th scope="col" class="num">Accrual-basis expense</th><th scope="col">Cash paid?</th><th scope="col" class="num">Cash-basis expense</th></tr></thead>
+          <tbody>
+            <tr><th scope="row">Dec 3: Prepays a year of boathouse rent, $48,000</th><td><span class="nope">No</span></td><td class="num">$0<span class="note">Prepaid rent (asset), expensed $4,000 a month</span></td><td><span class="yes">Yes</span></td><td class="num">$48,000</td></tr>
+            <tr><th scope="row">Dec 5: Buys paddles, helmets, and vests on account, $18,000</th><td><span class="nope">No</span></td><td class="num">$0<span class="note">Supplies (asset) until used</span></td><td><span class="nope">No</span></td><td class="num">$0<span class="note">Waits until cash is paid</span></td></tr>
+            <tr><th scope="row">Dec 27: Pays guides and staff for December, $31,000</th><td><span class="yes">Yes</span></td><td class="num">$31,000</td><td><span class="yes">Yes</span></td><td class="num">$31,000</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h3>Same totals, different timing</h3>
+      <p>Over the long run, both methods end up recording the same total revenue and expense. The $9,000 advance will become revenue under both methods eventually: under the accrual basis once the trips happen, under the cash basis the day the money arrived. The full $48,000 of rent will be expensed under both methods once the year is up. The <strong>only</strong> difference is <em>when</em>.</p>
+      <p>Sometimes there&rsquo;s no difference at all. When customers pay on the spot (Dec 10) or the company pays wages for work done that same month (Dec 27), the cash flow and the revenue or expense land in the same period under either method.</p>
+      <p>Cash-basis accounting feels natural because it&rsquo;s how most of us track a checking account. But it isn&rsquo;t part of <strong>generally accepted accounting principles (GAAP)</strong>, so major companies use the accrual basis for their financial statements.</p>
+
+      <aside class="callout mistake" role="note">
+        <span class="callout-icon"><svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true" focusable="false"><path d="M12 2.8L22 20.5H2z" fill="currentColor"/><rect x="11" y="9" width="2" height="6" style="fill:var(--warn-bg)"/><rect x="11" y="16.4" width="2" height="2" style="fill:var(--warn-bg)"/></svg></span>
+        <div><p class="callout-title">Common mistake</p><p>It&rsquo;s tempting to think revenue can&rsquo;t be recorded until cash shows up, or that an expense waits until the bill is paid. Under the accrual basis, revenue follows <em>delivery</em> and expenses follow <em>use</em>, whenever the cash happens to move.</p></div>
+      </aside>
+      <aside class="callout key" role="note">
+        <span class="callout-icon"><svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true" focusable="false"><path d="M12 2.5l2.9 6.1 6.6.8-4.9 4.6 1.3 6.6L12 17.3l-5.9 3.3 1.3-6.6L2.5 9.4l6.6-.8z" fill="currentColor"/></svg></span>
+        <div><p class="callout-title">Key point</p><p>The difference between the two methods is timing. Accrual basis: revenue when goods or services are delivered, expenses when costs are used. Cash basis: revenue when cash is received, expenses when cash is paid. Most major companies can&rsquo;t use the cash basis for financial reporting.</p></div>
+      </aside>
+      <div class="check">
+        <h3 class="check-title">Quick check</h3>
+        <fieldset data-correct="b" data-hint="Under the accrual basis, ask whether the service has been delivered yet, not whether cash has arrived." data-explain="Revenue is recorded when the service is delivered. In March, the cash creates deferred revenue (a liability). In April, the catering happens and the revenue is recorded.">
+          <legend>Catamount Coffee Roasters collects cash in March for a catering event it will serve in April. Under accrual-basis accounting, in which month does it record the revenue?</legend>
+          <label class="opt"><input type="radio" name="q1" value="a"><span><b>A.</b> March, when the cash is collected.</span></label><label class="opt"><input type="radio" name="q1" value="b"><span><b>B.</b> April, when the catering is provided.</span></label><label class="opt"><input type="radio" name="q1" value="c"><span><b>C.</b> Half in March and half in April.</span></label><label class="opt"><input type="radio" name="q1" value="d"><span><b>D.</b> Never, because the cash was collected early.</span></label>
+        </fieldset>
+        <button type="button" class="btn check-btn">Check answer</button>
+        <p class="feedback" role="status"></p>
+      </div>
+    </section>
+    <section class="block" id="types" aria-labelledby="h-types">
+      <h2 id="h-types">Adjusting entries: the four types</h2>
+      <p class="lede">The accrual basis creates gaps between when cash moves and when revenue or expense is recognized. Those gaps live on the balance sheet as assets and liabilities, and by the end of the period some of them are out of date.</p>
+      <p><strong>Adjusting entries</strong> fix that. They&rsquo;re recorded on the last day of the period to update assets and liabilities, along with the revenues and expenses tied to them, for activity that happened but hasn&rsquo;t been recorded. Rent expires a little every day, but nobody records rent expense every day. We wait until period-end and make one entry for the whole period.</p>
+      <p>Every adjustment fits one of four types, grouped by whether cash moved <em>before</em> or <em>after</em> the revenue or expense.</p>
+
+      <div class="types">
+        <p class="typegroup">Prepayments: cash moves first, revenue or expense comes later</p>
+        <div class="type pre">
+          <h4>Prepaid expense</h4>
+          <p>The company pays in advance for something it will use later, like rent, supplies, insurance, or equipment. It&rsquo;s recorded as an asset.</p>
+          <p class="pattern">Adjustment: record the expense, reduce the asset.</p>
+        </div>
+        <div class="type pre">
+          <h4>Deferred revenue</h4>
+          <p>Customers pay in advance for goods or services they&rsquo;ll receive later, like season passes, memberships, or gift cards. It&rsquo;s recorded as a liability.</p>
+          <p class="pattern">Adjustment: reduce the liability, record the revenue.</p>
+        </div>
+        <p class="typegroup">Accruals: revenue or expense comes first, cash moves later</p>
+        <div class="type acc">
+          <h4>Accrued expense</h4>
+          <p>The company has used a cost this period, like wages, utilities, interest, or taxes, but won&rsquo;t pay until next period.</p>
+          <p class="pattern">Adjustment: record the expense, record a liability (payable).</p>
+        </div>
+        <div class="type acc">
+          <h4>Accrued revenue</h4>
+          <p>The company has delivered goods or services, or earned interest, but hasn&rsquo;t collected or even billed yet.</p>
+          <p class="pattern">Adjustment: record an asset (receivable), record the revenue.</p>
+        </div>
+      </div>
+
+      <aside class="callout key" role="note">
+        <span class="callout-icon"><svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true" focusable="false"><path d="M12 2.5l2.9 6.1 6.6.8-4.9 4.6 1.3 6.6L12 17.3l-5.9 3.3 1.3-6.6L2.5 9.4l6.6-.8z" fill="currentColor"/></svg></span>
+        <div><p class="callout-title">Key point</p><p>Adjusting entries record changes in assets and liabilities, and their related revenues and expenses, that happened during the period but haven&rsquo;t been recorded by period-end. Prepayments need an adjustment when cash came first; accruals need one when cash will come later.</p></div>
+      </aside>
+    </section>
+    <section class="block" id="adjust" aria-labelledby="h-adjust">
+      <h2 id="h-adjust">Nantahala&rsquo;s December 31 adjustments</h2>
+      <p class="lede">All ten of Nantahala&rsquo;s December transactions are already in the books. On December 31, a review turns up eight items that happened during the month but haven&rsquo;t been recorded. Each card shows the adjusting entry and what it does to the accounts.</p>
+
+      <h3>Prepaid expenses</h3>
+
+      <article class="txn" aria-labelledby="adj-a">
+        <header class="txn-head">
+          <span class="txn-num" aria-hidden="true">a</span>
+          <h4 class="txn-title" id="adj-a"><span class="sr-only">Adjustment a: </span>Boathouse rent expires</h4>
+          <span class="txn-date">Dec 31</span>
+        </header>
+        <p class="tag">Prepaid expense</p>
+        <p class="txn-desc">On Dec 3, Nantahala prepaid a year of boathouse rent: $48,000, or $4,000 a month. One month of that rent has now been used.</p>
+        <table class="je">
+        <caption>Adjusting entry, December 31</caption>
+        <thead><tr><th scope="col">Account</th><th scope="col" class="num">Debit</th><th scope="col" class="num">Credit</th></tr></thead>
+        <tbody>
+          <tr><th scope="row">Rent expense</th><td class="num">$4,000</td><td class="num"><span class="sr-only">none</span></td></tr>
+          <tr><th scope="row" class="cr">Prepaid rent</th><td class="num"><span class="sr-only">none</span></td><td class="num">$4,000</td></tr>
+          <tr><td colspan="3" class="memo">(One month of prepaid rent has expired)</td></tr>
+        </tbody>
+      </table>
+        <ul class="fx" aria-label="Effects of this adjustment"><li class="is"><span aria-hidden="true">&#9650;</span><span class="sr-only">increases</span> Rent expense $4,000, so net income and equity go down</li><li class="bs"><span aria-hidden="true">&#9660;</span><span class="sr-only">decreases</span> Prepaid rent $4,000, leaving $44,000 for 11 more months</li></ul>
+        
+      </article>
+      <aside class="callout mistake" role="note">
+        <span class="callout-icon"><svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true" focusable="false"><path d="M12 2.8L22 20.5H2z" fill="currentColor"/><rect x="11" y="9" width="2" height="6" style="fill:var(--warn-bg)"/><rect x="11" y="16.4" width="2" height="2" style="fill:var(--warn-bg)"/></svg></span>
+        <div><p class="callout-title">Common mistake</p><p>The Dec 3 cash payment is <em>not</em> the adjustment. That entry recorded the asset. The adjustment comes later and records the portion that has been used up.</p></div>
+      </aside>
+      <article class="txn" aria-labelledby="adj-b">
+        <header class="txn-head">
+          <span class="txn-num" aria-hidden="true">b</span>
+          <h4 class="txn-title" id="adj-b"><span class="sr-only">Adjustment b: </span>Supplies get used</h4>
+          <span class="txn-date">Dec 31</span>
+        </header>
+        <p class="tag">Prepaid expense</p>
+        <p class="txn-desc">Nantahala bought $18,000 of paddles, helmets, and life vests on Dec 5. Nobody records supplies as they&rsquo;re used, so on Dec 31 the staff counts what&rsquo;s left: $11,000.</p>
+        <table class="je">
+        <caption>Adjusting entry, December 31</caption>
+        <thead><tr><th scope="col">Account</th><th scope="col" class="num">Debit</th><th scope="col" class="num">Credit</th></tr></thead>
+        <tbody>
+          <tr><th scope="row">Supplies expense</th><td class="num">$7,000</td><td class="num"><span class="sr-only">none</span></td></tr>
+          <tr><th scope="row" class="cr">Supplies</th><td class="num"><span class="sr-only">none</span></td><td class="num">$7,000</td></tr>
+          <tr><td colspan="3" class="memo">(Supplies used during December)</td></tr>
+        </tbody>
+      </table>
+        <ul class="fx" aria-label="Effects of this adjustment"><li class="is"><span aria-hidden="true">&#9650;</span><span class="sr-only">increases</span> Supplies expense $7,000</li><li class="bs"><span aria-hidden="true">&#9660;</span><span class="sr-only">decreases</span> Supplies $7,000, leaving $11,000 on hand</li></ul>
+        <div class="calc" style="margin:16px 0 0;box-shadow:none;background:var(--bg);">
+          <p class="formula">Supplies available &minus; supplies still on hand = supplies used</p>
+          <p>$18,000 &minus; $11,000 = <strong>$7,000</strong> used in December</p>
+        </div>
+      </article>
+      <article class="txn" aria-labelledby="adj-c">
+        <header class="txn-head">
+          <span class="txn-num" aria-hidden="true">c</span>
+          <h4 class="txn-title" id="adj-c"><span class="sr-only">Adjustment c: </span>Equipment depreciates</h4>
+          <span class="txn-date">Dec 31</span>
+        </header>
+        <p class="tag">Prepaid expense</p>
+        <p class="txn-desc">The $140,000 of rafts, kayaks, and safety gear bought on Dec 2 will be used for years, not months. Nantahala expects to use it for five years (60 months) and then sell it for about $20,000.</p>
+        <table class="je">
+        <caption>Adjusting entry, December 31</caption>
+        <thead><tr><th scope="col">Account</th><th scope="col" class="num">Debit</th><th scope="col" class="num">Credit</th></tr></thead>
+        <tbody>
+          <tr><th scope="row">Depreciation expense</th><td class="num">$2,000</td><td class="num"><span class="sr-only">none</span></td></tr>
+          <tr><th scope="row" class="cr">Accumulated depreciation</th><td class="num"><span class="sr-only">none</span></td><td class="num">$2,000</td></tr>
+          <tr><td colspan="3" class="memo">(One month of equipment use)</td></tr>
+        </tbody>
+      </table>
+        <ul class="fx" aria-label="Effects of this adjustment"><li class="is"><span aria-hidden="true">&#9650;</span><span class="sr-only">increases</span> Depreciation expense $2,000</li><li class="bs"><span aria-hidden="true">&#9660;</span><span class="sr-only">decreases</span> Equipment, net, $2,000 (through the contra account)</li></ul>
+        <div class="calc" style="margin:16px 0 0;box-shadow:none;background:var(--bg);">
+          <p class="formula">(Cost &minus; expected resale value) &divide; months of use = monthly depreciation</p>
+          <p>($140,000 &minus; $20,000) &divide; 60 months = <strong>$2,000</strong> per month</p>
+        </div>
+      </article>
+      <p><strong>Depreciation</strong> spreads the cost of a long-lived asset over the periods that benefit from it. Notice the credit didn&rsquo;t go to Equipment. It went to <strong>Accumulated depreciation</strong>, a <strong>contra account</strong>: an account whose normal balance is the opposite of the account it&rsquo;s paired with. Equipment keeps its normal debit balance at original cost, and accumulated depreciation carries a credit balance that builds up month after month.</p>
+      <div class="tablewrap" role="region" aria-labelledby="cap-bv" tabindex="0" style="max-width:460px;">
+        <table class="data" style="min-width:0;">
+          <caption id="cap-bv">Reporting equipment at book value</caption>
+          <tbody>
+            <tr><th scope="row">Equipment, at original cost</th><td class="num">$140,000</td></tr>
+            <tr><th scope="row">Less: Accumulated depreciation</th><td class="num"><span aria-hidden="true">(2,000)</span><span class="sr-only">minus $2,000</span></td></tr>
+          </tbody>
+          <tfoot><tr><th scope="row">Equipment, net (book value)</th><td class="num">$138,000</td></tr></tfoot>
+        </table>
+      </div>
+      <p>Cost minus accumulated depreciation is the asset&rsquo;s <strong>book value</strong>, also called its <strong>carrying value</strong>. Depreciation is an estimate for spreading cost, not a measure of what the gear would sell for today, so book value and market value are usually different. Depreciation gets a deeper treatment later in the course.</p>
+
+      <aside class="callout think" role="note">
+        <span class="callout-icon"><svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true" focusable="false"><path d="M12 2a7 7 0 0 0-4 12.7V17a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1v-2.3A7 7 0 0 0 12 2z" fill="currentColor"/><rect x="9" y="19.2" width="6" height="2.3" rx="1" fill="currentColor"/></svg></span>
+        <div><p class="callout-title">Ethics check</p><p>You&rsquo;re a staff accountant at Tuckasegee Trail Outfitters, a retailer in Asheville. The company spent $1 million on TV ads that all aired this year, so GAAP calls for expensing the full cost this year. The CFO asks you to record it as &ldquo;prepaid advertising&rdquo; instead, arguing the ads will keep pulling in customers next year, and that showing a loss could break a loan agreement with the bank and cost recent hires their jobs.</p><p>Would you record the costs the way the CFO asks? Does protecting jobs change your answer?</p></div>
+      </aside>
+
+      <h3>Deferred revenue</h3>
+
+      <article class="txn" aria-labelledby="adj-d">
+        <header class="txn-head">
+          <span class="txn-num" aria-hidden="true">d</span>
+          <h4 class="txn-title" id="adj-d"><span class="sr-only">Adjustment d: </span>Advance-booked trips are delivered</h4>
+          <span class="txn-date">Dec 31</span>
+        </header>
+        <p class="tag">Deferred revenue</p>
+        <p class="txn-desc">On Dec 20, a scout troop paid $9,000 up front for a season of trips, and Nantahala recorded a liability. By Dec 31, $3,000 of those trips have been guided.</p>
+        <table class="je">
+        <caption>Adjusting entry, December 31</caption>
+        <thead><tr><th scope="col">Account</th><th scope="col" class="num">Debit</th><th scope="col" class="num">Credit</th></tr></thead>
+        <tbody>
+          <tr><th scope="row">Deferred revenue</th><td class="num">$3,000</td><td class="num"><span class="sr-only">none</span></td></tr>
+          <tr><th scope="row" class="cr">Service revenue</th><td class="num"><span class="sr-only">none</span></td><td class="num">$3,000</td></tr>
+          <tr><td colspan="3" class="memo">(Trips delivered to customers who paid in advance)</td></tr>
+        </tbody>
+      </table>
+        <ul class="fx" aria-label="Effects of this adjustment"><li class="bs"><span aria-hidden="true">&#9660;</span><span class="sr-only">decreases</span> Deferred revenue $3,000, leaving $6,000 still owed in trips</li><li class="is"><span aria-hidden="true">&#9650;</span><span class="sr-only">increases</span> Service revenue $3,000, so net income and equity go up</li></ul>
+        
+      </article>
+      <p>Deferred revenue is sometimes called <strong>unearned revenue</strong>. You&rsquo;ll see it wherever customers pay first: ski season passes, gym memberships, concert tickets, and gift cards. Each time the company delivers what it owes, the liability shrinks and revenue grows.</p>
+
+      <h3>Accrued expenses</h3>
+
+      <article class="txn" aria-labelledby="adj-e">
+        <header class="txn-head">
+          <span class="txn-num" aria-hidden="true">e</span>
+          <h4 class="txn-title" id="adj-e"><span class="sr-only">Adjustment e: </span>Guides earn unpaid wages</h4>
+          <span class="txn-date">Dec 31</span>
+        </header>
+        <p class="tag">Accrued expense</p>
+        <p class="txn-desc">Guides worked Dec 29&ndash;31 and earned $4,000, but payday isn&rsquo;t until Jan 5. The work happened in December, so December carries the cost.</p>
+        <table class="je">
+        <caption>Adjusting entry, December 31</caption>
+        <thead><tr><th scope="col">Account</th><th scope="col" class="num">Debit</th><th scope="col" class="num">Credit</th></tr></thead>
+        <tbody>
+          <tr><th scope="row">Salaries expense</th><td class="num">$4,000</td><td class="num"><span class="sr-only">none</span></td></tr>
+          <tr><th scope="row" class="cr">Salaries payable</th><td class="num"><span class="sr-only">none</span></td><td class="num">$4,000</td></tr>
+          <tr><td colspan="3" class="memo">(Wages earned in December, not yet paid)</td></tr>
+        </tbody>
+      </table>
+        <ul class="fx" aria-label="Effects of this adjustment"><li class="is"><span aria-hidden="true">&#9650;</span><span class="sr-only">increases</span> Salaries expense $4,000, bringing December&rsquo;s total to $35,000</li><li class="bs"><span aria-hidden="true">&#9650;</span><span class="sr-only">increases</span> Salaries payable $4,000</li></ul>
+        
+      </article>
+      <p>On Jan 5, the paycheck will cover both days: the December portion pays off the $4,000 payable, and only the January days count as January expense.</p>
+
+      <article class="txn" aria-labelledby="adj-f">
+        <header class="txn-head">
+          <span class="txn-num" aria-hidden="true">f</span>
+          <h4 class="txn-title" id="adj-f"><span class="sr-only">Adjustment f: </span>December&rsquo;s utility bill arrives</h4>
+          <span class="txn-date">Dec 31</span>
+        </header>
+        <p class="tag">Accrued expense</p>
+        <p class="txn-desc">A $6,000 utility bill for December shows up on Dec 31. Nantahala plans to pay it Jan 8, but the power and water were used in December.</p>
+        <table class="je">
+        <caption>Adjusting entry, December 31</caption>
+        <thead><tr><th scope="col">Account</th><th scope="col" class="num">Debit</th><th scope="col" class="num">Credit</th></tr></thead>
+        <tbody>
+          <tr><th scope="row">Utilities expense</th><td class="num">$6,000</td><td class="num"><span class="sr-only">none</span></td></tr>
+          <tr><th scope="row" class="cr">Utilities payable</th><td class="num"><span class="sr-only">none</span></td><td class="num">$6,000</td></tr>
+          <tr><td colspan="3" class="memo">(Utilities used in December, not yet paid)</td></tr>
+        </tbody>
+      </table>
+        <ul class="fx" aria-label="Effects of this adjustment"><li class="is"><span aria-hidden="true">&#9650;</span><span class="sr-only">increases</span> Utilities expense $6,000</li><li class="bs"><span aria-hidden="true">&#9650;</span><span class="sr-only">increases</span> Utilities payable $6,000</li></ul>
+        
+      </article>
+      <article class="txn" aria-labelledby="adj-g">
+        <header class="txn-head">
+          <span class="txn-num" aria-hidden="true">g</span>
+          <h4 class="txn-title" id="adj-g"><span class="sr-only">Adjustment g: </span>Interest builds on the bank loan</h4>
+          <span class="txn-date">Dec 31</span>
+        </header>
+        <p class="tag">Accrued expense</p>
+        <p class="txn-desc">The $120,000 note from Dec 1 charges 6% annual interest, paid once a year. Interest isn&rsquo;t recorded daily, but one month of it has built up by Dec 31.</p>
+        <table class="je">
+        <caption>Adjusting entry, December 31</caption>
+        <thead><tr><th scope="col">Account</th><th scope="col" class="num">Debit</th><th scope="col" class="num">Credit</th></tr></thead>
+        <tbody>
+          <tr><th scope="row">Interest expense</th><td class="num">$600</td><td class="num"><span class="sr-only">none</span></td></tr>
+          <tr><th scope="row" class="cr">Interest payable</th><td class="num"><span class="sr-only">none</span></td><td class="num">$600</td></tr>
+          <tr><td colspan="3" class="memo">(Interest owed for December, not yet paid)</td></tr>
+        </tbody>
+      </table>
+        <ul class="fx" aria-label="Effects of this adjustment"><li class="is"><span aria-hidden="true">&#9650;</span><span class="sr-only">increases</span> Interest expense $600</li><li class="bs"><span aria-hidden="true">&#9650;</span><span class="sr-only">increases</span> Interest payable $600</li></ul>
+        <div class="calc" style="margin:16px 0 0;box-shadow:none;background:var(--bg);">
+          <p class="formula">Amount borrowed &times; annual rate &times; fraction of the year = interest</p>
+          <p>$120,000 &times; 6% &times; 1/12 = <strong>$600</strong> for December</p>
+          <p class="dim">For two months, use 2/12; for three months, 3/12; and so on.</p>
+        </div>
+      </article>
+      <aside class="callout mistake" role="note">
+        <span class="callout-icon"><svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true" focusable="false"><path d="M12 2.8L22 20.5H2z" fill="currentColor"/><rect x="11" y="9" width="2" height="6" style="fill:var(--warn-bg)"/><rect x="11" y="16.4" width="2" height="2" style="fill:var(--warn-bg)"/></svg></span>
+        <div><p class="callout-title">Common mistake</p><p>Don&rsquo;t credit <strong>Notes payable</strong> for interest. The note tracks the amount borrowed (the principal). Interest owed goes in its own account, <strong>Interest payable</strong>, so the two are never mixed together.</p></div>
+      </aside>
+
+      <h3>Accrued revenue</h3>
+
+      <article class="txn" aria-labelledby="adj-h">
+        <header class="txn-head">
+          <span class="txn-num" aria-hidden="true">h</span>
+          <h4 class="txn-title" id="adj-h"><span class="sr-only">Adjustment h: </span>Unbilled trips</h4>
+          <span class="txn-date">Dec 31</span>
+        </header>
+        <p class="tag">Accrued revenue</p>
+        <p class="txn-desc">Between Dec 16 and Dec 31, Nantahala guided another $5,000 of team-building trips for a corporate client. The invoice won&rsquo;t go out until January, but the service was delivered in December.</p>
+        <table class="je">
+        <caption>Adjusting entry, December 31</caption>
+        <thead><tr><th scope="col">Account</th><th scope="col" class="num">Debit</th><th scope="col" class="num">Credit</th></tr></thead>
+        <tbody>
+          <tr><th scope="row">Accounts receivable</th><td class="num">$5,000</td><td class="num"><span class="sr-only">none</span></td></tr>
+          <tr><th scope="row" class="cr">Service revenue</th><td class="num"><span class="sr-only">none</span></td><td class="num">$5,000</td></tr>
+          <tr><td colspan="3" class="memo">(Trips delivered in December, not yet billed)</td></tr>
+        </tbody>
+      </table>
+        <ul class="fx" aria-label="Effects of this adjustment"><li class="bs"><span aria-hidden="true">&#9650;</span><span class="sr-only">increases</span> Accounts receivable $5,000, bringing the total to $20,000</li><li class="is"><span aria-hidden="true">&#9650;</span><span class="sr-only">increases</span> Service revenue $5,000</li></ul>
+        
+      </article>
+      <aside class="callout think" role="note">
+        <span class="callout-icon"><svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true" focusable="false"><path d="M12 2a7 7 0 0 0-4 12.7V17a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1v-2.3A7 7 0 0 0 12 2z" fill="currentColor"/><rect x="9" y="19.2" width="6" height="2.3" rx="1" fill="currentColor"/></svg></span>
+        <div><p class="callout-title">The flip side</p><p>One company&rsquo;s accrued expense is often another company&rsquo;s accrued revenue. Fontana Lake Savings Bank, which lent Nantahala the $120,000, has earned $600 of interest by Dec 31 but hasn&rsquo;t collected it. The bank&rsquo;s adjustment mirrors Nantahala&rsquo;s:</p><table class="je">
+        <caption>Fontana Lake Savings Bank&rsquo;s adjusting entry</caption>
+        <thead><tr><th scope="col">Account</th><th scope="col" class="num">Debit</th><th scope="col" class="num">Credit</th></tr></thead>
+        <tbody>
+          <tr><th scope="row">Interest receivable</th><td class="num">$600</td><td class="num"><span class="sr-only">none</span></td></tr>
+          <tr><th scope="row" class="cr">Interest revenue</th><td class="num"><span class="sr-only">none</span></td><td class="num">$600</td></tr>
+          <tr><td colspan="3" class="memo">(Interest earned in December, not yet collected)</td></tr>
+        </tbody>
+      </table></div>
+      </aside>
+
+      <h3>When no adjustment is needed</h3>
+      <p>Not every transaction leads to an adjustment. Two kinds never do:</p>
+      <ul class="plain">
+        <li><strong>Transactions with owners.</strong> Issuing common stock and paying dividends don&rsquo;t involve revenue or expense, so there&rsquo;s nothing to update.</li>
+        <li><strong>Transactions where cash and the revenue or expense happen together.</strong> When Nantahala collected cash at the time it guided trips, or paid December wages in December, everything was recorded at once. No timing gap, no adjustment.</li>
+      </ul>
+
+      <aside class="callout key" role="note">
+        <span class="callout-icon"><svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true" focusable="false"><path d="M12 2.5l2.9 6.1 6.6.8-4.9 4.6 1.3 6.6L12 17.3l-5.9 3.3 1.3-6.6L2.5 9.4l6.6-.8z" fill="currentColor"/></svg></span>
+        <div><p class="callout-title">Key point</p><p>Adjustments are needed when cash (or an obligation) comes <em>before</em> the revenue or expense (prepayments) or <em>after</em> it (accruals). They aren&rsquo;t needed for owner transactions or for transactions where cash moves at the same time the revenue or expense is recorded.</p></div>
+      </aside>
+      <div class="check">
+        <h3 class="check-title">Quick check</h3>
+        <fieldset data-correct="c" data-hint="The cost was used in December, but the cash goes out in January. Which comes first, the expense or the cash?" data-explain="The wages are a December cost that won&rsquo;t be paid until January, so it&rsquo;s an accrued expense: debit Salaries expense and credit Salaries payable for $900.">
+          <legend>Mechanics at Balsam Gap Auto Care earned $900 during the last three days of December. They&rsquo;ll be paid on January 3. What type of adjustment is needed on December 31?</legend>
+          <label class="opt"><input type="radio" name="q2" value="a"><span><b>A.</b> Prepaid expense</span></label><label class="opt"><input type="radio" name="q2" value="b"><span><b>B.</b> Deferred revenue</span></label><label class="opt"><input type="radio" name="q2" value="c"><span><b>C.</b> Accrued expense</span></label><label class="opt"><input type="radio" name="q2" value="d"><span><b>D.</b> Accrued revenue</span></label>
+        </fieldset>
+        <button type="button" class="btn check-btn">Check answer</button>
+        <p class="feedback" role="status"></p>
+      </div>
+    </section>
+    <section class="block" id="atb" aria-labelledby="h-atb">
+      <h2 id="h-atb">Posting and the adjusted trial balance</h2>
+      <p class="lede">Recording the adjustments in the journal is only half the job. They also need to be <strong>posted</strong> to the general ledger so every account balance reflects them.</p>
+      <p>The table below shows each account before the adjustments, the change from each adjustment (letters match the cards above), and the updated balance. Notice which accounts never move: Cash, Common stock, and Dividends.</p>
+
+      <div class="tablewrap" role="region" aria-labelledby="cap-post" tabindex="0">
+        <table class="data">
+          <caption id="cap-post">Posting the eight adjustments</caption>
+          <thead><tr><th scope="col">Account</th><th scope="col" class="num">Before adjusting</th><th scope="col" class="num">Adjustment</th><th scope="col" class="num">After adjusting</th></tr></thead>
+          <tbody><tr><th scope="row">Cash</th><td class="num">$207,000</td><td class="num"><span class="dim">No change</span></td><td class="num">$207,000</td></tr><tr><th scope="row">Accounts receivable</th><td class="num">$15,000</td><td class="num"><span class="chg-up">+$5,000 (h)</span></td><td class="num">$20,000</td></tr><tr><th scope="row">Supplies</th><td class="num">$18,000</td><td class="num"><span class="chg-down">&minus;$7,000 (b)</span></td><td class="num">$11,000</td></tr><tr><th scope="row">Prepaid rent</th><td class="num">$48,000</td><td class="num"><span class="chg-down">&minus;$4,000 (a)</span></td><td class="num">$44,000</td></tr><tr><th scope="row">Equipment</th><td class="num">$140,000</td><td class="num"><span class="dim">No change</span></td><td class="num">$140,000</td></tr><tr><th scope="row">Accumulated depreciation</th><td class="num">$0</td><td class="num"><span class="chg-up">+$2,000 (c)</span></td><td class="num">$2,000</td></tr><tr><th scope="row">Accounts payable</th><td class="num">$18,000</td><td class="num"><span class="dim">No change</span></td><td class="num">$18,000</td></tr><tr><th scope="row">Deferred revenue</th><td class="num">$9,000</td><td class="num"><span class="chg-down">&minus;$3,000 (d)</span></td><td class="num">$6,000</td></tr><tr><th scope="row">Salaries payable</th><td class="num">$0</td><td class="num"><span class="chg-up">+$4,000 (e)</span></td><td class="num">$4,000</td></tr><tr><th scope="row">Utilities payable</th><td class="num">$0</td><td class="num"><span class="chg-up">+$6,000 (f)</span></td><td class="num">$6,000</td></tr><tr><th scope="row">Interest payable</th><td class="num">$0</td><td class="num"><span class="chg-up">+$600 (g)</span></td><td class="num">$600</td></tr><tr><th scope="row">Notes payable</th><td class="num">$120,000</td><td class="num"><span class="dim">No change</span></td><td class="num">$120,000</td></tr><tr><th scope="row">Common stock</th><td class="num">$250,000</td><td class="num"><span class="dim">No change</span></td><td class="num">$250,000</td></tr><tr><th scope="row">Retained earnings</th><td class="num">$0</td><td class="num"><span class="dim">No change</span></td><td class="num">$0</td></tr><tr><th scope="row">Dividends</th><td class="num">$5,000</td><td class="num"><span class="dim">No change</span></td><td class="num">$5,000</td></tr><tr><th scope="row">Service revenue</th><td class="num">$67,000</td><td class="num"><span class="chg-up">+$3,000 (d), +$5,000 (h)</span></td><td class="num">$75,000</td></tr><tr><th scope="row">Rent expense</th><td class="num">$0</td><td class="num"><span class="chg-up">+$4,000 (a)</span></td><td class="num">$4,000</td></tr><tr><th scope="row">Supplies expense</th><td class="num">$0</td><td class="num"><span class="chg-up">+$7,000 (b)</span></td><td class="num">$7,000</td></tr><tr><th scope="row">Depreciation expense</th><td class="num">$0</td><td class="num"><span class="chg-up">+$2,000 (c)</span></td><td class="num">$2,000</td></tr><tr><th scope="row">Salaries expense</th><td class="num">$31,000</td><td class="num"><span class="chg-up">+$4,000 (e)</span></td><td class="num">$35,000</td></tr><tr><th scope="row">Utilities expense</th><td class="num">$0</td><td class="num"><span class="chg-up">+$6,000 (f)</span></td><td class="num">$6,000</td></tr><tr><th scope="row">Interest expense</th><td class="num">$0</td><td class="num"><span class="chg-up">+$600 (g)</span></td><td class="num">$600</td></tr></tbody>
+        </table>
+      </div>
+
+      <aside class="callout mistake" role="note">
+        <span class="callout-icon"><svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true" focusable="false"><path d="M12 2.8L22 20.5H2z" fill="currentColor"/><rect x="11" y="9" width="2" height="6" style="fill:var(--warn-bg)"/><rect x="11" y="16.4" width="2" height="2" style="fill:var(--warn-bg)"/></svg></span>
+        <div><p class="callout-title">Common mistake</p><p>Cash never shows up in a normal adjusting entry. Cash was either already recorded during the period or won&rsquo;t move until next period. Instead, every adjustment pairs one <strong>income statement</strong> account (a revenue or expense) with one <strong>balance sheet</strong> account (an asset or liability).</p></div>
+      </aside>
+      <h3>The adjusted trial balance</h3>
+      <p>With everything posted, we list every account and its updated balance in an <strong>adjusted trial balance</strong>. Debits must still equal credits. This list is the starting point for the financial statements in Part B.</p>
+
+      <div class="tablewrap" role="region" aria-labelledby="cap-atb" tabindex="0" style="max-width:560px;">
+        <table class="data" style="min-width:0;">
+          <caption id="cap-atb">Nantahala Paddling Academy: adjusted trial balance, December 31</caption>
+          <thead><tr><th scope="col">Account</th><th scope="col" class="num">Debit</th><th scope="col" class="num">Credit</th></tr></thead>
+          <tbody><tr><th scope="row">Cash</th><td class="num">$207,000</td><td class="num"></td></tr><tr><th scope="row">Accounts receivable</th><td class="num">$20,000</td><td class="num"></td></tr><tr><th scope="row">Supplies</th><td class="num">$11,000</td><td class="num"></td></tr><tr><th scope="row">Prepaid rent</th><td class="num">$44,000</td><td class="num"></td></tr><tr><th scope="row">Equipment</th><td class="num">$140,000</td><td class="num"></td></tr><tr><th scope="row">Accumulated depreciation</th><td class="num"></td><td class="num">$2,000</td></tr><tr><th scope="row">Accounts payable</th><td class="num"></td><td class="num">$18,000</td></tr><tr><th scope="row">Deferred revenue</th><td class="num"></td><td class="num">$6,000</td></tr><tr><th scope="row">Salaries payable</th><td class="num"></td><td class="num">$4,000</td></tr><tr><th scope="row">Utilities payable</th><td class="num"></td><td class="num">$6,000</td></tr><tr><th scope="row">Interest payable</th><td class="num"></td><td class="num">$600</td></tr><tr><th scope="row">Notes payable</th><td class="num"></td><td class="num">$120,000</td></tr><tr><th scope="row">Common stock</th><td class="num"></td><td class="num">$250,000</td></tr><tr><th scope="row">Retained earnings</th><td class="num"></td><td class="num">$0</td></tr><tr><th scope="row">Dividends</th><td class="num">$5,000</td><td class="num"></td></tr><tr><th scope="row">Service revenue</th><td class="num"></td><td class="num">$75,000</td></tr><tr><th scope="row">Rent expense</th><td class="num">$4,000</td><td class="num"></td></tr><tr><th scope="row">Supplies expense</th><td class="num">$7,000</td><td class="num"></td></tr><tr><th scope="row">Depreciation expense</th><td class="num">$2,000</td><td class="num"></td></tr><tr><th scope="row">Salaries expense</th><td class="num">$35,000</td><td class="num"></td></tr><tr><th scope="row">Utilities expense</th><td class="num">$6,000</td><td class="num"></td></tr><tr><th scope="row">Interest expense</th><td class="num">$600</td><td class="num"></td></tr></tbody>
+          <tfoot><tr><th scope="row">Totals</th><td class="num">$481,600</td><td class="num">$481,600</td></tr></tfoot>
+        </table>
+      </div>
+      <p>Retained earnings shows $0 because the trial balance lists its <em>beginning</em> balance, before this period&rsquo;s revenues, expenses, and dividends. December is Nantahala&rsquo;s first month, so it starts at zero. Part B shows how it gets updated.</p>
+
+      <aside class="callout key" role="note">
+        <span class="callout-icon"><svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true" focusable="false"><path d="M12 2.5l2.9 6.1 6.6.8-4.9 4.6 1.3 6.6L12 17.3l-5.9 3.3 1.3-6.6L2.5 9.4l6.6-.8z" fill="currentColor"/></svg></span>
+        <div><p class="callout-title">Key point</p><p>After adjusting entries are posted to the general ledger, an adjusted trial balance lists every account and its updated balance on a specific date. Total debits must equal total credits.</p></div>
+      </aside>
+      <div class="pagefoot">
+        <p>Trace each adjustment from its card into the posting table before moving on. Part B turns this adjusted trial balance into Nantahala&rsquo;s financial statements.</p>
+        <a class="btn" href="ch3-part-b.html">Continue to Part B: Financial statements <span aria-hidden="true">&rarr;</span></a>
+      </div>
+    </section>
+  </main>
+</div>
+
+<footer>
+  <p>Western Carolina University &middot; Department of Accounting</p>
+</footer>
+
+<script>
+// Quick checks: pick an answer, check it, retry as many times as needed
+document.querySelectorAll('.check').forEach(function (sec) {
+  var fs = sec.querySelector('fieldset');
+  var btn = sec.querySelector('.check-btn');
+  var out = sec.querySelector('.feedback');
+  function say(kind, lead, text) {
+    out.className = 'feedback ' + kind;
+    out.textContent = '';
+    if (lead) { var s = document.createElement('strong'); s.textContent = lead; out.appendChild(s); }
+    out.appendChild(document.createTextNode(text));
+  }
+  btn.addEventListener('click', function () {
+    var sel = fs.querySelector('input:checked');
+    if (!sel) { say('info', '', 'Choose an answer, then select Check answer.'); return; }
+    if (sel.value === fs.dataset.correct) { say('ok', 'Correct. ', fs.dataset.explain); }
+    else { say('no', 'Not quite. ', fs.dataset.hint); }
+  });
+});
+
+// "On this page" list: mark the section currently in view
+(function () {
+  var links = document.querySelectorAll('.toc a');
+  if (!('IntersectionObserver' in window) || !links.length) return;
+  links[0].setAttribute('aria-current', 'location');
+  var map = {};
+  links.forEach(function (a) { map[a.getAttribute('href').slice(1)] = a; });
+  var obs = new IntersectionObserver(function (entries) {
+    entries.forEach(function (e) {
+      if (e.isIntersecting) {
+        links.forEach(function (a) { a.removeAttribute('aria-current'); });
+        var a = map[e.target.id];
+        if (a) a.setAttribute('aria-current', 'location');
+      }
+    });
+  }, { rootMargin: '-15% 0px -70% 0px' });
+  Object.keys(map).forEach(function (id) {
+    var el = document.getElementById(id);
+    if (el) obs.observe(el);
+  });
+})();
+</script>
+
+</body>
+</html>
