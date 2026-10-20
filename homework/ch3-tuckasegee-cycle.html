@@ -1,0 +1,911 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="color-scheme" content="light dark">
+<meta name="description" content="ACCT 251 homework: record the year-end adjusting entries for Tuckasegee Cycle Studio.">
+<title>Adjusting entries: Tuckasegee Cycle Studio | ACCT 251</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,700;12..96,800&family=Figtree:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{
+  color-scheme: light dark;
+  --bg:#F7F4FC; --paper:#FFFFFF; --ink:#1D1730; --muted:#574F6E;
+  --brand:#592C88; --gold:#C9A24B; --gold-text:#735410; --line:#E3DCF0;
+  --btn:#592C88; --btn-ink:#FFFFFF; --btn-hover:#3F1E66;
+  --assets-bg:#FBF3DC; --assets-line:#E2C66F;
+  --liab-bg:#E9ECF8;   --liab-line:#B7C0E6;
+  --eq-bg:#F0E6FA;     --eq-line:#C9AEE8;
+  --up:#1B6B3D; --down:#A3302A;
+  --key-bg:#F0E6FA; --key-icon:#592C88;
+  --warn-bg:#FBEDE9; --warn-ink:#8E2F22;
+  --ok-bg:#E4F4EA; --ok-ink:#1B6B3D; --no-bg:#FBEDE9; --no-ink:#8E2F22;
+  --badge:#E9C46A; --badge-ink:#1D1730;
+  --focus:#592C88;
+  --shadow:0 1px 2px rgba(43,18,80,.06), 0 14px 34px rgba(43,18,80,.09);
+}
+@media (prefers-color-scheme: dark){
+  :root{
+    --bg:#130C20; --paper:#1D1430; --ink:#F2EDFB; --muted:#BDB3D4;
+    --brand:#D2B9F5; --gold:#EBCB7F; --gold-text:#EBCB7F; --line:#342650;
+    --btn:#CDB1F2; --btn-ink:#1A0E2E; --btn-hover:#E1CDF8;
+    --assets-bg:#2B2410; --assets-line:#6B5A25;
+    --liab-bg:#1B2038;   --liab-line:#3F4A7E;
+    --eq-bg:#2E1C4A;     --eq-line:#5F4090;
+    --up:#86DBA6; --down:#FFA295;
+    --key-bg:#2E1C4A; --key-icon:#D2B9F5;
+    --warn-bg:#3A1D1A; --warn-ink:#FFB4A8;
+    --ok-bg:#16301F; --ok-ink:#86DBA6; --no-bg:#3A1D1A; --no-ink:#FFB4A8;
+    --focus:#D2B9F5;
+    --shadow:0 1px 2px rgba(0,0,0,.4), 0 14px 34px rgba(0,0,0,.35);
+  }
+}
+*{box-sizing:border-box;}
+html{ -webkit-text-size-adjust:100%; }
+@media (prefers-reduced-motion:no-preference){ html{ scroll-behavior:smooth; } }
+body{
+  margin:0; background:var(--bg); color:var(--ink);
+  font-family:'Figtree', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+  font-size:17px; line-height:1.65; font-variant-numeric:tabular-nums;
+}
+a{ color:var(--brand); text-underline-offset:3px; }
+p{ margin:0 0 16px; max-width:68ch; }
+strong{ font-weight:700; }
+:focus-visible{ outline:3px solid var(--focus); outline-offset:3px; border-radius:4px; }
+.sr-only{
+  position:absolute !important; width:1px; height:1px; padding:0; margin:-1px; overflow:hidden;
+  clip:rect(0,0,0,0); clip-path:inset(50%); white-space:nowrap; border:0;
+}
+.skip-link{
+  position:absolute; left:12px; top:-80px; z-index:100; background:#fff; color:#592C88;
+  font-weight:700; padding:12px 18px; border:3px solid #592C88; border-radius:10px; text-decoration:none;
+}
+.skip-link:focus{ top:12px; }
+
+/* ---------- Hero ---------- */
+.hero{
+  position:relative; color:#fff; overflow:hidden;
+  background:
+    radial-gradient(900px 380px at 88% -8%, rgba(235,203,127,.30), transparent 62%),
+    linear-gradient(165deg, #6A35A0 0%, #3B1D5C 55%, #2B1250 100%);
+}
+.hero :focus-visible{ outline-color:#FFFFFF; }
+.hero-inner{ max-width:1120px; margin:0 auto; padding:30px 24px clamp(120px,19vw,230px); position:relative; z-index:2; }
+.crumb{ margin:0 0 34px; font-size:15px; }
+.crumb ol{ list-style:none; margin:0; padding:0; display:flex; flex-wrap:wrap; gap:6px 10px; }
+.crumb li+li::before{ content:"/"; content:"/" / ""; margin-right:10px; color:#D9C9EE; }
+.crumb a{ color:#fff; text-decoration:underline; text-decoration-color:rgba(255,255,255,.45); }
+.crumb a:hover{ text-decoration-color:#fff; }
+.pill{
+  display:inline-block; background:#EBCB7F; color:#2B1250; font-weight:700; font-size:14px;
+  padding:4px 14px; border-radius:999px; margin:0 0 18px;
+}
+h1{
+  font-family:'Bricolage Grotesque','Figtree',system-ui,sans-serif; font-weight:800;
+  font-size:clamp(2.5rem,6.4vw,4.4rem); line-height:1.02; letter-spacing:-.025em;
+  margin:0 0 18px; max-width:15ch; text-wrap:balance;
+}
+.subtitle{ font-size:clamp(1.05rem,2vw,1.3rem); color:#E8DEF5; max-width:46ch; margin:0 0 30px; line-height:1.5; }
+.goals{
+  max-width:540px; padding:18px 22px; border-radius:20px;
+  background:rgba(255,255,255,.10); border:1px solid rgba(255,255,255,.28);
+  -webkit-backdrop-filter:blur(8px); backdrop-filter:blur(8px);
+}
+.goals-title{ margin:0 0 10px; font-weight:700; }
+.goals ul{ list-style:none; padding:0; margin:0; }
+.goals li{ display:flex; gap:10px; align-items:flex-start; margin:0 0 8px; font-size:16px; line-height:1.5; }
+.goals li:last-child{ margin-bottom:0; }
+.goals svg{ flex:0 0 20px; margin-top:2px; color:#EBCB7F; }
+.ridge{ position:absolute; left:0; right:0; bottom:-1px; width:100%; height:clamp(110px,18vw,220px); z-index:1; }
+.ridge .r1{ fill:#7A45B3; opacity:.55; }
+.ridge .r2{ fill:#4A2475; opacity:.9; }
+.ridge .r3{ fill:var(--bg); }
+.ridge .crest{ fill:none; stroke:#EBCB7F; stroke-width:2.2; stroke-linejoin:round; opacity:.9; }
+
+/* ---------- Layout ---------- */
+.layout{
+  max-width:1120px; margin:0 auto; padding:24px 24px 90px;
+  display:grid; grid-template-columns:210px minmax(0,1fr); gap:56px;
+}
+.toc{ position:sticky; top:28px; align-self:start; font-size:15px; }
+.toc-title{ margin:0 0 10px; font-weight:700; color:var(--muted); font-size:14px; }
+.toc ul{ list-style:none; margin:0; padding:0; border-left:3px solid var(--line); }
+.toc li{ margin:0; }
+.toc a{
+  display:block; padding:7px 14px; margin-left:-3px; border-left:3px solid transparent;
+  color:var(--muted); text-decoration:none; line-height:1.35;
+}
+.toc a:hover{ color:var(--ink); }
+.toc a[aria-current="location"]{ color:var(--brand); font-weight:700; border-left-color:var(--gold); }
+article.content, .content{ min-width:0; max-width:720px; }
+section.block{ margin:0 0 72px; }
+section.block:last-of-type{ margin-bottom:0; }
+h2{
+  font-family:'Bricolage Grotesque','Figtree',system-ui,sans-serif; font-weight:700;
+  font-size:clamp(1.7rem,3.4vw,2.25rem); line-height:1.1; letter-spacing:-.02em;
+  margin:0 0 20px; color:var(--ink); scroll-margin-top:24px; text-wrap:balance;
+}
+h3{
+  font-family:'Bricolage Grotesque','Figtree',system-ui,sans-serif; font-weight:700;
+  font-size:1.3rem; line-height:1.2; letter-spacing:-.01em; margin:40px 0 14px; color:var(--ink);
+}
+.lede{ font-size:1.12rem; line-height:1.6; }
+
+/* ---------- Steps ---------- */
+.steps{
+  list-style:none; padding:0; margin:0 0 28px; counter-reset:s;
+  display:grid; grid-template-columns:repeat(auto-fit,minmax(200px,1fr)); gap:14px;
+}
+.steps li{
+  counter-increment:s; background:var(--paper); border-radius:18px; padding:16px 18px 18px;
+  box-shadow:var(--shadow); margin:0; font-size:16px; line-height:1.5;
+}
+.steps li::before{
+  content:counter(s); display:grid; place-items:center; width:32px; height:32px; border-radius:50%;
+  background:var(--badge); color:var(--badge-ink); font-weight:800; margin-bottom:10px;
+}
+.split{ display:grid; grid-template-columns:1fr 1fr; gap:14px; margin:0 0 28px; }
+.split > div{ border-radius:18px; padding:18px 20px; }
+.split p{ margin:0; font-size:16px; line-height:1.55; }
+.split h4{ margin:0 0 6px; font-size:1.05rem; font-family:'Bricolage Grotesque','Figtree',sans-serif; }
+.split .rec{ background:var(--assets-bg); border:1px solid var(--assets-line); }
+.split .wait{ background:var(--liab-bg); border:1px solid var(--liab-line); }
+
+/* ---------- Callouts ---------- */
+.callout{
+  display:flex; gap:14px; align-items:flex-start; border-radius:18px; padding:18px 20px; margin:26px 0;
+}
+.callout .callout-icon{
+  flex:0 0 40px; height:40px; border-radius:12px; display:grid; place-items:center;
+}
+.callout p{ margin:0 0 8px; font-size:16px; line-height:1.55; }
+.callout p:last-child{ margin-bottom:0; }
+.callout .callout-title{ font-weight:800; font-size:1.02rem; margin-bottom:4px; }
+.callout.key{ background:var(--key-bg); }
+.callout.key .callout-icon{ background:var(--key-icon); color:#fff; }
+@media (prefers-color-scheme: dark){ .callout.key .callout-icon{ color:#1A0E2E; } }
+.callout.mistake{ background:var(--warn-bg); }
+.callout.mistake .callout-title{ color:var(--warn-ink); }
+.callout.mistake .callout-icon{ color:var(--warn-ink); }
+
+/* ---------- Transactions ---------- */
+.txn{
+  background:var(--paper); border-radius:22px; padding:22px 22px 24px; margin:0 0 20px; box-shadow:var(--shadow);
+}
+.txn-head{ display:flex; align-items:center; gap:12px; margin:0 0 8px; }
+.txn-num{
+  flex:0 0 38px; height:38px; border-radius:50%; display:grid; place-items:center;
+  background:var(--badge); color:var(--badge-ink); font-weight:800; font-size:16px;
+}
+.txn-title{ margin:0; font-size:1.2rem; flex:1 1 auto; font-family:'Bricolage Grotesque','Figtree',sans-serif; font-weight:700; letter-spacing:-.01em; }
+.txn-date{
+  font-size:14px; font-weight:600; color:var(--muted); background:var(--bg); border-radius:999px; padding:3px 12px; white-space:nowrap;
+}
+.txn-desc{ margin:0 0 16px; color:var(--muted); font-size:16px; line-height:1.55; }
+.eq{ display:grid; grid-template-columns:minmax(0,1fr) auto minmax(0,1fr) auto minmax(0,1fr); gap:8px; align-items:stretch; }
+.op{
+  align-self:center; width:26px; text-align:center; font-weight:800; font-size:20px; color:var(--muted);
+}
+.tile{ border-radius:14px; padding:12px 14px 12px; border:1px solid; min-width:0; }
+.t-assets{ background:var(--assets-bg); border-color:var(--assets-line); }
+.t-liab{ background:var(--liab-bg); border-color:var(--liab-line); }
+.t-equity{ background:var(--eq-bg); border-color:var(--eq-line); }
+.tile-label{ margin:0 0 8px; font-weight:800; font-size:14px; max-width:none; color:var(--ink); }
+.lines{ list-style:none; margin:0; padding:0; }
+.lines li{ display:flex; flex-direction:column; margin:0 0 6px; font-size:15px; line-height:1.3; }
+.lines li:last-child{ margin-bottom:0; }
+.acct{ font-weight:600; }
+.amt{ font-weight:700; }
+.amt.up{ color:var(--up); }
+.amt.down{ color:var(--down); }
+.lines .net{
+  margin-top:8px; padding-top:8px; border-top:1px dashed var(--muted); color:var(--muted); font-size:14px;
+}
+.lines .net span:last-child{ font-weight:700; color:var(--ink); }
+.none{ margin:0; color:var(--muted); font-size:15px; max-width:none; }
+
+/* ---------- Expanded equation ---------- */
+.expanded{ background:var(--paper); border-radius:22px; padding:22px; margin:8px 0 26px; box-shadow:var(--shadow); }
+.ex-row{ display:flex; flex-wrap:wrap; align-items:center; gap:10px; margin:0 0 18px; font-weight:700; }
+.chip{ border-radius:999px; padding:6px 16px; border:1px solid var(--eq-line); background:var(--eq-bg); }
+.ex-row .eqop{ color:var(--muted); font-weight:800; }
+.ex-sub{ margin:0 0 12px; color:var(--muted); font-weight:600; font-size:15px; max-width:none; }
+.drivers{ list-style:none; margin:0; padding:0; display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:12px; }
+.drivers li{ border-radius:16px; padding:14px 16px; margin:0; background:var(--bg); font-size:15px; line-height:1.4; }
+.drivers strong{ display:block; font-size:1.05rem; margin-bottom:4px; }
+.drivers .up{ color:var(--up); font-weight:700; }
+.drivers .down{ color:var(--down); font-weight:700; }
+
+/* ---------- Quick check ---------- */
+.check{ background:var(--paper); border-radius:22px; padding:22px; margin:32px 0; box-shadow:var(--shadow); }
+.check-title{ margin:0 0 12px; font-size:1.05rem; color:var(--gold-text); }
+.check fieldset{ border:0; padding:0; margin:0 0 16px; min-width:0; }
+.check legend{ font-weight:700; font-size:1.08rem; line-height:1.4; padding:0; margin:0 0 12px; }
+.opt{
+  display:flex; gap:12px; align-items:flex-start; padding:12px 14px; margin:0 0 8px; cursor:pointer;
+  border:1.5px solid var(--line); border-radius:14px; font-size:16px; line-height:1.45;
+}
+.opt:hover{ border-color:var(--brand); }
+.opt:has(input:checked){ border-color:var(--brand); background:var(--key-bg); }
+.opt input{ margin-top:4px; width:18px; height:18px; accent-color:var(--brand); flex:0 0 auto; }
+.btn{
+  font:inherit; font-weight:700; font-size:16px; background:var(--btn); color:var(--btn-ink); border:0;
+  border-radius:999px; padding:11px 24px; cursor:pointer; text-decoration:none; display:inline-block;
+  transition:background-color .15s;
+}
+.btn:hover{ background:var(--btn-hover); }
+.feedback{ margin:14px 0 0; padding:0; border-radius:14px; font-size:16px; line-height:1.5; max-width:none; }
+.feedback.ok, .feedback.no, .feedback.info{ padding:12px 16px; }
+.feedback.ok{ background:var(--ok-bg); color:var(--ok-ink); }
+.feedback.no{ background:var(--no-bg); color:var(--no-ink); }
+.feedback.info{ background:var(--bg); color:var(--ink); }
+.feedback strong{ margin-right:4px; }
+
+/* ---------- Summary ---------- */
+.balance{
+  display:grid; grid-template-columns:minmax(0,1fr) auto minmax(0,1fr) auto minmax(0,1fr); gap:10px; align-items:center;
+  margin:0 0 20px;
+}
+.bal{ border-radius:18px; padding:14px 16px; border:1px solid; text-align:left; }
+.bal.t-assets{ background:var(--assets-bg); border-color:var(--assets-line); }
+.bal.t-liab{ background:var(--liab-bg); border-color:var(--liab-line); }
+.bal.t-equity{ background:var(--eq-bg); border-color:var(--eq-line); }
+.bal .lab{ margin:0; font-size:14px; font-weight:700; color:var(--muted); max-width:none; }
+.bal .num{ margin:0; font-family:'Bricolage Grotesque','Figtree',sans-serif; font-weight:800; font-size:clamp(1.3rem,3vw,1.8rem); letter-spacing:-.02em; max-width:none; line-height:1.15; }
+.bento{ display:grid; grid-template-columns:1fr 1fr; gap:16px; margin:0 0 22px; align-items:start; }
+.bento .b-assets{ grid-row:span 2; }
+.sumcard{ background:var(--paper); border-radius:20px; box-shadow:var(--shadow); overflow:hidden; padding-top:16px; }
+.sum{ width:100%; border-collapse:collapse; font-size:16px; }
+.sum caption{
+  text-align:left; font-family:'Bricolage Grotesque','Figtree',sans-serif; font-weight:700; font-size:1.1rem;
+  padding:0 16px 8px; color:var(--ink);
+}
+.sum th, .sum td{ padding:10px 16px; border-bottom:1px solid var(--line); }
+.sum th[scope="row"]{ text-align:left; font-weight:500; }
+.sum td{ text-align:right; font-weight:600; }
+.sum tfoot th[scope="row"], .sum tfoot td{ font-weight:800; border-bottom:0; }
+.s-assets tfoot th, .s-assets tfoot td{ background:var(--assets-bg); }
+.s-liab tfoot th, .s-liab tfoot td{ background:var(--liab-bg); }
+.s-equity tfoot th, .s-equity tfoot td{ background:var(--eq-bg); }
+
+.pagefoot{ margin-top:48px; display:flex; flex-wrap:wrap; gap:18px; align-items:center; justify-content:space-between; }
+.pagefoot p{ margin:0; flex:1 1 320px; }
+footer{ padding:26px 24px 46px; text-align:center; color:var(--muted); font-size:14px; border-top:1px solid var(--line); }
+footer p{ margin:0 auto; max-width:none; }
+
+/* ---------- Responsive ---------- */
+@media (max-width:960px){
+  .layout{ grid-template-columns:minmax(0,1fr); gap:28px; padding-top:20px; }
+  .toc{ position:static; }
+  .toc ul{ display:flex; flex-wrap:wrap; gap:8px; border-left:0; }
+  .toc a{ border:1.5px solid var(--line); border-radius:999px; padding:6px 14px; margin:0; background:var(--paper); }
+  .toc a[aria-current="location"]{ border-color:var(--gold); }
+}
+@media (max-width:640px){
+  body{ font-size:16.5px; }
+  .eq, .balance{ grid-template-columns:minmax(0,1fr); gap:6px; }
+  .op{ width:auto; justify-self:center; }
+  .drivers{ grid-template-columns:minmax(0,1fr); }
+  .split, .bento{ grid-template-columns:minmax(0,1fr); }
+  .bento .b-assets{ grid-row:auto; }
+  .txn-head{ flex-wrap:wrap; }
+  .txn-date{ margin-left:50px; }
+}
+@media print{
+  .toc, .skip-link, .check .btn{ display:none; }
+  .layout{ display:block; }
+  .hero{ background:#fff; color:#000; }
+}
+
+
+/* ---------- Chapter 3 additions ---------- */
+ul.plain{ margin:0 0 18px; padding-left:22px; max-width:68ch; }
+ul.plain li{ margin:0 0 8px; }
+.tablewrap{
+  position:relative; overflow-x:auto; margin:0 0 26px; border-radius:20px; background:var(--paper); box-shadow:var(--shadow);
+}
+.data{ width:100%; border-collapse:collapse; font-size:15.5px; min-width:540px; }
+.data caption{
+  text-align:left; font-family:'Bricolage Grotesque','Figtree',sans-serif; font-weight:700; font-size:1.1rem;
+  padding:16px 16px 8px; color:var(--ink);
+}
+.data th, .data td{ padding:10px 14px; border-bottom:1px solid var(--line); text-align:left; vertical-align:top; line-height:1.45; }
+.data thead th{ font-size:14px; color:var(--muted); font-weight:700; background:var(--bg); }
+.data tbody th[scope="row"]{ font-weight:600; }
+.data .num{ text-align:right; white-space:nowrap; }
+.data tfoot th, .data tfoot td{ font-weight:800; border-bottom:0; background:var(--eq-bg); }
+.data .note{ display:block; font-size:14px; color:var(--muted); font-weight:500; }
+.yes{ color:var(--ok-ink); font-weight:700; }
+.nope{ color:var(--no-ink); font-weight:700; }
+.chg-up{ color:var(--up); font-weight:700; }
+.chg-down{ color:var(--down); font-weight:700; }
+.dim{ color:var(--muted); }
+
+/* Four types grid */
+.types{ display:grid; grid-template-columns:1fr 1fr; gap:14px; margin:0 0 28px; }
+.typegroup{ grid-column:1 / -1; margin:10px 0 0; font-weight:800; font-size:15px; color:var(--gold-text); max-width:none; }
+.typegroup:first-child{ margin-top:0; }
+.type{ border-radius:18px; padding:16px 18px 18px; border:1px solid; }
+.type.pre{ background:var(--assets-bg); border-color:var(--assets-line); }
+.type.acc{ background:var(--liab-bg); border-color:var(--liab-line); }
+.type h4{ margin:0 0 6px; font-size:1.08rem; font-family:'Bricolage Grotesque','Figtree',sans-serif; }
+.type p{ margin:0 0 10px; font-size:15.5px; line-height:1.5; }
+.type .pattern{ margin:0; font-size:15px; font-weight:600; padding-top:10px; border-top:1px dashed var(--muted); }
+
+/* Adjustment cards */
+.tag{
+  display:inline-block; font-size:13px; font-weight:700; border-radius:999px; padding:2px 10px; margin:0 0 12px;
+  background:var(--eq-bg); color:var(--brand); border:1px solid var(--eq-line);
+}
+.je{ width:100%; border-collapse:collapse; font-size:15.5px; margin:0 0 14px; background:var(--bg); border-radius:14px; overflow:hidden; }
+.je caption{ text-align:left; font-weight:800; font-size:14px; color:var(--muted); padding:0 0 6px; }
+.je th, .je td{ padding:9px 14px; text-align:left; border-bottom:1px solid var(--line); }
+.je thead th{ font-size:13px; color:var(--muted); font-weight:700; }
+.je tbody tr:last-child th, .je tbody tr:last-child td{ border-bottom:0; }
+.je tbody th{ font-weight:600; }
+.je .num{ text-align:right; width:100px; white-space:nowrap; font-weight:700; }
+.je .cr{ padding-left:40px; }
+.fx{ list-style:none; margin:0; padding:0; display:flex; flex-wrap:wrap; gap:8px; }
+.fx li{ margin:0; font-size:14.5px; line-height:1.35; padding:6px 12px; border-radius:999px; border:1px solid var(--line); background:var(--paper); }
+.fx .is{ border-color:var(--eq-line); background:var(--eq-bg); }
+.fx .bs{ border-color:var(--assets-line); background:var(--assets-bg); }
+.calc{ background:var(--paper); border-radius:18px; padding:16px 18px; margin:0 0 20px; box-shadow:var(--shadow); }
+.calc p{ margin:0 0 6px; font-size:16px; max-width:none; }
+.calc p:last-child{ margin:0; }
+.calc .formula{ font-weight:700; font-size:1.05rem; }
+
+/* Think-about-it callout */
+.callout.think{ background:var(--assets-bg); border:1px solid var(--assets-line); }
+.callout.think .callout-icon{ background:var(--gold); color:#2B1250; }
+
+/* Financial statements */
+.stmt{ width:100%; border-collapse:collapse; font-size:16px; min-width:0; }
+.stmt caption{ padding:18px 16px 12px; text-align:center; line-height:1.35; }
+.stmt caption .co{ display:block; font-family:'Bricolage Grotesque','Figtree',sans-serif; font-weight:800; font-size:1.15rem; color:var(--ink); }
+.stmt caption .st{ display:block; font-weight:700; color:var(--ink); }
+.stmt caption .dt{ display:block; font-size:14px; color:var(--muted); font-weight:600; }
+.stmt th, .stmt td{ padding:8px 16px; border:0; text-align:left; }
+.stmt td{ text-align:right; white-space:nowrap; font-weight:600; width:130px; }
+.stmt .sec th{ font-weight:800; padding-top:16px; color:var(--brand); }
+.stmt .sub th{ font-weight:700; padding-top:10px; }
+.stmt .ind th{ padding-left:34px; font-weight:500; }
+.stmt .ind2 th{ padding-left:52px; font-weight:500; }
+.stmt .tot th, .stmt .tot td{ font-weight:800; border-top:1px solid var(--muted); }
+.stmt .grand th, .stmt .grand td{ font-weight:800; border-top:1px solid var(--muted); border-bottom:4px double var(--muted); background:var(--eq-bg); }
+.stmt.wide{ min-width:560px; }
+.stmt.wide thead th{ font-size:14px; color:var(--muted); text-align:right; font-weight:700; border-bottom:1px solid var(--line); }
+.stmt.wide thead th:first-child{ text-align:left; }
+.stmt.wide td{ width:auto; }
+.flowmap{ list-style:none; margin:0 0 28px; padding:0; display:grid; gap:12px; }
+.flowmap li{ margin:0; background:var(--paper); border-radius:18px; padding:14px 18px; box-shadow:var(--shadow); font-size:16px; line-height:1.5; border-left:6px solid var(--gold); }
+.flowmap strong{ display:block; font-family:'Bricolage Grotesque','Figtree',sans-serif; font-size:1.08rem; }
+@media (max-width:640px){
+  .types{ grid-template-columns:minmax(0,1fr); }
+  .je .cr{ padding-left:26px; }
+  .stmt td{ width:auto; }
+}
+.drivers.two{ grid-template-columns:repeat(2,minmax(0,1fr)); }
+@media (max-width:640px){ .drivers.two{ grid-template-columns:minmax(0,1fr); } }
+
+
+/* ---------- Homework additions ---------- */
+:root{ --field-line:#7D6F99; --field-bg:#FFFFFF; }
+@media (prefers-color-scheme: dark){ :root{ --field-line:#A496C2; --field-bg:#150E24; } }
+.card{ background:var(--paper); border-radius:22px; padding:22px; box-shadow:var(--shadow); margin:0 0 22px; }
+.card h2{ font-size:clamp(1.4rem,2.6vw,1.75rem); margin:0 0 12px; }
+.card > p{ font-size:16px; }
+.formgrid{ display:grid; grid-template-columns:repeat(auto-fit,minmax(220px,1fr)); gap:14px 18px; margin:0 0 16px; }
+.fld label{ display:block; font-weight:700; font-size:15px; margin:0 0 6px; }
+.fld .help{ display:block; font-size:14px; color:var(--muted); margin:4px 0 0; }
+input[type="text"], input[type="number"], select{
+  font:inherit; font-size:15.5px; color:var(--ink); background:var(--field-bg);
+  border:1.5px solid var(--field-line); border-radius:10px; padding:9px 12px; min-height:44px; width:100%;
+}
+input[type="number"]{ font-variant-numeric:tabular-nums; text-align:right; -moz-appearance:textfield; }
+input[type="number"]::-webkit-inner-spin-button, input[type="number"]::-webkit-outer-spin-button{ -webkit-appearance:none; margin:0; }
+input:focus-visible, select:focus-visible{ outline:3px solid var(--focus); outline-offset:2px; }
+.btnrow{ display:flex; flex-wrap:wrap; gap:12px; align-items:center; }
+.btn.secondary{ background:transparent; color:var(--brand); box-shadow:inset 0 0 0 2px var(--brand); }
+.btn.secondary:hover{ background:var(--key-bg); }
+.codebox{ display:inline-flex; align-items:center; gap:10px; font-weight:700; }
+.codeval{ font-family:ui-monospace,'SFMono-Regular',Menlo,Consolas,monospace; letter-spacing:.14em; font-size:1.05rem;
+  padding:6px 12px; border-radius:10px; background:var(--eq-bg); border:1px solid var(--eq-line); color:var(--brand); }
+
+/* Score card */
+.scorecard{ border-left:8px solid var(--gold); }
+.scorecard .big{ font-family:'Bricolage Grotesque','Figtree',sans-serif; font-weight:800; font-size:clamp(1.6rem,4vw,2.2rem); margin:0 0 10px; line-height:1.15; max-width:none; }
+.stepscores{ list-style:none; margin:0; padding:0; display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:10px; }
+.stepscores li{ margin:0; background:var(--bg); border-radius:14px; padding:10px 14px; font-size:15px; line-height:1.35; }
+.stepscores strong{ display:block; font-size:14px; color:var(--muted); }
+
+/* Chart of accounts */
+.coa{ columns:2; column-gap:28px; margin:0; padding-left:20px; font-size:15.5px; }
+.coa li{ margin:0 0 4px; break-inside:avoid; }
+
+/* Step cards */
+.stephead{ display:flex; align-items:center; gap:14px; margin:0 0 10px; }
+.stepnum{ flex:0 0 44px; height:44px; border-radius:50%; display:grid; place-items:center; background:var(--badge); color:var(--badge-ink); font-weight:800; font-size:18px; }
+.stephead h2{ margin:0; }
+.checkbar{ display:flex; flex-wrap:wrap; align-items:center; gap:14px; margin:20px 0 0; padding-top:18px; border-top:1px solid var(--line); }
+.summary{ font-weight:700; font-size:16px; margin:0; max-width:none; }
+.summary.good{ color:var(--ok-ink); }
+.summary.bad{ color:var(--no-ink); }
+
+/* Journal entries */
+.jeitem{ background:var(--bg); border-radius:16px; padding:14px 16px 16px; margin:0 0 14px; }
+.jeitem h3{ font-family:'Figtree',sans-serif; font-size:16px; font-weight:600; letter-spacing:0; margin:0 0 10px; line-height:1.45; }
+.jeitem h3 .dt{ display:inline-block; font-weight:800; color:var(--brand); margin-right:6px; }
+.jt{ width:100%; border-collapse:collapse; table-layout:fixed; }
+.jt th{ font-size:13px; color:var(--muted); font-weight:700; text-align:left; padding:0 6px 6px; }
+.jt th.num{ text-align:right; }
+.jt td{ padding:4px 6px; vertical-align:middle; }
+.jt col.c-acct{ width:52%; } .jt col.c-amt{ width:24%; }
+.jt td.cr{ padding-left:28px; }
+
+/* Field feedback */
+.fwrap{ display:flex; align-items:center; gap:6px; width:100%; }
+.fwrap > input, .fwrap > select{ flex:1; min-width:0; }
+.ficon{ flex:0 0 18px; text-align:center; font-weight:800; font-size:16px; line-height:1; }
+.ficon:empty{ visibility:hidden; }
+.ficon.ok{ color:var(--ok-ink); } .ficon.no{ color:var(--no-ink); }
+.is-ok{ border-color:var(--ok-ink) !important; background:var(--ok-bg) !important; }
+.is-no{ border-color:var(--no-ink) !important; background:var(--no-bg) !important; border-style:dashed !important; }
+
+/* T-accounts */
+.ledger{ display:grid; grid-template-columns:repeat(auto-fill,minmax(250px,1fr)); gap:14px; }
+.tacct{ display:flex; flex-direction:column; background:var(--paper); border:1.5px solid var(--line); border-radius:16px; overflow:hidden; break-inside:avoid; }
+.tacct.wide{ grid-column:1 / -1; }
+.tacct h3{ margin:0; padding:9px 12px; background:var(--btn); color:var(--btn-ink); font-family:'Figtree',sans-serif; font-size:15px; font-weight:700; letter-spacing:0; text-align:center; }
+.tbody{ flex:1; display:grid; grid-template-columns:1fr 1fr; }
+.tside{ padding:8px 9px; min-width:0; }
+.tside.dr{ border-right:2px solid var(--brand); }
+.tlab{ font-size:12.5px; font-weight:800; color:var(--muted); text-align:center; margin:0 0 6px; max-width:none; }
+.tbeg{ text-align:right; font-weight:700; font-size:14.5px; padding:4px 26px 4px 4px; border-bottom:1px solid var(--ink); margin:0 0 6px; max-width:none; }
+.tline{ margin:0 0 6px; }
+.tline input{ font-size:14.5px; padding:6px 8px; min-height:38px; }
+.tnone{ font-size:13.5px; color:var(--muted); font-style:italic; text-align:center; margin:4px 0; max-width:none; }
+.tend{ border-top:2px solid var(--brand); background:var(--bg); padding:10px 12px; display:grid; grid-template-columns:minmax(0,1fr) 128px; gap:8px; align-items:end; }
+.tend label{ display:block; font-size:13px; font-weight:700; margin:0 0 4px; }
+.tend input, .tend select{ font-size:14.5px; padding:6px 8px; min-height:38px; }
+
+/* Trial balance tables */
+.tb{ width:100%; border-collapse:collapse; font-size:15.5px; }
+.tb caption{ text-align:left; font-family:'Bricolage Grotesque','Figtree',sans-serif; font-weight:700; font-size:1.1rem; padding:0 0 8px; }
+.tb th, .tb td{ padding:7px 8px; border-bottom:1px solid var(--line); text-align:left; vertical-align:middle; }
+.tb thead th{ font-size:13.5px; color:var(--muted); border-bottom:2px solid var(--brand); }
+.tb .num{ text-align:right; white-space:nowrap; }
+.tb tbody th{ font-weight:600; }
+.tb tfoot th, .tb tfoot td{ font-weight:800; border-top:2px solid var(--brand); border-bottom:0; }
+.tb.entry td{ width:30%; }
+
+.print-only{ display:none; }
+@media (max-width:640px){
+  .coa{ columns:1; }
+  .stepscores{ grid-template-columns:minmax(0,1fr); }
+  .jt, .jt tbody, .jt td{ display:block; width:100%; }
+  .jt thead{ display:none; }
+  .jt tr{ display:grid; grid-template-columns:minmax(0,1fr); gap:8px; margin:0 0 12px; }
+  .jt td.amt{ max-width:220px; }
+  .jt td{ padding:0; }
+  .jt td.empty{ display:none; }
+  .jt td.cr{ padding-left:12px; }
+  .jt td::before{ content:attr(data-label); display:block; font-size:12.5px; font-weight:700; color:var(--muted); margin:0 0 3px; }
+  .jeitem{ padding:12px 10px 14px; }
+  .tb{ font-size:14.5px; }
+  .tb.entry td{ width:34%; }
+}
+
+/* ---------- Print / Save as PDF ---------- */
+@media print{
+  @page{ margin:0.6in; }
+  *{ -webkit-print-color-adjust:exact; print-color-adjust:exact; }
+  :root{ color-scheme:light; }
+  body{ background:#fff !important; color:#000 !important; font-size:11pt; }
+  .print-only{ display:block !important; }
+  .screen-only, .toc, .skip-link, .btn, .checkbar .btn, .ridge, .goals, .crumb, .pill, footer{ display:none !important; }
+  .hero{ background:#fff !important; color:#000 !important; }
+  .hero-inner{ padding:0 0 8px !important; }
+  h1{ font-size:20pt !important; max-width:none !important; margin:0 0 4px !important; color:#000; }
+  .subtitle{ color:#333 !important; margin:0 !important; font-size:11pt !important; }
+  .layout{ display:block !important; padding:0 !important; max-width:none !important; }
+  .content{ max-width:none !important; }
+  .card, .tacct, .jeitem{ box-shadow:none !important; border:1px solid #888 !important; break-inside:avoid; background:#fff !important; }
+  .card.stepcard{ break-inside:auto; }
+  section.block{ margin:0 0 18px !important; }
+  input, select{ border:1px solid #555 !important; min-height:0 !important; padding:2px 6px !important; color:#000 !important; -webkit-appearance:none; appearance:none; }
+  .is-ok{ background:#E4F4EA !important; } .is-no{ background:#FBEDE9 !important; }
+  .print-summary{ border:2px solid #592C88 !important; border-radius:12px; padding:12px 16px; margin:0 0 16px; break-inside:avoid; }
+  .print-summary h2{ font-size:14pt !important; margin:0 0 6px !important; color:#000; }
+  .print-summary p{ margin:0 0 3px; max-width:none; }
+  .print-summary .pscore{ font-size:16pt; font-weight:800; margin:6px 0 4px; }
+}
+
+
+/* ---------- Chapter 3 homework additions ---------- */
+ol.plain{ margin:0 0 18px; padding-left:24px; max-width:68ch; }
+ol.plain li{ margin:0 0 10px; }
+.tb.amt td{ width:200px; }
+.tb.amt th[scope="row"]{ font-weight:600; }
+.tb.amt th label{ font-weight:600; cursor:pointer; }
+.tb.amt + .tb.amt{ margin-top:22px; }
+.stepscores{ grid-template-columns:repeat(auto-fit,minmax(190px,1fr)); }
+.steplist{ list-style:none; margin:0 0 12px; padding:0; }
+@media print{ .tb.amt td{ width:auto; } }
+</style>
+</head>
+<body>
+
+<a class="skip-link" href="#main-content">Skip to main content</a>
+
+<section class="print-only print-summary">
+  <h2>ACCT 251 &middot; Adjusting Entries &mdash; Tuckasegee Cycle Studio</h2>
+  <p id="pName">Name:</p>
+  <p id="pId">Student ID:</p>
+  <p id="pCode">Data set code:</p>
+  <p class="pscore" id="pScore">Score:</p>
+  <p id="pBreak"></p>
+  <p id="pDate"></p>
+</section>
+
+<header class="hero">
+  <div class="hero-inner">
+    <nav class="crumb" aria-label="Breadcrumb">
+      <ol>
+        <li><a href="../index.html">All course materials</a></li>
+        <li>ACCT 251</li>
+        <li><span aria-current="page">Homework: Adjusting entries</span></li>
+      </ol>
+    </nav>
+    <p class="pill">Homework &middot; Ch. 3</p>
+    <h1>Year-end adjusting entries</h1>
+    <p class="subtitle">Record six year-end adjustments for Tuckasegee Cycle Studio, a Sylva shop that paints and designs custom bicycles.</p>
+    <div class="goals"><p class="goals-title">What you will do:</p><ul><li><svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true" focusable="false"><path d="M5 12.5l4.5 4.5L19 7.5" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Calculate the amount of each of six adjustments.</span></li><li><svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true" focusable="false"><path d="M5 12.5l4.5 4.5L19 7.5" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Journalize the adjusting entries on December 31.</span></li><li><svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true" focusable="false"><path d="M5 12.5l4.5 4.5L19 7.5" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg><span>See how the adjustments change net income.</span></li></ul></div>
+  </div>
+  <svg class="ridge" viewBox="0 0 1440 220" preserveAspectRatio="none" aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg">
+    <path class="r1" d="M0,150 L110,96 L190,128 L320,52 L430,120 L540,78 L660,138 L790,60 L900,118 L1030,70 L1150,126 L1290,58 L1440,110 L1440,220 L0,220 Z"/>
+    <path class="r2" d="M0,176 L140,122 L250,158 L390,96 L520,152 L640,112 L770,168 L910,104 L1040,150 L1180,100 L1320,152 L1440,128 L1440,220 L0,220 Z"/>
+    <polyline class="crest" points="0,176 140,122 250,158 390,96 520,152 640,112 770,168 910,104 1040,150 1180,100 1320,152 1440,128"/>
+    <path class="r3" d="M0,204 L170,164 L300,190 L470,148 L610,188 L780,156 L930,192 L1100,152 L1250,190 L1440,166 L1440,220 L0,220 Z"/>
+  </svg>
+</header>
+
+<div class="layout">
+  <nav class="toc" aria-labelledby="toc-title">
+    <p class="toc-title" id="toc-title">On this page</p>
+    <ul id="tocList"></ul>
+  </nav>
+
+  <main class="content" id="main-content" tabindex="-1">
+    <noscript><div class="card"><h2>JavaScript is required</h2><p>This interactive homework generates your personal data set and checks your answers in the browser. Please turn on JavaScript, or ask your instructor for an accessible alternative format.</p></div></noscript>
+
+    <section class="block screen-only" id="start" aria-labelledby="h-start">
+      <div class="card">
+        <h2 id="h-start">Start here</h2>
+        <div class="formgrid">
+          <div class="fld">
+            <label for="studentName">Your name</label>
+            <input type="text" id="studentName" autocomplete="name">
+            <span class="help">First and last name, printed at the top of your PDF.</span>
+          </div>
+          <div class="fld">
+            <label for="studentId">Student ID</label>
+            <input type="text" id="studentId" inputmode="numeric" autocomplete="off" aria-describedby="idHelp">
+            <span class="help" id="idHelp">Example: 92841016. Your ID creates your personal data set.</span>
+          </div>
+        </div>
+        <div class="btnrow screen-only">
+          <button type="button" class="btn" id="genBtn">Generate my scenario</button>
+          <p class="codebox" style="margin:0;">Data set code: <span class="codeval" id="codeDisplay"></span></p>
+          <p class="sr-only" role="status" id="genStatus"></p>
+        </div>
+      </div>
+
+      <aside class="callout key screen-only" role="note">
+        <span class="callout-icon"><svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true" focusable="false"><path d="M12 2.5l2.9 6.1 6.6.8-4.9 4.6 1.3 6.6L12 17.3l-5.9 3.3 1.3-6.6L2.5 9.4l6.6-.8z" fill="currentColor"/></svg></span>
+        <div>
+          <p class="callout-title">Before you begin</p>
+          <p>Your Student ID always produces the same numbers, so you can close this page and pick up the same data set later, on any device, by entering your ID again. Your instructor uses the data set code to regenerate your exact solution.</p>
+          <p>Round all dollar amounts to the nearest whole dollar. Use <strong>Check my work</strong> at the end of each step as often as you like. Correct fields are marked with a check mark (&#10003;) and incorrect fields with an X (&#10007;). Use the account list in the Chart of accounts section.</p>
+        </div>
+      </aside>
+
+      <div class="card scorecard" aria-labelledby="h-score">
+        <h2 id="h-score">Your score</h2>
+        <div role="status" aria-live="polite" aria-atomic="true">
+          <p class="big" id="overallScore">Check any step to see your score</p>
+          <ul class="stepscores" role="list" id="stepScores"></ul>
+        </div>
+      </div>
+    </section>
+
+    <section class="block" id="given" aria-labelledby="h-given">
+      <div class="card">
+        <h2 id="h-given">Given information</h2>
+        <div id="givenBody"></div>
+      </div>
+      <div class="card">
+        <h2 id="h-chart">Chart of accounts</h2>
+        <ul class="coa" id="chartList" aria-labelledby="h-chart"></ul>
+      </div>
+    </section>
+
+    <div id="steps"></div>
+
+    <section class="block screen-only" id="submit" aria-labelledby="h-submit">
+      <div class="card">
+        <h2 id="h-submit">Ready to submit?</h2>
+        <p>Selecting <strong>Print / Save as PDF</strong> checks every step, then puts your name, Student ID, data set code, and score at the top of the first page. Choose &ldquo;Save as PDF&rdquo; as the printer to create your file.</p>
+        <p id="nameWarn" class="feedback" role="alert"></p>
+        <div class="btnrow">
+          <button class="btn" id="printBtn" type="button">Print / Save as PDF</button>
+        </div>
+      </div>
+    </section>
+
+  </main>
+</div>
+
+<footer>
+  <p>Tuckasegee Cycle Studio &middot; Adjusting Entries &middot; ACCT 251 &middot; Western Carolina University</p>
+</footer>
+
+<script>
+
+var CFG = {
+chart:['Cash','Supplies','Prepaid Insurance','Prepaid Advertising','Salaries Payable','Interest Payable','Deferred Revenue','Service Revenue','Insurance Expense','Salaries Expense','Supplies Expense','Advertising Expense','Interest Expense'],
+gen:function(d, H){
+  var f = H.fmt, Y = new Date().getFullYear();
+  var pc = 400 + d[0]*25, cost = 36*pc, insExp = cost/6;
+  var sal = 20000 + d[1]*1000;
+  var price = 800 + d[2]*50, dep = 6*price, done = 3 + d[2]%3, earned = done*price;
+  var sb = 1500 + d[3]*100, sp = 15000 + d[4]*500, se = 3000 + d[5]*200, supExp = sb + sp - se;
+  var rc = 4*(2400 + d[5]*100), adv = rc/4;
+  var k = 4 + d[1]%6, P = 6000*k, rate = [8,9,10,12][d[2]%4], intr = Math.round(P*rate/100*10/12);
+  var facts = [
+    'A three-year fire insurance policy was purchased on July 1, '+Y+', for '+f(cost)+'. The company debited Prepaid Insurance for the entire amount on July 1.',
+    'Employee salaries of '+f(sal)+' for the month of December will be paid in early January.',
+    'On November 1, '+Y+', the company received '+f(dep)+' in cash from a customer requesting a custom design for six identical bikes ('+f(price)+' each). Deferred Revenue was credited for the entire amount on November 1. By the end of the year, '+['','','','three','four','five'][done]+' of the bikes have been completed.',
+    'Supplies at the beginning of the year totaled '+f(sb)+'. During '+Y+', additional supplies of '+f(sp)+' were purchased, and the entire amount was debited to Supplies at the time of purchase. Supplies remaining at the end of the year total '+f(se)+'.',
+    'The company paid a local radio station '+f(rc)+' for four months of advertising on December 1, '+Y+'. The advertising will appear evenly over the four-month period. The company debited Prepaid Advertising for the entire amount on December 1.',
+    'The company borrowed '+f(P)+' on March 1, '+Y+'. The principal is due to be paid in five years. Interest is payable each March 1 at an annual rate of '+rate+'%.'
+  ];
+  var given = '<p>Tuckasegee Cycle Studio, a shop in Sylva, specializes in custom painting and design of bicycles. December 31 is the company&rsquo;s fiscal year-end. The information needed to prepare the '+Y+' year-end adjusting entries is below.</p><ol class="plain">'+facts.map(function(x){ return '<li>'+x+'</li>'; }).join('')+'</ol>';
+  var E = [
+    {lab:'Dec 31 (1)', desc:'Insurance expired from the July 1 policy.', lines:[['Insurance Expense','d',insExp],['Prepaid Insurance','c',insExp]]},
+    {lab:'Dec 31 (2)', desc:'December salaries owed but not yet paid.', lines:[['Salaries Expense','d',sal],['Salaries Payable','c',sal]]},
+    {lab:'Dec 31 (3)', desc:'Bike designs completed from the November 1 customer deposit.', lines:[['Deferred Revenue','d',earned],['Service Revenue','c',earned]]},
+    {lab:'Dec 31 (4)', desc:'Supplies used during the year.', lines:[['Supplies Expense','d',supExp],['Supplies','c',supExp]]},
+    {lab:'Dec 31 (5)', desc:'Radio advertising that has appeared in December.', lines:[['Advertising Expense','d',adv],['Prepaid Advertising','c',adv]]},
+    {lab:'Dec 31 (6)', desc:'Interest accrued on the March 1 loan.', lines:[['Interest Expense','d',intr],['Interest Payable','c',intr]]}
+  ];
+  var exps = insExp + sal + supExp + adv + intr;
+  return { given:given, steps:[
+    {type:'amounts', short:'Calculations', title:'Calculate each adjustment', intro:'Before journalizing, work out the dollar amount of each year-end adjustment. Use the facts in the Given information section.', groups:[{cap:'Adjustment amounts', fields:[
+      ['1. Insurance expense for the year', insExp],['2. Salaries expense to accrue', sal],['3. Service revenue earned from the deposit', earned],['4. Supplies expense for the year', supExp],['5. Advertising expense for December', adv],['6. Interest expense accrued through December 31', intr]]}]},
+    {type:'journal', short:'Adjusting entries', title:'Record the adjusting entries, December 31, '+Y, intro:'For each adjustment, choose the account debited and the account credited, and enter the dollar amount of each. Omit explanations.', entries:E},
+    {type:'amounts', short:'Income effect', title:'Effect on the income statement', intro:'Combine your six adjusting entries to see how they change the year&rsquo;s income.', groups:[{cap:'Total effect of the adjusting entries', fields:[
+      ['Total revenue recognized by the adjustments', earned],['Total expenses recorded by the adjustments', exps],['Decrease in net income (expenses minus revenue)', exps - earned]]}]}
+  ]};
+}};
+
+
+(function(){
+/* ============================== DATA GENERATION ============================== */
+function hashSeed(str){ var h = 2166136261; for(var i=0;i<str.length;i++){ h ^= str.charCodeAt(i); h = Math.imul(h, 16777619); } return h >>> 0; }
+function mulberry32(seed){ return function(){ seed |= 0; seed = seed + 0x6D2B79F5 | 0; var t = Math.imul(seed ^ seed >>> 15, 1 | seed); t = t + Math.imul(t ^ t >>> 7, 61 | t) ^ t; return ((t ^ t >>> 14) >>> 0) / 4294967296; }; }
+var fmt = function(n){ return (n<0?'-':'')+'$'+Math.abs(Math.round(n)).toLocaleString('en-US'); };
+var R = function(x){ return Math.round(x); };
+function esc(s){ return String(s).replace(/[&<>"]/g, function(c){ return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]; }); }
+function $(id){ return document.getElementById(id); }
+var setCode = '', steps = [], scoreState = [];
+
+// Journal lines are [account, 'd' | 'c', amount]. Signed balances: debit +, credit -.
+var H = {
+  fmt: fmt,
+  signed: function(begin, sets){
+    var m = {}; Object.keys(begin).forEach(function(k){ m[k] = begin[k]; });
+    sets.forEach(function(es){ es.forEach(function(e){ e.lines.forEach(function(l){ m[l[0]] = (m[l[0]]||0) + (l[1]==='d' ? l[2] : -l[2]); }); }); });
+    return m;
+  },
+  ledger: function(names, begin, es){
+    return names.map(function(n){
+      var b = begin[n]||0, e = b, dr = [], cr = [];
+      es.forEach(function(en){ en.lines.forEach(function(l){ if(l[0]===n){ if(l[1]==='d'){ dr.push(l[2]); e += l[2]; } else { cr.push(l[2]); e -= l[2]; } } }); });
+      return [n, Math.abs(b), b>0 ? 'debit' : (b<0 ? 'credit' : ''), dr, cr, Math.abs(e), e<0 ? 'credit' : 'debit'];
+    });
+  },
+  tb: function(names, sg){ return names.map(function(n){ var v = sg[n]||0; return [n, v>0 ? v : 0, v<0 ? -v : 0]; }); }
+};
+
+var acctOptions = '<option value="">Select account…</option>' + CFG.chart.map(function(a){ return '<option value="'+esc(a)+'">'+esc(a)+'</option>'; }).join('');
+$('chartList').innerHTML = CFG.chart.map(function(a){ return '<li>'+esc(a)+'</li>'; }).join('');
+
+/* ============================== FIELD FEEDBACK ============================== */
+// Symbol + border style + color, never color alone. Status is also spoken to screen readers.
+function field(html){ return '<span class="fwrap">'+html+'<span class="ficon" aria-hidden="true"></span></span>'; }
+function mark(el, ok){
+  el.classList.remove('is-ok','is-no');
+  el.classList.add(ok ? 'is-ok' : 'is-no');
+  el.setAttribute('aria-invalid', ok ? 'false' : 'true');
+  var icon = el.parentElement.querySelector('.ficon');
+  if(icon){ icon.textContent = ok ? '✓' : '✗'; icon.className = 'ficon ' + (ok ? 'ok' : 'no'); }
+  var sr = el.parentElement.querySelector('.fstat');
+  if(!sr){ sr = document.createElement('span'); sr.className = 'sr-only fstat'; sr.id = el.id + '_st'; el.parentElement.appendChild(sr); el.setAttribute('aria-describedby', sr.id); }
+  sr.textContent = ok ? 'Correct' : 'Incorrect';
+  return ok;
+}
+function numVal(el){ var v = parseFloat(el.value); return isNaN(v) ? null : v; }
+function amtMatch(el, expected){ var v = numVal(el); if(expected===0) return v===null || R(v)===0; return v!==null && R(v)===R(expected); }
+function badge(id, correct, total){
+  var el = $(id);
+  el.textContent = (correct===total ? '✓ ' : '') + correct+' of '+total+' correct';
+  el.classList.remove('good','bad'); el.classList.add(correct===total ? 'good' : 'bad');
+}
+
+/* ============================== STEP TYPES ============================== */
+// ---- journal ----
+function renderJournal(s, n){
+  return s.entries.map(function(t, i){
+    var p = 's'+n+'e'+i;
+    var rows = t.lines.map(function(l, k){
+      var id = p+'_'+k, cr = l[1]==='c', side = cr ? 'credit' : 'debit';
+      var acct = '<td class="acct'+(cr?' cr':'')+'" data-label="'+(cr?'Credit':'Debit')+' account">'+field('<select id="'+id+'_a" aria-label="'+esc(t.lab)+', line '+(k+1)+', '+side+' account">'+acctOptions+'</select>')+'</td>';
+      var amt = '<td class="amt" data-label="'+(cr?'Credit':'Debit')+'">'+field('<input type="number" inputmode="decimal" id="'+id+'_m" aria-label="'+esc(t.lab)+', line '+(k+1)+', '+side+' amount">')+'</td>';
+      return '<tr>'+acct+(cr ? '<td class="empty"></td>'+amt : amt+'<td class="empty"></td>')+'</tr>';
+    }).join('');
+    return '<div class="jeitem" role="group" aria-labelledby="'+p+'_h"><h3 id="'+p+'_h"><span class="dt">'+esc(t.lab)+'</span>'+esc(t.desc)+'</h3>'+
+      '<table class="jt"><caption class="sr-only">'+esc(t.lab)+' journal entry</caption><colgroup><col class="c-acct"><col class="c-amt"><col class="c-amt"></colgroup>'+
+      '<thead><tr><th scope="col">Account</th><th scope="col" class="num">Debit</th><th scope="col" class="num">Credit</th></tr></thead><tbody>'+rows+'</tbody></table></div>';
+  }).join('');
+}
+function checkJournal(s, n){
+  var c = 0, tt = 0;
+  s.entries.forEach(function(t, i){
+    var p = 's'+n+'e'+i, used = {};
+    t.lines.forEach(function(l, k){
+      var a = $(p+'_'+k+'_a'), m = $(p+'_'+k+'_m'), hit = -1;
+      t.lines.forEach(function(x, j){ if(hit<0 && !used[j] && x[1]===l[1] && x[0]===a.value && amtMatch(m, x[2])) hit = j; });
+      if(hit<0) t.lines.forEach(function(x, j){ if(hit<0 && !used[j] && x[1]===l[1] && x[0]===a.value) hit = j; });
+      tt += 2;
+      if(hit>=0){ used[hit] = 1; if(mark(a, true)) c++; if(mark(m, amtMatch(m, t.lines[hit][2]))) c++; }
+      else { mark(a, false); mark(m, false); }
+    });
+  });
+  return {correct:c, total:tt};
+}
+// ---- amounts (calculations and financial statement lines) ----
+function renderAmounts(s, n){
+  return s.groups.map(function(g, gi){
+    return '<table class="tb entry amt"><caption>'+esc(g.cap)+'</caption><thead><tr><th scope="col">Item</th><th scope="col" class="num">Amount</th></tr></thead><tbody>'+
+      g.fields.map(function(f, fi){ var id = 's'+n+'g'+gi+'f'+fi;
+        return '<tr><th scope="row"><label for="'+id+'">'+esc(f[0])+'</label></th><td>'+field('<input type="number" inputmode="decimal" id="'+id+'">')+'</td></tr>'; }).join('')+
+      '</tbody></table>';
+  }).join('');
+}
+function checkAmounts(s, n){
+  var c = 0, tt = 0;
+  s.groups.forEach(function(g, gi){ g.fields.forEach(function(f, fi){ var el = $('s'+n+'g'+gi+'f'+fi); tt++; if(mark(el, amtMatch(el, f[1]))) c++; }); });
+  return {correct:c, total:tt};
+}
+// ---- trial balance ----
+function renderTB(s, n){
+  return '<table class="tb entry"><caption class="sr-only">'+esc(s.cap)+'</caption><thead><tr><th scope="col">Account</th><th scope="col" class="num">Debit</th><th scope="col" class="num">Credit</th></tr></thead><tbody>'+
+    s.rows.map(function(r, i){ var id = 's'+n+'r'+i;
+      return '<tr><th scope="row">'+esc(r[0])+'</th><td>'+field('<input type="number" inputmode="decimal" id="'+id+'_d" aria-label="'+esc(r[0])+' debit">')+'</td><td>'+field('<input type="number" inputmode="decimal" id="'+id+'_c" aria-label="'+esc(r[0])+' credit">')+'</td></tr>'; }).join('')+'</tbody></table>';
+}
+function checkTB(s, n){
+  var c = 0, tt = 0;
+  s.rows.forEach(function(r, i){ var d = $('s'+n+'r'+i+'_d'), k = $('s'+n+'r'+i+'_c'); tt += 2; if(mark(d, amtMatch(d, r[1]))) c++; if(mark(k, amtMatch(k, r[2]))) c++; });
+  return {correct:c, total:tt};
+}
+// ---- ledger (T-accounts) ----
+function renderLedger(s, n){
+  return '<div class="ledger">'+s.accts.map(function(a, idx){
+    var name = a[0], beg = a[1], bs = a[2], debits = a[3], credits = a[4], p = 's'+n+'l'+idx;
+    var dr = '', cr = '', bh = '<p class="tbeg"><span class="sr-only">Beginning balance </span>'+fmt(beg)+'</p>';
+    if(bs==='debit' && beg) dr += bh; if(bs==='credit' && beg) cr += bh;
+    debits.forEach(function(x, j){ dr += '<div class="tline">'+field('<input type="number" inputmode="decimal" id="'+p+'_d'+j+'" aria-label="'+esc(name)+', debit posting '+(j+1)+' of '+debits.length+'">')+'</div>'; });
+    credits.forEach(function(x, j){ cr += '<div class="tline">'+field('<input type="number" inputmode="decimal" id="'+p+'_c'+j+'" aria-label="'+esc(name)+', credit posting '+(j+1)+' of '+credits.length+'">')+'</div>'; });
+    if(!debits.length && !credits.length){ var nn = '<p class="tnone">No activity</p>'; if(bs==='debit') cr = nn; else dr = nn; }
+    return '<div class="tacct" role="group" aria-labelledby="'+p+'_h"><h3 id="'+p+'_h">'+esc(name)+'</h3>'+
+      '<div class="tbody"><div class="tside dr"><p class="tlab" aria-hidden="true">Debit</p>'+dr+'</div><div class="tside"><p class="tlab" aria-hidden="true">Credit</p>'+cr+'</div></div>'+
+      '<div class="tend"><div><label for="'+p+'_amt">Ending balance<span class="sr-only">, '+esc(name)+'</span></label>'+field('<input type="number" inputmode="decimal" id="'+p+'_amt">')+'</div>'+
+      '<div><label for="'+p+'_side">Side<span class="sr-only">, '+esc(name)+'</span></label>'+field('<select id="'+p+'_side"><option value="">Choose</option><option value="debit">Debit</option><option value="credit">Credit</option></select>')+'</div></div></div>';
+  }).join('')+'</div>';
+}
+function checkLedger(s, n){
+  var c = 0, tt = 0;
+  s.accts.forEach(function(a, i){
+    var p = 's'+n+'l'+i;
+    a[3].forEach(function(x, j){ var el = $(p+'_d'+j); tt++; if(mark(el, amtMatch(el, x))) c++; });
+    a[4].forEach(function(x, j){ var el = $(p+'_c'+j); tt++; if(mark(el, amtMatch(el, x))) c++; });
+    var ae = $(p+'_amt'), se = $(p+'_side'); tt += 2;
+    if(mark(ae, amtMatch(ae, a[5]))) c++;
+    if(mark(se, a[5]===0 ? true : se.value===a[6])) c++;
+  });
+  return {correct:c, total:tt};
+}
+var TYPES = { journal:[renderJournal, checkJournal], amounts:[renderAmounts, checkAmounts], tb:[renderTB, checkTB], ledger:[renderLedger, checkLedger] };
+
+/* ============================== PAGE RENDER ============================== */
+function renderPage(){
+  var host = $('steps');
+  host.innerHTML = steps.map(function(s, i){
+    var n = i+1;
+    return '<section class="block" id="step'+n+'" aria-labelledby="h-step'+n+'"><div class="card stepcard">'+
+      '<div class="stephead"><span class="stepnum" aria-hidden="true">'+n+'</span><h2 id="h-step'+n+'"><span class="sr-only">Step '+n+': </span>'+esc(s.title)+'</h2></div>'+
+      '<p>'+s.intro+'</p>'+TYPES[s.type][0](s, n)+
+      '<div class="checkbar"><button class="btn" id="check'+n+'" type="button">Check my work: Step '+n+'</button><p class="summary" id="score'+n+'" role="status"></p></div></div></section>';
+  }).join('');
+  steps.forEach(function(s, i){ var n = i+1; $('check'+n).addEventListener('click', function(){ scoreState[i] = TYPES[s.type][1](s, n); updateOverallScore(); }); });
+  $('stepScores').innerHTML = steps.map(function(s, i){ return '<li><strong>Step '+(i+1)+': '+esc(s.short)+'</strong><span id="bd'+(i+1)+'">Not checked yet</span></li>'; }).join('');
+  var toc = [['start','Start here'],['given','Given information']].concat(steps.map(function(s, i){ return ['step'+(i+1), 'Step '+(i+1)+': '+s.short]; })).concat([['submit','Submit']]);
+  $('tocList').innerHTML = toc.map(function(t){ return '<li><a href="#'+t[0]+'">'+esc(t[1])+'</a></li>'; }).join('');
+  watchToc();
+}
+function scoreText(){
+  var c = 0, t = 0, any = false;
+  scoreState.forEach(function(s){ if(s){ any = true; c += s.correct; t += s.total; } });
+  return any ? c+' / '+t+' correct ('+(t ? Math.round(100*c/t) : 0)+'%)' : null;
+}
+function stepText(i){ return scoreState[i] ? scoreState[i].correct+' of '+scoreState[i].total+' correct' : 'Not checked yet'; }
+function updateOverallScore(){
+  $('overallScore').textContent = scoreText() || 'Check any step to see your score';
+  steps.forEach(function(s, i){ $('bd'+(i+1)).textContent = stepText(i); if(scoreState[i]) badge('score'+(i+1), scoreState[i].correct, scoreState[i].total); });
+}
+function init(seedStr){
+  var rand = mulberry32(hashSeed((seedStr||'').trim().toLowerCase())), d = [];
+  for(var i=0;i<6;i++) d.push(Math.floor(rand()*10));
+  setCode = d.join(''); $('codeDisplay').textContent = setCode;
+  var g = CFG.gen(d, H);
+  $('givenBody').innerHTML = g.given; steps = g.steps; scoreState = steps.map(function(){ return null; });
+  renderPage(); updateOverallScore();
+}
+init('');
+var idInput = $('studentId');
+function generate(){ init(idInput.value); $('genStatus').textContent = 'Scenario generated. Data set code ' + setCode.split('').join(' ') + '. All answer fields have been cleared.'; }
+$('genBtn').addEventListener('click', generate);
+idInput.addEventListener('keydown', function(e){ if(e.key==='Enter'){ e.preventDefault(); generate(); } });
+
+/* ============================== PRINT / SAVE AS PDF ============================== */
+function gradeAll(){ steps.forEach(function(s, i){ scoreState[i] = TYPES[s.type][1](s, i+1); }); updateOverallScore(); }
+function preparePrint(){
+  gradeAll();
+  var name = ($('studentName').value||'').trim(), sid = (idInput.value||'').trim();
+  $('pName').textContent = 'Name: ' + (name || '______________________________');
+  $('pId').textContent = 'Student ID: ' + (sid || '______________________');
+  $('pCode').textContent = 'Data set code: ' + setCode;
+  $('pScore').textContent = 'Score: ' + scoreText();
+  $('pBreak').textContent = steps.map(function(s, i){ return 'Step '+(i+1)+', '+s.short+': '+stepText(i); }).join('  ·  ');
+  $('pDate').textContent = 'Printed: ' + new Date().toLocaleString('en-US', { dateStyle:'medium', timeStyle:'short' });
+}
+window.addEventListener('beforeprint', preparePrint);
+$('printBtn').addEventListener('click', function(){
+  var warn = $('nameWarn'), name = ($('studentName').value||'').trim();
+  if(!name){
+    warn.className = 'feedback no'; warn.textContent = 'Please enter your name in the Start here section before saving your PDF.';
+    var f = $('studentName'); f.focus(); f.scrollIntoView({block:'center'}); return;
+  }
+  warn.className = 'feedback'; warn.textContent = '';
+  preparePrint(); window.print();
+});
+
+/* ============================== "ON THIS PAGE" HIGHLIGHT ============================== */
+function watchToc(){
+  var links = document.querySelectorAll('.toc a');
+  if(!('IntersectionObserver' in window) || !links.length) return;
+  links[0].setAttribute('aria-current', 'location');
+  var map = {}; links.forEach(function(a){ map[a.getAttribute('href').slice(1)] = a; });
+  var obs = new IntersectionObserver(function(entries){
+    entries.forEach(function(e){ if(e.isIntersecting){ links.forEach(function(a){ a.removeAttribute('aria-current'); }); var a = map[e.target.id]; if(a) a.setAttribute('aria-current', 'location'); } });
+  }, { rootMargin: '-15% 0px -70% 0px' });
+  Object.keys(map).forEach(function(id){ var el = $(id); if(el) obs.observe(el); });
+}
+/*HOOK*/
+})();
+
+</script>
+</body>
+</html>
