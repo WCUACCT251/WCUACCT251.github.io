@@ -1,0 +1,632 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="color-scheme" content="light dark">
+<meta name="description" content="ACCT 251 practice quiz: Preparing the Financial Statements Practice Quiz">
+<title>Preparing the Financial Statements Practice Quiz | ACCT 251</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,700;12..96,800&family=Figtree:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{
+  color-scheme: light dark;
+  --bg:#F7F4FC; --paper:#FFFFFF; --ink:#1D1730; --muted:#574F6E;
+  --brand:#592C88; --gold:#C9A24B; --gold-text:#735410; --line:#E3DCF0;
+  --btn:#592C88; --btn-ink:#FFFFFF; --btn-hover:#3F1E66;
+  --assets-bg:#FBF3DC; --assets-line:#E2C66F;
+  --liab-bg:#E9ECF8;   --liab-line:#B7C0E6;
+  --eq-bg:#F0E6FA;     --eq-line:#C9AEE8;
+  --up:#1B6B3D; --down:#A3302A;
+  --key-bg:#F0E6FA; --key-icon:#592C88;
+  --warn-bg:#FBEDE9; --warn-ink:#8E2F22;
+  --ok-bg:#E4F4EA; --ok-ink:#1B6B3D; --no-bg:#FBEDE9; --no-ink:#8E2F22;
+  --badge:#E9C46A; --badge-ink:#1D1730;
+  --focus:#592C88;
+  --shadow:0 1px 2px rgba(43,18,80,.06), 0 14px 34px rgba(43,18,80,.09);
+}
+@media (prefers-color-scheme: dark){
+  :root{
+    --bg:#130C20; --paper:#1D1430; --ink:#F2EDFB; --muted:#BDB3D4;
+    --brand:#D2B9F5; --gold:#EBCB7F; --gold-text:#EBCB7F; --line:#342650;
+    --btn:#CDB1F2; --btn-ink:#1A0E2E; --btn-hover:#E1CDF8;
+    --assets-bg:#2B2410; --assets-line:#6B5A25;
+    --liab-bg:#1B2038;   --liab-line:#3F4A7E;
+    --eq-bg:#2E1C4A;     --eq-line:#5F4090;
+    --up:#86DBA6; --down:#FFA295;
+    --key-bg:#2E1C4A; --key-icon:#D2B9F5;
+    --warn-bg:#3A1D1A; --warn-ink:#FFB4A8;
+    --ok-bg:#16301F; --ok-ink:#86DBA6; --no-bg:#3A1D1A; --no-ink:#FFB4A8;
+    --focus:#D2B9F5;
+    --shadow:0 1px 2px rgba(0,0,0,.4), 0 14px 34px rgba(0,0,0,.35);
+  }
+}
+*{box-sizing:border-box;}
+html{ -webkit-text-size-adjust:100%; }
+@media (prefers-reduced-motion:no-preference){ html{ scroll-behavior:smooth; } }
+body{
+  margin:0; background:var(--bg); color:var(--ink);
+  font-family:'Figtree', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+  font-size:17px; line-height:1.65; font-variant-numeric:tabular-nums;
+}
+a{ color:var(--brand); text-underline-offset:3px; }
+p{ margin:0 0 16px; max-width:68ch; }
+strong{ font-weight:700; }
+:focus-visible{ outline:3px solid var(--focus); outline-offset:3px; border-radius:4px; }
+.sr-only{
+  position:absolute !important; width:1px; height:1px; padding:0; margin:-1px; overflow:hidden;
+  clip:rect(0,0,0,0); clip-path:inset(50%); white-space:nowrap; border:0;
+}
+.skip-link{
+  position:absolute; left:12px; top:-80px; z-index:100; background:#fff; color:#592C88;
+  font-weight:700; padding:12px 18px; border:3px solid #592C88; border-radius:10px; text-decoration:none;
+}
+.skip-link:focus{ top:12px; }
+
+/* ---------- Hero ---------- */
+.hero{
+  position:relative; color:#fff; overflow:hidden;
+  background:
+    radial-gradient(900px 380px at 88% -8%, rgba(235,203,127,.30), transparent 62%),
+    linear-gradient(165deg, #6A35A0 0%, #3B1D5C 55%, #2B1250 100%);
+}
+.hero :focus-visible{ outline-color:#FFFFFF; }
+.hero-inner{ max-width:1120px; margin:0 auto; padding:30px 24px clamp(120px,19vw,230px); position:relative; z-index:2; }
+.crumb{ margin:0 0 34px; font-size:15px; }
+.crumb ol{ list-style:none; margin:0; padding:0; display:flex; flex-wrap:wrap; gap:6px 10px; }
+.crumb li+li::before{ content:"/"; content:"/" / ""; margin-right:10px; color:#D9C9EE; }
+.crumb a{ color:#fff; text-decoration:underline; text-decoration-color:rgba(255,255,255,.45); }
+.crumb a:hover{ text-decoration-color:#fff; }
+.pill{
+  display:inline-block; background:#EBCB7F; color:#2B1250; font-weight:700; font-size:14px;
+  padding:4px 14px; border-radius:999px; margin:0 0 18px;
+}
+h1{
+  font-family:'Bricolage Grotesque','Figtree',system-ui,sans-serif; font-weight:800;
+  font-size:clamp(2.5rem,6.4vw,4.4rem); line-height:1.02; letter-spacing:-.025em;
+  margin:0 0 18px; max-width:15ch; text-wrap:balance;
+}
+.subtitle{ font-size:clamp(1.05rem,2vw,1.3rem); color:#E8DEF5; max-width:46ch; margin:0 0 30px; line-height:1.5; }
+.goals{
+  max-width:540px; padding:18px 22px; border-radius:20px;
+  background:rgba(255,255,255,.10); border:1px solid rgba(255,255,255,.28);
+  -webkit-backdrop-filter:blur(8px); backdrop-filter:blur(8px);
+}
+.goals-title{ margin:0 0 10px; font-weight:700; }
+.goals ul{ list-style:none; padding:0; margin:0; }
+.goals li{ display:flex; gap:10px; align-items:flex-start; margin:0 0 8px; font-size:16px; line-height:1.5; }
+.goals li:last-child{ margin-bottom:0; }
+.goals svg{ flex:0 0 20px; margin-top:2px; color:#EBCB7F; }
+.ridge{ position:absolute; left:0; right:0; bottom:-1px; width:100%; height:clamp(110px,18vw,220px); z-index:1; }
+.ridge .r1{ fill:#7A45B3; opacity:.55; }
+.ridge .r2{ fill:#4A2475; opacity:.9; }
+.ridge .r3{ fill:var(--bg); }
+.ridge .crest{ fill:none; stroke:#EBCB7F; stroke-width:2.2; stroke-linejoin:round; opacity:.9; }
+
+/* ---------- Layout ---------- */
+.layout{
+  max-width:1120px; margin:0 auto; padding:24px 24px 90px;
+  display:grid; grid-template-columns:210px minmax(0,1fr); gap:56px;
+}
+.toc{ position:sticky; top:28px; align-self:start; font-size:15px; }
+.toc-title{ margin:0 0 10px; font-weight:700; color:var(--muted); font-size:14px; }
+.toc ul{ list-style:none; margin:0; padding:0; border-left:3px solid var(--line); }
+.toc li{ margin:0; }
+.toc a{
+  display:block; padding:7px 14px; margin-left:-3px; border-left:3px solid transparent;
+  color:var(--muted); text-decoration:none; line-height:1.35;
+}
+.toc a:hover{ color:var(--ink); }
+.toc a[aria-current="location"]{ color:var(--brand); font-weight:700; border-left-color:var(--gold); }
+article.content, .content{ min-width:0; max-width:720px; }
+section.block{ margin:0 0 72px; }
+section.block:last-of-type{ margin-bottom:0; }
+h2{
+  font-family:'Bricolage Grotesque','Figtree',system-ui,sans-serif; font-weight:700;
+  font-size:clamp(1.7rem,3.4vw,2.25rem); line-height:1.1; letter-spacing:-.02em;
+  margin:0 0 20px; color:var(--ink); scroll-margin-top:24px; text-wrap:balance;
+}
+h3{
+  font-family:'Bricolage Grotesque','Figtree',system-ui,sans-serif; font-weight:700;
+  font-size:1.3rem; line-height:1.2; letter-spacing:-.01em; margin:40px 0 14px; color:var(--ink);
+}
+.lede{ font-size:1.12rem; line-height:1.6; }
+
+/* ---------- Steps ---------- */
+.steps{
+  list-style:none; padding:0; margin:0 0 28px; counter-reset:s;
+  display:grid; grid-template-columns:repeat(auto-fit,minmax(200px,1fr)); gap:14px;
+}
+.steps li{
+  counter-increment:s; background:var(--paper); border-radius:18px; padding:16px 18px 18px;
+  box-shadow:var(--shadow); margin:0; font-size:16px; line-height:1.5;
+}
+.steps li::before{
+  content:counter(s); display:grid; place-items:center; width:32px; height:32px; border-radius:50%;
+  background:var(--badge); color:var(--badge-ink); font-weight:800; margin-bottom:10px;
+}
+.split{ display:grid; grid-template-columns:1fr 1fr; gap:14px; margin:0 0 28px; }
+.split > div{ border-radius:18px; padding:18px 20px; }
+.split p{ margin:0; font-size:16px; line-height:1.55; }
+.split h4{ margin:0 0 6px; font-size:1.05rem; font-family:'Bricolage Grotesque','Figtree',sans-serif; }
+.split .rec{ background:var(--assets-bg); border:1px solid var(--assets-line); }
+.split .wait{ background:var(--liab-bg); border:1px solid var(--liab-line); }
+
+/* ---------- Callouts ---------- */
+.callout{
+  display:flex; gap:14px; align-items:flex-start; border-radius:18px; padding:18px 20px; margin:26px 0;
+}
+.callout .callout-icon{
+  flex:0 0 40px; height:40px; border-radius:12px; display:grid; place-items:center;
+}
+.callout p{ margin:0 0 8px; font-size:16px; line-height:1.55; }
+.callout p:last-child{ margin-bottom:0; }
+.callout .callout-title{ font-weight:800; font-size:1.02rem; margin-bottom:4px; }
+.callout.key{ background:var(--key-bg); }
+.callout.key .callout-icon{ background:var(--key-icon); color:#fff; }
+@media (prefers-color-scheme: dark){ .callout.key .callout-icon{ color:#1A0E2E; } }
+.callout.mistake{ background:var(--warn-bg); }
+.callout.mistake .callout-title{ color:var(--warn-ink); }
+.callout.mistake .callout-icon{ color:var(--warn-ink); }
+
+/* ---------- Transactions ---------- */
+.txn{
+  background:var(--paper); border-radius:22px; padding:22px 22px 24px; margin:0 0 20px; box-shadow:var(--shadow);
+}
+.txn-head{ display:flex; align-items:center; gap:12px; margin:0 0 8px; }
+.txn-num{
+  flex:0 0 38px; height:38px; border-radius:50%; display:grid; place-items:center;
+  background:var(--badge); color:var(--badge-ink); font-weight:800; font-size:16px;
+}
+.txn-title{ margin:0; font-size:1.2rem; flex:1 1 auto; font-family:'Bricolage Grotesque','Figtree',sans-serif; font-weight:700; letter-spacing:-.01em; }
+.txn-date{
+  font-size:14px; font-weight:600; color:var(--muted); background:var(--bg); border-radius:999px; padding:3px 12px; white-space:nowrap;
+}
+.txn-desc{ margin:0 0 16px; color:var(--muted); font-size:16px; line-height:1.55; }
+.eq{ display:grid; grid-template-columns:minmax(0,1fr) auto minmax(0,1fr) auto minmax(0,1fr); gap:8px; align-items:stretch; }
+.op{
+  align-self:center; width:26px; text-align:center; font-weight:800; font-size:20px; color:var(--muted);
+}
+.tile{ border-radius:14px; padding:12px 14px 12px; border:1px solid; min-width:0; }
+.t-assets{ background:var(--assets-bg); border-color:var(--assets-line); }
+.t-liab{ background:var(--liab-bg); border-color:var(--liab-line); }
+.t-equity{ background:var(--eq-bg); border-color:var(--eq-line); }
+.tile-label{ margin:0 0 8px; font-weight:800; font-size:14px; max-width:none; color:var(--ink); }
+.lines{ list-style:none; margin:0; padding:0; }
+.lines li{ display:flex; flex-direction:column; margin:0 0 6px; font-size:15px; line-height:1.3; }
+.lines li:last-child{ margin-bottom:0; }
+.acct{ font-weight:600; }
+.amt{ font-weight:700; }
+.amt.up{ color:var(--up); }
+.amt.down{ color:var(--down); }
+.lines .net{
+  margin-top:8px; padding-top:8px; border-top:1px dashed var(--muted); color:var(--muted); font-size:14px;
+}
+.lines .net span:last-child{ font-weight:700; color:var(--ink); }
+.none{ margin:0; color:var(--muted); font-size:15px; max-width:none; }
+
+/* ---------- Expanded equation ---------- */
+.expanded{ background:var(--paper); border-radius:22px; padding:22px; margin:8px 0 26px; box-shadow:var(--shadow); }
+.ex-row{ display:flex; flex-wrap:wrap; align-items:center; gap:10px; margin:0 0 18px; font-weight:700; }
+.chip{ border-radius:999px; padding:6px 16px; border:1px solid var(--eq-line); background:var(--eq-bg); }
+.ex-row .eqop{ color:var(--muted); font-weight:800; }
+.ex-sub{ margin:0 0 12px; color:var(--muted); font-weight:600; font-size:15px; max-width:none; }
+.drivers{ list-style:none; margin:0; padding:0; display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:12px; }
+.drivers li{ border-radius:16px; padding:14px 16px; margin:0; background:var(--bg); font-size:15px; line-height:1.4; }
+.drivers strong{ display:block; font-size:1.05rem; margin-bottom:4px; }
+.drivers .up{ color:var(--up); font-weight:700; }
+.drivers .down{ color:var(--down); font-weight:700; }
+
+/* ---------- Quick check ---------- */
+.check{ background:var(--paper); border-radius:22px; padding:22px; margin:32px 0; box-shadow:var(--shadow); }
+.check-title{ margin:0 0 12px; font-size:1.05rem; color:var(--gold-text); }
+.check fieldset{ border:0; padding:0; margin:0 0 16px; min-width:0; }
+.check legend{ font-weight:700; font-size:1.08rem; line-height:1.4; padding:0; margin:0 0 12px; }
+.opt{
+  display:flex; gap:12px; align-items:flex-start; padding:12px 14px; margin:0 0 8px; cursor:pointer;
+  border:1.5px solid var(--line); border-radius:14px; font-size:16px; line-height:1.45;
+}
+.opt:hover{ border-color:var(--brand); }
+.opt:has(input:checked){ border-color:var(--brand); background:var(--key-bg); }
+.opt input{ margin-top:4px; width:18px; height:18px; accent-color:var(--brand); flex:0 0 auto; }
+.btn{
+  font:inherit; font-weight:700; font-size:16px; background:var(--btn); color:var(--btn-ink); border:0;
+  border-radius:999px; padding:11px 24px; cursor:pointer; text-decoration:none; display:inline-block;
+  transition:background-color .15s;
+}
+.btn:hover{ background:var(--btn-hover); }
+.feedback{ margin:14px 0 0; padding:0; border-radius:14px; font-size:16px; line-height:1.5; max-width:none; }
+.feedback.ok, .feedback.no, .feedback.info{ padding:12px 16px; }
+.feedback.ok{ background:var(--ok-bg); color:var(--ok-ink); }
+.feedback.no{ background:var(--no-bg); color:var(--no-ink); }
+.feedback.info{ background:var(--bg); color:var(--ink); }
+.feedback strong{ margin-right:4px; }
+
+/* ---------- Summary ---------- */
+.balance{
+  display:grid; grid-template-columns:minmax(0,1fr) auto minmax(0,1fr) auto minmax(0,1fr); gap:10px; align-items:center;
+  margin:0 0 20px;
+}
+.bal{ border-radius:18px; padding:14px 16px; border:1px solid; text-align:left; }
+.bal.t-assets{ background:var(--assets-bg); border-color:var(--assets-line); }
+.bal.t-liab{ background:var(--liab-bg); border-color:var(--liab-line); }
+.bal.t-equity{ background:var(--eq-bg); border-color:var(--eq-line); }
+.bal .lab{ margin:0; font-size:14px; font-weight:700; color:var(--muted); max-width:none; }
+.bal .num{ margin:0; font-family:'Bricolage Grotesque','Figtree',sans-serif; font-weight:800; font-size:clamp(1.3rem,3vw,1.8rem); letter-spacing:-.02em; max-width:none; line-height:1.15; }
+.bento{ display:grid; grid-template-columns:1fr 1fr; gap:16px; margin:0 0 22px; align-items:start; }
+.bento .b-assets{ grid-row:span 2; }
+.sumcard{ background:var(--paper); border-radius:20px; box-shadow:var(--shadow); overflow:hidden; padding-top:16px; }
+.sum{ width:100%; border-collapse:collapse; font-size:16px; }
+.sum caption{
+  text-align:left; font-family:'Bricolage Grotesque','Figtree',sans-serif; font-weight:700; font-size:1.1rem;
+  padding:0 16px 8px; color:var(--ink);
+}
+.sum th, .sum td{ padding:10px 16px; border-bottom:1px solid var(--line); }
+.sum th[scope="row"]{ text-align:left; font-weight:500; }
+.sum td{ text-align:right; font-weight:600; }
+.sum tfoot th[scope="row"], .sum tfoot td{ font-weight:800; border-bottom:0; }
+.s-assets tfoot th, .s-assets tfoot td{ background:var(--assets-bg); }
+.s-liab tfoot th, .s-liab tfoot td{ background:var(--liab-bg); }
+.s-equity tfoot th, .s-equity tfoot td{ background:var(--eq-bg); }
+
+.pagefoot{ margin-top:48px; display:flex; flex-wrap:wrap; gap:18px; align-items:center; justify-content:space-between; }
+.pagefoot p{ margin:0; flex:1 1 320px; }
+footer{ padding:26px 24px 46px; text-align:center; color:var(--muted); font-size:14px; border-top:1px solid var(--line); }
+footer p{ margin:0 auto; max-width:none; }
+
+/* ---------- Responsive ---------- */
+@media (max-width:960px){
+  .layout{ grid-template-columns:minmax(0,1fr); gap:28px; padding-top:20px; }
+  .toc{ position:static; }
+  .toc ul{ display:flex; flex-wrap:wrap; gap:8px; border-left:0; }
+  .toc a{ border:1.5px solid var(--line); border-radius:999px; padding:6px 14px; margin:0; background:var(--paper); }
+  .toc a[aria-current="location"]{ border-color:var(--gold); }
+}
+@media (max-width:640px){
+  body{ font-size:16.5px; }
+  .eq, .balance{ grid-template-columns:minmax(0,1fr); gap:6px; }
+  .op{ width:auto; justify-self:center; }
+  .drivers{ grid-template-columns:minmax(0,1fr); }
+  .split, .bento{ grid-template-columns:minmax(0,1fr); }
+  .bento .b-assets{ grid-row:auto; }
+  .txn-head{ flex-wrap:wrap; }
+  .txn-date{ margin-left:50px; }
+}
+@media print{
+  .toc, .skip-link, .check .btn{ display:none; }
+  .layout{ display:block; }
+  .hero{ background:#fff; color:#000; }
+}
+
+
+/* ---------- Chapter 3 additions ---------- */
+ul.plain{ margin:0 0 18px; padding-left:22px; max-width:68ch; }
+ul.plain li{ margin:0 0 8px; }
+.tablewrap{
+  position:relative; overflow-x:auto; margin:0 0 26px; border-radius:20px; background:var(--paper); box-shadow:var(--shadow);
+}
+.data{ width:100%; border-collapse:collapse; font-size:15.5px; min-width:540px; }
+.data caption{
+  text-align:left; font-family:'Bricolage Grotesque','Figtree',sans-serif; font-weight:700; font-size:1.1rem;
+  padding:16px 16px 8px; color:var(--ink);
+}
+.data th, .data td{ padding:10px 14px; border-bottom:1px solid var(--line); text-align:left; vertical-align:top; line-height:1.45; }
+.data thead th{ font-size:14px; color:var(--muted); font-weight:700; background:var(--bg); }
+.data tbody th[scope="row"]{ font-weight:600; }
+.data .num{ text-align:right; white-space:nowrap; }
+.data tfoot th, .data tfoot td{ font-weight:800; border-bottom:0; background:var(--eq-bg); }
+.data .note{ display:block; font-size:14px; color:var(--muted); font-weight:500; }
+.yes{ color:var(--ok-ink); font-weight:700; }
+.nope{ color:var(--no-ink); font-weight:700; }
+.chg-up{ color:var(--up); font-weight:700; }
+.chg-down{ color:var(--down); font-weight:700; }
+.dim{ color:var(--muted); }
+
+/* Four types grid */
+.types{ display:grid; grid-template-columns:1fr 1fr; gap:14px; margin:0 0 28px; }
+.typegroup{ grid-column:1 / -1; margin:10px 0 0; font-weight:800; font-size:15px; color:var(--gold-text); max-width:none; }
+.typegroup:first-child{ margin-top:0; }
+.type{ border-radius:18px; padding:16px 18px 18px; border:1px solid; }
+.type.pre{ background:var(--assets-bg); border-color:var(--assets-line); }
+.type.acc{ background:var(--liab-bg); border-color:var(--liab-line); }
+.type h4{ margin:0 0 6px; font-size:1.08rem; font-family:'Bricolage Grotesque','Figtree',sans-serif; }
+.type p{ margin:0 0 10px; font-size:15.5px; line-height:1.5; }
+.type .pattern{ margin:0; font-size:15px; font-weight:600; padding-top:10px; border-top:1px dashed var(--muted); }
+
+/* Adjustment cards */
+.tag{
+  display:inline-block; font-size:13px; font-weight:700; border-radius:999px; padding:2px 10px; margin:0 0 12px;
+  background:var(--eq-bg); color:var(--brand); border:1px solid var(--eq-line);
+}
+.je{ width:100%; border-collapse:collapse; font-size:15.5px; margin:0 0 14px; background:var(--bg); border-radius:14px; overflow:hidden; }
+.je caption{ text-align:left; font-weight:800; font-size:14px; color:var(--muted); padding:0 0 6px; }
+.je th, .je td{ padding:9px 14px; text-align:left; border-bottom:1px solid var(--line); }
+.je thead th{ font-size:13px; color:var(--muted); font-weight:700; }
+.je tbody tr:last-child th, .je tbody tr:last-child td{ border-bottom:0; }
+.je tbody th{ font-weight:600; }
+.je .num{ text-align:right; width:100px; white-space:nowrap; font-weight:700; }
+.je .cr{ padding-left:40px; }
+.fx{ list-style:none; margin:0; padding:0; display:flex; flex-wrap:wrap; gap:8px; }
+.fx li{ margin:0; font-size:14.5px; line-height:1.35; padding:6px 12px; border-radius:999px; border:1px solid var(--line); background:var(--paper); }
+.fx .is{ border-color:var(--eq-line); background:var(--eq-bg); }
+.fx .bs{ border-color:var(--assets-line); background:var(--assets-bg); }
+.calc{ background:var(--paper); border-radius:18px; padding:16px 18px; margin:0 0 20px; box-shadow:var(--shadow); }
+.calc p{ margin:0 0 6px; font-size:16px; max-width:none; }
+.calc p:last-child{ margin:0; }
+.calc .formula{ font-weight:700; font-size:1.05rem; }
+
+/* Think-about-it callout */
+.callout.think{ background:var(--assets-bg); border:1px solid var(--assets-line); }
+.callout.think .callout-icon{ background:var(--gold); color:#2B1250; }
+
+/* Financial statements */
+.stmt{ width:100%; border-collapse:collapse; font-size:16px; min-width:0; }
+.stmt caption{ padding:18px 16px 12px; text-align:center; line-height:1.35; }
+.stmt caption .co{ display:block; font-family:'Bricolage Grotesque','Figtree',sans-serif; font-weight:800; font-size:1.15rem; color:var(--ink); }
+.stmt caption .st{ display:block; font-weight:700; color:var(--ink); }
+.stmt caption .dt{ display:block; font-size:14px; color:var(--muted); font-weight:600; }
+.stmt th, .stmt td{ padding:8px 16px; border:0; text-align:left; }
+.stmt td{ text-align:right; white-space:nowrap; font-weight:600; width:130px; }
+.stmt .sec th{ font-weight:800; padding-top:16px; color:var(--brand); }
+.stmt .sub th{ font-weight:700; padding-top:10px; }
+.stmt .ind th{ padding-left:34px; font-weight:500; }
+.stmt .ind2 th{ padding-left:52px; font-weight:500; }
+.stmt .tot th, .stmt .tot td{ font-weight:800; border-top:1px solid var(--muted); }
+.stmt .grand th, .stmt .grand td{ font-weight:800; border-top:1px solid var(--muted); border-bottom:4px double var(--muted); background:var(--eq-bg); }
+.stmt.wide{ min-width:560px; }
+.stmt.wide thead th{ font-size:14px; color:var(--muted); text-align:right; font-weight:700; border-bottom:1px solid var(--line); }
+.stmt.wide thead th:first-child{ text-align:left; }
+.stmt.wide td{ width:auto; }
+.flowmap{ list-style:none; margin:0 0 28px; padding:0; display:grid; gap:12px; }
+.flowmap li{ margin:0; background:var(--paper); border-radius:18px; padding:14px 18px; box-shadow:var(--shadow); font-size:16px; line-height:1.5; border-left:6px solid var(--gold); }
+.flowmap strong{ display:block; font-family:'Bricolage Grotesque','Figtree',sans-serif; font-size:1.08rem; }
+@media (max-width:640px){
+  .types{ grid-template-columns:minmax(0,1fr); }
+  .je .cr{ padding-left:26px; }
+  .stmt td{ width:auto; }
+}
+.drivers.two{ grid-template-columns:repeat(2,minmax(0,1fr)); }
+@media (max-width:640px){ .drivers.two{ grid-template-columns:minmax(0,1fr); } }
+
+
+.quiz-wrap{ max-width:780px; margin:0 auto; padding:24px 24px 90px; }
+.intro{ background:var(--paper); border-radius:22px; padding:20px 22px; box-shadow:var(--shadow); margin:0 0 28px; }
+.intro h2{ font-size:1.35rem; margin:0 0 10px; }
+.intro ul{ margin:0; padding-left:22px; }
+.intro li{ margin:0 0 6px; }
+.q{ background:var(--paper); border-radius:22px; padding:20px 22px 22px; margin:0 0 18px; box-shadow:var(--shadow); }
+.q fieldset{ border:0; padding:0; margin:0; min-width:0; }
+.q legend{ font-weight:700; font-size:1.06rem; line-height:1.45; padding:0; margin:0 0 14px; }
+.qnum{ display:inline-grid; place-items:center; width:30px; height:30px; border-radius:50%; background:var(--badge); color:var(--badge-ink); font-weight:800; font-size:14px; margin-right:10px; vertical-align:middle; }
+.q.is-ok{ box-shadow:inset 6px 0 0 var(--ok-ink), var(--shadow); }
+.q.is-no{ box-shadow:inset 6px 0 0 var(--no-ink), var(--shadow); }
+.opt.right{ border-color:var(--ok-ink); background:var(--ok-bg); }
+.qfb:empty{ display:none; }
+.actions{ display:flex; flex-wrap:wrap; gap:12px; align-items:center; margin:26px 0 0; }
+.btn.secondary{ background:transparent; color:var(--brand); border:2px solid var(--brand); }
+.btn.secondary:hover{ background:var(--key-bg); }
+.score{ background:var(--paper); border-radius:22px; padding:22px; margin:0 0 24px; box-shadow:var(--shadow); border-left:8px solid var(--gold); }
+.score[hidden]{ display:none; }
+.score h2{ margin:0 0 6px; font-size:1.5rem; }
+.score p{ margin:0; }
+.backlinks{ display:flex; flex-wrap:wrap; gap:12px; margin:34px 0 0; }
+@media print{ .actions, .backlinks{ display:none; } }
+
+</style>
+</head>
+<body>
+
+<a class="skip-link" href="#main-content">Skip to main content</a>
+
+<header class="hero">
+  <div class="hero-inner">
+    <nav class="crumb" aria-label="Breadcrumb">
+      <ol>
+        <li><a href="../index.html">All course materials</a></li>
+        <li>ACCT 251</li>
+        <li><span aria-current="page">Practice quiz</span></li>
+      </ol>
+    </nav>
+    <p class="pill">Practice quiz</p>
+    <h1>Preparing the financial statements</h1>
+    <p class="subtitle">Practice quiz on the income statement, statement of stockholders&rsquo; equity, and classified balance sheet.</p>
+    <div class="goals"><p class="goals-title">How this quiz works:</p><ul><li><svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true" focusable="false"><path d="M5 12.5l4.5 4.5L19 7.5" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg><span>16 multiple-choice questions, one best answer each.</span></li><li><svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true" focusable="false"><path d="M5 12.5l4.5 4.5L19 7.5" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Check your answers any time; you&rsquo;ll see your score and an explanation for every question.</span></li><li><svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true" focusable="false"><path d="M5 12.5l4.5 4.5L19 7.5" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Retake it as often as you like. Nothing is recorded or graded.</span></li></ul></div>
+  </div>
+  <svg class="ridge" viewBox="0 0 1440 220" preserveAspectRatio="none" aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg">
+    <path class="r1" d="M0,150 L110,96 L190,128 L320,52 L430,120 L540,78 L660,138 L790,60 L900,118 L1030,70 L1150,126 L1290,58 L1440,110 L1440,220 L0,220 Z"/>
+    <path class="r2" d="M0,176 L140,122 L250,158 L390,96 L520,152 L640,112 L770,168 L910,104 L1040,150 L1180,100 L1320,152 L1440,128 L1440,220 L0,220 Z"/>
+    <polyline class="crest" points="0,176 140,122 250,158 390,96 520,152 640,112 770,168 910,104 1040,150 1180,100 1320,152 1440,128"/>
+    <path class="r3" d="M0,204 L170,164 L300,190 L470,148 L610,188 L780,156 L930,192 L1100,152 L1250,190 L1440,166 L1440,220 L0,220 Z"/>
+  </svg>
+</header>
+
+<main class="quiz-wrap" id="main-content" tabindex="-1">
+  <div class="score" id="score" tabindex="-1" role="status" hidden>
+    <h2 id="score-head"></h2>
+    <p id="score-text"></p>
+  </div>
+
+  <form id="quiz" novalidate>
+    
+      <div class="q" id="q1">
+        <fieldset data-correct="c" data-explain="Net income from the income statement feeds the statement of stockholders’ equity, and ending retained earnings from that statement feeds the balance sheet.">
+          <legend><span class="qnum" aria-hidden="true">1</span><span class="sr-only">Question 1: </span>In what order are the financial statements prepared?</legend>
+          <label class="opt"><input type="radio" name="q1" value="a"><span><b>A.</b> Balance sheet, income statement, statement of stockholders&rsquo; equity</span></label><label class="opt"><input type="radio" name="q1" value="b"><span><b>B.</b> Statement of stockholders&rsquo; equity, balance sheet, income statement</span></label><label class="opt"><input type="radio" name="q1" value="c"><span><b>C.</b> Income statement, statement of stockholders&rsquo; equity, balance sheet</span></label><label class="opt"><input type="radio" name="q1" value="d"><span><b>D.</b> Income statement, balance sheet, statement of stockholders&rsquo; equity</span></label>
+        </fieldset>
+        <p class="feedback qfb"></p>
+      </div>
+      <div class="q" id="q2">
+        <fieldset data-correct="a" data-explain="The income statement reports only revenues and expenses. Dividends are a distribution to owners, not an expense, so they appear on the statement of stockholders’ equity.">
+          <legend><span class="qnum" aria-hidden="true">2</span><span class="sr-only">Question 2: </span>Which accounts are reported on the income statement?</legend>
+          <label class="opt"><input type="radio" name="q2" value="a"><span><b>A.</b> Revenues and expenses</span></label><label class="opt"><input type="radio" name="q2" value="b"><span><b>B.</b> Revenues, expenses, and dividends</span></label><label class="opt"><input type="radio" name="q2" value="c"><span><b>C.</b> Assets and liabilities</span></label><label class="opt"><input type="radio" name="q2" value="d"><span><b>D.</b> Common stock and retained earnings</span></label>
+        </fieldset>
+        <p class="feedback qfb"></p>
+      </div>
+      <div class="q" id="q3">
+        <fieldset data-correct="d" data-explain="Revenues minus expenses: $48,000 − ($18,000 + $6,000 + $2,500 + $1,500) = $20,000. Dividends are not an expense.">
+          <legend><span class="qnum" aria-hidden="true">3</span><span class="sr-only">Question 3: </span>Sylva Snow Cone Co. reports service revenue of $48,000, salaries expense of $18,000, rent expense of $6,000, depreciation expense of $2,500, utilities expense of $1,500, and dividends of $4,000. What is net income?</legend>
+          <label class="opt"><input type="radio" name="q3" value="a"><span><b>A.</b> $16,000</span></label><label class="opt"><input type="radio" name="q3" value="b"><span><b>B.</b> $24,000</span></label><label class="opt"><input type="radio" name="q3" value="c"><span><b>C.</b> $22,500</span></label><label class="opt"><input type="radio" name="q3" value="d"><span><b>D.</b> $20,000</span></label>
+        </fieldset>
+        <p class="feedback qfb"></p>
+      </div>
+      <div class="q" id="q4">
+        <fieldset data-correct="a" data-explain="$32,000 + $20,000 − $4,000 = $48,000.">
+          <legend><span class="qnum" aria-hidden="true">4</span><span class="sr-only">Question 4: </span>Beginning retained earnings is $32,000, net income is $20,000, and dividends are $4,000. What is ending retained earnings?</legend>
+          <label class="opt"><input type="radio" name="q4" value="a"><span><b>A.</b> $48,000</span></label><label class="opt"><input type="radio" name="q4" value="b"><span><b>B.</b> $56,000</span></label><label class="opt"><input type="radio" name="q4" value="c"><span><b>C.</b> $52,000</span></label><label class="opt"><input type="radio" name="q4" value="d"><span><b>D.</b> $16,000</span></label>
+        </fieldset>
+        <p class="feedback qfb"></p>
+      </div>
+      <div class="q" id="q5">
+        <fieldset data-correct="b" data-explain="Dividends reduce retained earnings and are shown on the statement of stockholders’ equity.">
+          <legend><span class="qnum" aria-hidden="true">5</span><span class="sr-only">Question 5: </span>On which financial statement do dividends appear?</legend>
+          <label class="opt"><input type="radio" name="q5" value="a"><span><b>A.</b> Income statement, as an expense</span></label><label class="opt"><input type="radio" name="q5" value="b"><span><b>B.</b> Statement of stockholders&rsquo; equity, as a reduction of retained earnings</span></label><label class="opt"><input type="radio" name="q5" value="c"><span><b>C.</b> Balance sheet, as a liability</span></label><label class="opt"><input type="radio" name="q5" value="d"><span><b>D.</b> They don&rsquo;t appear on any statement</span></label>
+        </fieldset>
+        <p class="feedback qfb"></p>
+      </div>
+      <div class="q" id="q6">
+        <fieldset data-correct="c" data-explain="The trial balance shows retained earnings before the current period’s revenues, expenses, and dividends are added in. Use the ending balance from the statement of stockholders’ equity on the balance sheet.">
+          <legend><span class="qnum" aria-hidden="true">6</span><span class="sr-only">Question 6: </span>The Retained earnings balance listed on an adjusted trial balance represents:</legend>
+          <label class="opt"><input type="radio" name="q6" value="a"><span><b>A.</b> The ending balance to report on the balance sheet</span></label><label class="opt"><input type="radio" name="q6" value="b"><span><b>B.</b> Net income for the current period</span></label><label class="opt"><input type="radio" name="q6" value="c"><span><b>C.</b> The balance at the beginning of the period</span></label><label class="opt"><input type="radio" name="q6" value="d"><span><b>D.</b> Total dividends paid since the company began</span></label>
+        </fieldset>
+        <p class="feedback qfb"></p>
+      </div>
+      <div class="q" id="q7">
+        <fieldset data-correct="d" data-explain="Prepaid rent will be used up within the year, so it’s current. The other three provide benefits for more than a year.">
+          <legend><span class="qnum" aria-hidden="true">7</span><span class="sr-only">Question 7: </span>Which of these is classified as a current asset?</legend>
+          <label class="opt"><input type="radio" name="q7" value="a"><span><b>A.</b> Equipment</span></label><label class="opt"><input type="radio" name="q7" value="b"><span><b>B.</b> A patent</span></label><label class="opt"><input type="radio" name="q7" value="c"><span><b>C.</b> A five-year investment in another company&rsquo;s bonds</span></label><label class="opt"><input type="radio" name="q7" value="d"><span><b>D.</b> Prepaid rent covering the next six months</span></label>
+        </fieldset>
+        <p class="feedback qfb"></p>
+      </div>
+      <div class="q" id="q8">
+        <fieldset data-correct="b" data-explain="Current assets are listed by liquidity, starting with the asset closest to cash. Cash is first, then receivables, then prepaid items like supplies.">
+          <legend><span class="qnum" aria-hidden="true">8</span><span class="sr-only">Question 8: </span>In what order are current assets usually listed?</legend>
+          <label class="opt"><input type="radio" name="q8" value="a"><span><b>A.</b> Supplies, accounts receivable, cash</span></label><label class="opt"><input type="radio" name="q8" value="b"><span><b>B.</b> Cash, accounts receivable, supplies</span></label><label class="opt"><input type="radio" name="q8" value="c"><span><b>C.</b> Accounts receivable, cash, supplies</span></label><label class="opt"><input type="radio" name="q8" value="d"><span><b>D.</b> Alphabetical order</span></label>
+        </fieldset>
+        <p class="feedback qfb"></p>
+      </div>
+      <div class="q" id="q9">
+        <fieldset data-correct="a" data-explain="Intangible assets lack physical form but have long-term value, such as patents, copyrights, trademarks, and franchises.">
+          <legend><span class="qnum" aria-hidden="true">9</span><span class="sr-only">Question 9: </span>Which of the following is an intangible asset?</legend>
+          <label class="opt"><input type="radio" name="q9" value="a"><span><b>A.</b> A trademark</span></label><label class="opt"><input type="radio" name="q9" value="b"><span><b>B.</b> Land</span></label><label class="opt"><input type="radio" name="q9" value="c"><span><b>C.</b> Accounts receivable</span></label><label class="opt"><input type="radio" name="q9" value="d"><span><b>D.</b> Supplies</span></label>
+        </fieldset>
+        <p class="feedback qfb"></p>
+      </div>
+      <div class="q" id="q10">
+        <fieldset data-correct="c" data-explain="Deferred revenue is an obligation to deliver services. Because the service will be delivered within a year, it’s a current liability.">
+          <legend><span class="qnum" aria-hidden="true">10</span><span class="sr-only">Question 10: </span>Waynesville Bike Works collected cash in advance for bike tune-ups it will perform in the next three months. How is this reported on the balance sheet?</legend>
+          <label class="opt"><input type="radio" name="q10" value="a"><span><b>A.</b> Current asset</span></label><label class="opt"><input type="radio" name="q10" value="b"><span><b>B.</b> Revenue</span></label><label class="opt"><input type="radio" name="q10" value="c"><span><b>C.</b> Current liability</span></label><label class="opt"><input type="radio" name="q10" value="d"><span><b>D.</b> Long-term liability</span></label>
+        </fieldset>
+        <p class="feedback qfb"></p>
+      </div>
+      <div class="q" id="q11">
+        <fieldset data-correct="b" data-explain="Liabilities due more than one year after the balance sheet date are long-term.">
+          <legend><span class="qnum" aria-hidden="true">11</span><span class="sr-only">Question 11: </span>A note payable is due in three years. On the balance sheet it is classified as a:</legend>
+          <label class="opt"><input type="radio" name="q11" value="a"><span><b>A.</b> Current liability</span></label><label class="opt"><input type="radio" name="q11" value="b"><span><b>B.</b> Long-term liability</span></label><label class="opt"><input type="radio" name="q11" value="c"><span><b>C.</b> Long-term asset</span></label><label class="opt"><input type="radio" name="q11" value="d"><span><b>D.</b> Part of stockholders&rsquo; equity</span></label>
+        </fieldset>
+        <p class="feedback qfb"></p>
+      </div>
+      <div class="q" id="q12">
+        <fieldset data-correct="d" data-explain="Current assets ÷ current liabilities = $90,000 ÷ $36,000 = 2.5. The company has $2.50 of current assets for every $1 of current liabilities.">
+          <legend><span class="qnum" aria-hidden="true">12</span><span class="sr-only">Question 12: </span>Lake Junaluska Kayak Co. has current assets of $90,000 and current liabilities of $36,000. What is its current ratio?</legend>
+          <label class="opt"><input type="radio" name="q12" value="a"><span><b>A.</b> 0.4</span></label><label class="opt"><input type="radio" name="q12" value="b"><span><b>B.</b> 54,000</span></label><label class="opt"><input type="radio" name="q12" value="c"><span><b>C.</b> 3.0</span></label><label class="opt"><input type="radio" name="q12" value="d"><span><b>D.</b> 2.5</span></label>
+        </fieldset>
+        <p class="feedback qfb"></p>
+      </div>
+      <div class="q" id="q13">
+        <fieldset data-correct="a" data-explain="$20,000 + $8,000 + $2,000 + ($50,000 − $10,000) = $70,000. Accumulated depreciation reduces assets.">
+          <legend><span class="qnum" aria-hidden="true">13</span><span class="sr-only">Question 13: </span>A company has Cash $20,000, Accounts receivable $8,000, Supplies $2,000, Equipment $50,000, and Accumulated depreciation $10,000. What are total assets?</legend>
+          <label class="opt"><input type="radio" name="q13" value="a"><span><b>A.</b> $70,000</span></label><label class="opt"><input type="radio" name="q13" value="b"><span><b>B.</b> $80,000</span></label><label class="opt"><input type="radio" name="q13" value="c"><span><b>C.</b> $90,000</span></label><label class="opt"><input type="radio" name="q13" value="d"><span><b>D.</b> $60,000</span></label>
+        </fieldset>
+        <p class="feedback qfb"></p>
+      </div>
+      <div class="q" id="q14">
+        <fieldset data-correct="d" data-explain="The balance sheet shows balances on one date. The income statement summarizes activity over a period, such as a month or year.">
+          <legend><span class="qnum" aria-hidden="true">14</span><span class="sr-only">Question 14: </span>Which statement best describes the time frame of the balance sheet and the income statement?</legend>
+          <label class="opt"><input type="radio" name="q14" value="a"><span><b>A.</b> Both cover a span of time.</span></label><label class="opt"><input type="radio" name="q14" value="b"><span><b>B.</b> Both report balances at a single point in time.</span></label><label class="opt"><input type="radio" name="q14" value="c"><span><b>C.</b> The balance sheet covers a span of time; the income statement is a single date.</span></label><label class="opt"><input type="radio" name="q14" value="d"><span><b>D.</b> The balance sheet is a single point in time; the income statement covers a span of time.</span></label>
+        </fieldset>
+        <p class="feedback qfb"></p>
+      </div>
+      <div class="q" id="q15">
+        <fieldset data-correct="a" data-explain="The trial balance shows the beginning balance. Without this period’s net income and dividends, equity is wrong and the balance sheet won’t balance.">
+          <legend><span class="qnum" aria-hidden="true">15</span><span class="sr-only">Question 15: </span>If retained earnings from the <em>adjusted trial balance</em> were used on the balance sheet instead of the ending balance, what would happen?</legend>
+          <label class="opt"><input type="radio" name="q15" value="a"><span><b>A.</b> Total assets would not equal total liabilities plus stockholders&rsquo; equity.</span></label><label class="opt"><input type="radio" name="q15" value="b"><span><b>B.</b> Net income would be overstated.</span></label><label class="opt"><input type="radio" name="q15" value="c"><span><b>C.</b> Nothing; the two balances are always the same.</span></label><label class="opt"><input type="radio" name="q15" value="d"><span><b>D.</b> Current liabilities would be understated.</span></label>
+        </fieldset>
+        <p class="feedback qfb"></p>
+      </div>
+      <div class="q" id="q16">
+        <fieldset data-correct="c" data-explain="Cash flows are reported as operating, investing, and financing activities.">
+          <legend><span class="qnum" aria-hidden="true">16</span><span class="sr-only">Question 16: </span>The statement of cash flows groups cash receipts and payments into which three categories?</legend>
+          <label class="opt"><input type="radio" name="q16" value="a"><span><b>A.</b> Current, long-term, and equity</span></label><label class="opt"><input type="radio" name="q16" value="b"><span><b>B.</b> Revenues, expenses, and dividends</span></label><label class="opt"><input type="radio" name="q16" value="c"><span><b>C.</b> Operating, investing, and financing</span></label><label class="opt"><input type="radio" name="q16" value="d"><span><b>D.</b> Assets, liabilities, and stockholders&rsquo; equity</span></label>
+        </fieldset>
+        <p class="feedback qfb"></p>
+      </div>
+    <div class="actions">
+      <button type="submit" class="btn">Check my answers</button>
+      <button type="button" class="btn secondary" id="reset">Clear and start over</button>
+    </div>
+  </form>
+
+  <div class="backlinks">
+    <a class="btn secondary" href="../notes/ch3-part-b.html"><span aria-hidden="true">&larr;</span> Review the notes: Preparing the financial statements</a>
+    <a class="btn secondary" href="../index.html">All course materials</a>
+  </div>
+</main>
+
+<footer>
+  <p>Western Carolina University &middot; Department of Accounting</p>
+</footer>
+
+<script>
+(function () {
+  var form = document.getElementById('quiz');
+  var qs = form.querySelectorAll('.q');
+  var score = document.getElementById('score');
+  var scoreText = document.getElementById('score-text');
+  var scoreHead = document.getElementById('score-head');
+  function fb(out, kind, lead, text) {
+    out.className = 'feedback qfb ' + kind; out.textContent = '';
+    var s = document.createElement('strong'); s.textContent = lead; out.appendChild(s);
+    out.appendChild(document.createTextNode(text));
+  }
+  form.addEventListener('submit', function (e) {
+    e.preventDefault();
+    var right = 0, blank = 0;
+    qs.forEach(function (q) {
+      var fs = q.querySelector('fieldset'), out = q.querySelector('.qfb');
+      var sel = fs.querySelector('input:checked');
+      q.classList.remove('is-ok', 'is-no');
+      fs.querySelectorAll('.opt').forEach(function (o) { o.classList.remove('right'); });
+      if (!sel) { blank++; fb(out, 'info', 'Not answered. ', 'Choose an answer, then check again.'); return; }
+      if (sel.value === fs.dataset.correct) {
+        right++; q.classList.add('is-ok'); fb(out, 'ok', 'Correct. ', fs.dataset.explain);
+      } else {
+        q.classList.add('is-no');
+        fs.querySelector('input[value="' + fs.dataset.correct + '"]').closest('.opt').classList.add('right');
+        fb(out, 'no', 'Not quite. The correct answer is ' + fs.dataset.correct.toUpperCase() + '. ', fs.dataset.explain);
+      }
+    });
+    var pct = Math.round(right / qs.length * 100);
+    scoreHead.textContent = 'You scored ' + right + ' out of ' + qs.length + ' (' + pct + '%)';
+    scoreText.textContent = (blank ? blank + ' question' + (blank === 1 ? ' was' : 's were') + ' left blank. ' : '') +
+      (pct >= 90 ? 'Excellent work. You have a strong handle on this material.' :
+       pct >= 70 ? 'Solid effort. Review the explanations below for the ones you missed.' :
+       'Review the notes, read the explanations below, and try again.');
+    score.hidden = false;
+    score.focus();
+  });
+  document.getElementById('reset').addEventListener('click', function () {
+    form.reset();
+    qs.forEach(function (q) {
+      q.classList.remove('is-ok', 'is-no');
+      q.querySelectorAll('.opt').forEach(function (o) { o.classList.remove('right'); });
+      var out = q.querySelector('.qfb'); out.className = 'feedback qfb'; out.textContent = '';
+    });
+    score.hidden = true;
+    document.getElementById('main-content').focus();
+    window.scrollTo(0, 0);
+  });
+})();
+</script>
+</body>
+</html>

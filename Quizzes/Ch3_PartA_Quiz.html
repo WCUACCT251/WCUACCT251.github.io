@@ -1,0 +1,632 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="color-scheme" content="light dark">
+<meta name="description" content="ACCT 251 practice quiz: Adjusting the Accounts Practice Quiz">
+<title>Adjusting the Accounts Practice Quiz | ACCT 251</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,700;12..96,800&family=Figtree:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{
+  color-scheme: light dark;
+  --bg:#F7F4FC; --paper:#FFFFFF; --ink:#1D1730; --muted:#574F6E;
+  --brand:#592C88; --gold:#C9A24B; --gold-text:#735410; --line:#E3DCF0;
+  --btn:#592C88; --btn-ink:#FFFFFF; --btn-hover:#3F1E66;
+  --assets-bg:#FBF3DC; --assets-line:#E2C66F;
+  --liab-bg:#E9ECF8;   --liab-line:#B7C0E6;
+  --eq-bg:#F0E6FA;     --eq-line:#C9AEE8;
+  --up:#1B6B3D; --down:#A3302A;
+  --key-bg:#F0E6FA; --key-icon:#592C88;
+  --warn-bg:#FBEDE9; --warn-ink:#8E2F22;
+  --ok-bg:#E4F4EA; --ok-ink:#1B6B3D; --no-bg:#FBEDE9; --no-ink:#8E2F22;
+  --badge:#E9C46A; --badge-ink:#1D1730;
+  --focus:#592C88;
+  --shadow:0 1px 2px rgba(43,18,80,.06), 0 14px 34px rgba(43,18,80,.09);
+}
+@media (prefers-color-scheme: dark){
+  :root{
+    --bg:#130C20; --paper:#1D1430; --ink:#F2EDFB; --muted:#BDB3D4;
+    --brand:#D2B9F5; --gold:#EBCB7F; --gold-text:#EBCB7F; --line:#342650;
+    --btn:#CDB1F2; --btn-ink:#1A0E2E; --btn-hover:#E1CDF8;
+    --assets-bg:#2B2410; --assets-line:#6B5A25;
+    --liab-bg:#1B2038;   --liab-line:#3F4A7E;
+    --eq-bg:#2E1C4A;     --eq-line:#5F4090;
+    --up:#86DBA6; --down:#FFA295;
+    --key-bg:#2E1C4A; --key-icon:#D2B9F5;
+    --warn-bg:#3A1D1A; --warn-ink:#FFB4A8;
+    --ok-bg:#16301F; --ok-ink:#86DBA6; --no-bg:#3A1D1A; --no-ink:#FFB4A8;
+    --focus:#D2B9F5;
+    --shadow:0 1px 2px rgba(0,0,0,.4), 0 14px 34px rgba(0,0,0,.35);
+  }
+}
+*{box-sizing:border-box;}
+html{ -webkit-text-size-adjust:100%; }
+@media (prefers-reduced-motion:no-preference){ html{ scroll-behavior:smooth; } }
+body{
+  margin:0; background:var(--bg); color:var(--ink);
+  font-family:'Figtree', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+  font-size:17px; line-height:1.65; font-variant-numeric:tabular-nums;
+}
+a{ color:var(--brand); text-underline-offset:3px; }
+p{ margin:0 0 16px; max-width:68ch; }
+strong{ font-weight:700; }
+:focus-visible{ outline:3px solid var(--focus); outline-offset:3px; border-radius:4px; }
+.sr-only{
+  position:absolute !important; width:1px; height:1px; padding:0; margin:-1px; overflow:hidden;
+  clip:rect(0,0,0,0); clip-path:inset(50%); white-space:nowrap; border:0;
+}
+.skip-link{
+  position:absolute; left:12px; top:-80px; z-index:100; background:#fff; color:#592C88;
+  font-weight:700; padding:12px 18px; border:3px solid #592C88; border-radius:10px; text-decoration:none;
+}
+.skip-link:focus{ top:12px; }
+
+/* ---------- Hero ---------- */
+.hero{
+  position:relative; color:#fff; overflow:hidden;
+  background:
+    radial-gradient(900px 380px at 88% -8%, rgba(235,203,127,.30), transparent 62%),
+    linear-gradient(165deg, #6A35A0 0%, #3B1D5C 55%, #2B1250 100%);
+}
+.hero :focus-visible{ outline-color:#FFFFFF; }
+.hero-inner{ max-width:1120px; margin:0 auto; padding:30px 24px clamp(120px,19vw,230px); position:relative; z-index:2; }
+.crumb{ margin:0 0 34px; font-size:15px; }
+.crumb ol{ list-style:none; margin:0; padding:0; display:flex; flex-wrap:wrap; gap:6px 10px; }
+.crumb li+li::before{ content:"/"; content:"/" / ""; margin-right:10px; color:#D9C9EE; }
+.crumb a{ color:#fff; text-decoration:underline; text-decoration-color:rgba(255,255,255,.45); }
+.crumb a:hover{ text-decoration-color:#fff; }
+.pill{
+  display:inline-block; background:#EBCB7F; color:#2B1250; font-weight:700; font-size:14px;
+  padding:4px 14px; border-radius:999px; margin:0 0 18px;
+}
+h1{
+  font-family:'Bricolage Grotesque','Figtree',system-ui,sans-serif; font-weight:800;
+  font-size:clamp(2.5rem,6.4vw,4.4rem); line-height:1.02; letter-spacing:-.025em;
+  margin:0 0 18px; max-width:15ch; text-wrap:balance;
+}
+.subtitle{ font-size:clamp(1.05rem,2vw,1.3rem); color:#E8DEF5; max-width:46ch; margin:0 0 30px; line-height:1.5; }
+.goals{
+  max-width:540px; padding:18px 22px; border-radius:20px;
+  background:rgba(255,255,255,.10); border:1px solid rgba(255,255,255,.28);
+  -webkit-backdrop-filter:blur(8px); backdrop-filter:blur(8px);
+}
+.goals-title{ margin:0 0 10px; font-weight:700; }
+.goals ul{ list-style:none; padding:0; margin:0; }
+.goals li{ display:flex; gap:10px; align-items:flex-start; margin:0 0 8px; font-size:16px; line-height:1.5; }
+.goals li:last-child{ margin-bottom:0; }
+.goals svg{ flex:0 0 20px; margin-top:2px; color:#EBCB7F; }
+.ridge{ position:absolute; left:0; right:0; bottom:-1px; width:100%; height:clamp(110px,18vw,220px); z-index:1; }
+.ridge .r1{ fill:#7A45B3; opacity:.55; }
+.ridge .r2{ fill:#4A2475; opacity:.9; }
+.ridge .r3{ fill:var(--bg); }
+.ridge .crest{ fill:none; stroke:#EBCB7F; stroke-width:2.2; stroke-linejoin:round; opacity:.9; }
+
+/* ---------- Layout ---------- */
+.layout{
+  max-width:1120px; margin:0 auto; padding:24px 24px 90px;
+  display:grid; grid-template-columns:210px minmax(0,1fr); gap:56px;
+}
+.toc{ position:sticky; top:28px; align-self:start; font-size:15px; }
+.toc-title{ margin:0 0 10px; font-weight:700; color:var(--muted); font-size:14px; }
+.toc ul{ list-style:none; margin:0; padding:0; border-left:3px solid var(--line); }
+.toc li{ margin:0; }
+.toc a{
+  display:block; padding:7px 14px; margin-left:-3px; border-left:3px solid transparent;
+  color:var(--muted); text-decoration:none; line-height:1.35;
+}
+.toc a:hover{ color:var(--ink); }
+.toc a[aria-current="location"]{ color:var(--brand); font-weight:700; border-left-color:var(--gold); }
+article.content, .content{ min-width:0; max-width:720px; }
+section.block{ margin:0 0 72px; }
+section.block:last-of-type{ margin-bottom:0; }
+h2{
+  font-family:'Bricolage Grotesque','Figtree',system-ui,sans-serif; font-weight:700;
+  font-size:clamp(1.7rem,3.4vw,2.25rem); line-height:1.1; letter-spacing:-.02em;
+  margin:0 0 20px; color:var(--ink); scroll-margin-top:24px; text-wrap:balance;
+}
+h3{
+  font-family:'Bricolage Grotesque','Figtree',system-ui,sans-serif; font-weight:700;
+  font-size:1.3rem; line-height:1.2; letter-spacing:-.01em; margin:40px 0 14px; color:var(--ink);
+}
+.lede{ font-size:1.12rem; line-height:1.6; }
+
+/* ---------- Steps ---------- */
+.steps{
+  list-style:none; padding:0; margin:0 0 28px; counter-reset:s;
+  display:grid; grid-template-columns:repeat(auto-fit,minmax(200px,1fr)); gap:14px;
+}
+.steps li{
+  counter-increment:s; background:var(--paper); border-radius:18px; padding:16px 18px 18px;
+  box-shadow:var(--shadow); margin:0; font-size:16px; line-height:1.5;
+}
+.steps li::before{
+  content:counter(s); display:grid; place-items:center; width:32px; height:32px; border-radius:50%;
+  background:var(--badge); color:var(--badge-ink); font-weight:800; margin-bottom:10px;
+}
+.split{ display:grid; grid-template-columns:1fr 1fr; gap:14px; margin:0 0 28px; }
+.split > div{ border-radius:18px; padding:18px 20px; }
+.split p{ margin:0; font-size:16px; line-height:1.55; }
+.split h4{ margin:0 0 6px; font-size:1.05rem; font-family:'Bricolage Grotesque','Figtree',sans-serif; }
+.split .rec{ background:var(--assets-bg); border:1px solid var(--assets-line); }
+.split .wait{ background:var(--liab-bg); border:1px solid var(--liab-line); }
+
+/* ---------- Callouts ---------- */
+.callout{
+  display:flex; gap:14px; align-items:flex-start; border-radius:18px; padding:18px 20px; margin:26px 0;
+}
+.callout .callout-icon{
+  flex:0 0 40px; height:40px; border-radius:12px; display:grid; place-items:center;
+}
+.callout p{ margin:0 0 8px; font-size:16px; line-height:1.55; }
+.callout p:last-child{ margin-bottom:0; }
+.callout .callout-title{ font-weight:800; font-size:1.02rem; margin-bottom:4px; }
+.callout.key{ background:var(--key-bg); }
+.callout.key .callout-icon{ background:var(--key-icon); color:#fff; }
+@media (prefers-color-scheme: dark){ .callout.key .callout-icon{ color:#1A0E2E; } }
+.callout.mistake{ background:var(--warn-bg); }
+.callout.mistake .callout-title{ color:var(--warn-ink); }
+.callout.mistake .callout-icon{ color:var(--warn-ink); }
+
+/* ---------- Transactions ---------- */
+.txn{
+  background:var(--paper); border-radius:22px; padding:22px 22px 24px; margin:0 0 20px; box-shadow:var(--shadow);
+}
+.txn-head{ display:flex; align-items:center; gap:12px; margin:0 0 8px; }
+.txn-num{
+  flex:0 0 38px; height:38px; border-radius:50%; display:grid; place-items:center;
+  background:var(--badge); color:var(--badge-ink); font-weight:800; font-size:16px;
+}
+.txn-title{ margin:0; font-size:1.2rem; flex:1 1 auto; font-family:'Bricolage Grotesque','Figtree',sans-serif; font-weight:700; letter-spacing:-.01em; }
+.txn-date{
+  font-size:14px; font-weight:600; color:var(--muted); background:var(--bg); border-radius:999px; padding:3px 12px; white-space:nowrap;
+}
+.txn-desc{ margin:0 0 16px; color:var(--muted); font-size:16px; line-height:1.55; }
+.eq{ display:grid; grid-template-columns:minmax(0,1fr) auto minmax(0,1fr) auto minmax(0,1fr); gap:8px; align-items:stretch; }
+.op{
+  align-self:center; width:26px; text-align:center; font-weight:800; font-size:20px; color:var(--muted);
+}
+.tile{ border-radius:14px; padding:12px 14px 12px; border:1px solid; min-width:0; }
+.t-assets{ background:var(--assets-bg); border-color:var(--assets-line); }
+.t-liab{ background:var(--liab-bg); border-color:var(--liab-line); }
+.t-equity{ background:var(--eq-bg); border-color:var(--eq-line); }
+.tile-label{ margin:0 0 8px; font-weight:800; font-size:14px; max-width:none; color:var(--ink); }
+.lines{ list-style:none; margin:0; padding:0; }
+.lines li{ display:flex; flex-direction:column; margin:0 0 6px; font-size:15px; line-height:1.3; }
+.lines li:last-child{ margin-bottom:0; }
+.acct{ font-weight:600; }
+.amt{ font-weight:700; }
+.amt.up{ color:var(--up); }
+.amt.down{ color:var(--down); }
+.lines .net{
+  margin-top:8px; padding-top:8px; border-top:1px dashed var(--muted); color:var(--muted); font-size:14px;
+}
+.lines .net span:last-child{ font-weight:700; color:var(--ink); }
+.none{ margin:0; color:var(--muted); font-size:15px; max-width:none; }
+
+/* ---------- Expanded equation ---------- */
+.expanded{ background:var(--paper); border-radius:22px; padding:22px; margin:8px 0 26px; box-shadow:var(--shadow); }
+.ex-row{ display:flex; flex-wrap:wrap; align-items:center; gap:10px; margin:0 0 18px; font-weight:700; }
+.chip{ border-radius:999px; padding:6px 16px; border:1px solid var(--eq-line); background:var(--eq-bg); }
+.ex-row .eqop{ color:var(--muted); font-weight:800; }
+.ex-sub{ margin:0 0 12px; color:var(--muted); font-weight:600; font-size:15px; max-width:none; }
+.drivers{ list-style:none; margin:0; padding:0; display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:12px; }
+.drivers li{ border-radius:16px; padding:14px 16px; margin:0; background:var(--bg); font-size:15px; line-height:1.4; }
+.drivers strong{ display:block; font-size:1.05rem; margin-bottom:4px; }
+.drivers .up{ color:var(--up); font-weight:700; }
+.drivers .down{ color:var(--down); font-weight:700; }
+
+/* ---------- Quick check ---------- */
+.check{ background:var(--paper); border-radius:22px; padding:22px; margin:32px 0; box-shadow:var(--shadow); }
+.check-title{ margin:0 0 12px; font-size:1.05rem; color:var(--gold-text); }
+.check fieldset{ border:0; padding:0; margin:0 0 16px; min-width:0; }
+.check legend{ font-weight:700; font-size:1.08rem; line-height:1.4; padding:0; margin:0 0 12px; }
+.opt{
+  display:flex; gap:12px; align-items:flex-start; padding:12px 14px; margin:0 0 8px; cursor:pointer;
+  border:1.5px solid var(--line); border-radius:14px; font-size:16px; line-height:1.45;
+}
+.opt:hover{ border-color:var(--brand); }
+.opt:has(input:checked){ border-color:var(--brand); background:var(--key-bg); }
+.opt input{ margin-top:4px; width:18px; height:18px; accent-color:var(--brand); flex:0 0 auto; }
+.btn{
+  font:inherit; font-weight:700; font-size:16px; background:var(--btn); color:var(--btn-ink); border:0;
+  border-radius:999px; padding:11px 24px; cursor:pointer; text-decoration:none; display:inline-block;
+  transition:background-color .15s;
+}
+.btn:hover{ background:var(--btn-hover); }
+.feedback{ margin:14px 0 0; padding:0; border-radius:14px; font-size:16px; line-height:1.5; max-width:none; }
+.feedback.ok, .feedback.no, .feedback.info{ padding:12px 16px; }
+.feedback.ok{ background:var(--ok-bg); color:var(--ok-ink); }
+.feedback.no{ background:var(--no-bg); color:var(--no-ink); }
+.feedback.info{ background:var(--bg); color:var(--ink); }
+.feedback strong{ margin-right:4px; }
+
+/* ---------- Summary ---------- */
+.balance{
+  display:grid; grid-template-columns:minmax(0,1fr) auto minmax(0,1fr) auto minmax(0,1fr); gap:10px; align-items:center;
+  margin:0 0 20px;
+}
+.bal{ border-radius:18px; padding:14px 16px; border:1px solid; text-align:left; }
+.bal.t-assets{ background:var(--assets-bg); border-color:var(--assets-line); }
+.bal.t-liab{ background:var(--liab-bg); border-color:var(--liab-line); }
+.bal.t-equity{ background:var(--eq-bg); border-color:var(--eq-line); }
+.bal .lab{ margin:0; font-size:14px; font-weight:700; color:var(--muted); max-width:none; }
+.bal .num{ margin:0; font-family:'Bricolage Grotesque','Figtree',sans-serif; font-weight:800; font-size:clamp(1.3rem,3vw,1.8rem); letter-spacing:-.02em; max-width:none; line-height:1.15; }
+.bento{ display:grid; grid-template-columns:1fr 1fr; gap:16px; margin:0 0 22px; align-items:start; }
+.bento .b-assets{ grid-row:span 2; }
+.sumcard{ background:var(--paper); border-radius:20px; box-shadow:var(--shadow); overflow:hidden; padding-top:16px; }
+.sum{ width:100%; border-collapse:collapse; font-size:16px; }
+.sum caption{
+  text-align:left; font-family:'Bricolage Grotesque','Figtree',sans-serif; font-weight:700; font-size:1.1rem;
+  padding:0 16px 8px; color:var(--ink);
+}
+.sum th, .sum td{ padding:10px 16px; border-bottom:1px solid var(--line); }
+.sum th[scope="row"]{ text-align:left; font-weight:500; }
+.sum td{ text-align:right; font-weight:600; }
+.sum tfoot th[scope="row"], .sum tfoot td{ font-weight:800; border-bottom:0; }
+.s-assets tfoot th, .s-assets tfoot td{ background:var(--assets-bg); }
+.s-liab tfoot th, .s-liab tfoot td{ background:var(--liab-bg); }
+.s-equity tfoot th, .s-equity tfoot td{ background:var(--eq-bg); }
+
+.pagefoot{ margin-top:48px; display:flex; flex-wrap:wrap; gap:18px; align-items:center; justify-content:space-between; }
+.pagefoot p{ margin:0; flex:1 1 320px; }
+footer{ padding:26px 24px 46px; text-align:center; color:var(--muted); font-size:14px; border-top:1px solid var(--line); }
+footer p{ margin:0 auto; max-width:none; }
+
+/* ---------- Responsive ---------- */
+@media (max-width:960px){
+  .layout{ grid-template-columns:minmax(0,1fr); gap:28px; padding-top:20px; }
+  .toc{ position:static; }
+  .toc ul{ display:flex; flex-wrap:wrap; gap:8px; border-left:0; }
+  .toc a{ border:1.5px solid var(--line); border-radius:999px; padding:6px 14px; margin:0; background:var(--paper); }
+  .toc a[aria-current="location"]{ border-color:var(--gold); }
+}
+@media (max-width:640px){
+  body{ font-size:16.5px; }
+  .eq, .balance{ grid-template-columns:minmax(0,1fr); gap:6px; }
+  .op{ width:auto; justify-self:center; }
+  .drivers{ grid-template-columns:minmax(0,1fr); }
+  .split, .bento{ grid-template-columns:minmax(0,1fr); }
+  .bento .b-assets{ grid-row:auto; }
+  .txn-head{ flex-wrap:wrap; }
+  .txn-date{ margin-left:50px; }
+}
+@media print{
+  .toc, .skip-link, .check .btn{ display:none; }
+  .layout{ display:block; }
+  .hero{ background:#fff; color:#000; }
+}
+
+
+/* ---------- Chapter 3 additions ---------- */
+ul.plain{ margin:0 0 18px; padding-left:22px; max-width:68ch; }
+ul.plain li{ margin:0 0 8px; }
+.tablewrap{
+  position:relative; overflow-x:auto; margin:0 0 26px; border-radius:20px; background:var(--paper); box-shadow:var(--shadow);
+}
+.data{ width:100%; border-collapse:collapse; font-size:15.5px; min-width:540px; }
+.data caption{
+  text-align:left; font-family:'Bricolage Grotesque','Figtree',sans-serif; font-weight:700; font-size:1.1rem;
+  padding:16px 16px 8px; color:var(--ink);
+}
+.data th, .data td{ padding:10px 14px; border-bottom:1px solid var(--line); text-align:left; vertical-align:top; line-height:1.45; }
+.data thead th{ font-size:14px; color:var(--muted); font-weight:700; background:var(--bg); }
+.data tbody th[scope="row"]{ font-weight:600; }
+.data .num{ text-align:right; white-space:nowrap; }
+.data tfoot th, .data tfoot td{ font-weight:800; border-bottom:0; background:var(--eq-bg); }
+.data .note{ display:block; font-size:14px; color:var(--muted); font-weight:500; }
+.yes{ color:var(--ok-ink); font-weight:700; }
+.nope{ color:var(--no-ink); font-weight:700; }
+.chg-up{ color:var(--up); font-weight:700; }
+.chg-down{ color:var(--down); font-weight:700; }
+.dim{ color:var(--muted); }
+
+/* Four types grid */
+.types{ display:grid; grid-template-columns:1fr 1fr; gap:14px; margin:0 0 28px; }
+.typegroup{ grid-column:1 / -1; margin:10px 0 0; font-weight:800; font-size:15px; color:var(--gold-text); max-width:none; }
+.typegroup:first-child{ margin-top:0; }
+.type{ border-radius:18px; padding:16px 18px 18px; border:1px solid; }
+.type.pre{ background:var(--assets-bg); border-color:var(--assets-line); }
+.type.acc{ background:var(--liab-bg); border-color:var(--liab-line); }
+.type h4{ margin:0 0 6px; font-size:1.08rem; font-family:'Bricolage Grotesque','Figtree',sans-serif; }
+.type p{ margin:0 0 10px; font-size:15.5px; line-height:1.5; }
+.type .pattern{ margin:0; font-size:15px; font-weight:600; padding-top:10px; border-top:1px dashed var(--muted); }
+
+/* Adjustment cards */
+.tag{
+  display:inline-block; font-size:13px; font-weight:700; border-radius:999px; padding:2px 10px; margin:0 0 12px;
+  background:var(--eq-bg); color:var(--brand); border:1px solid var(--eq-line);
+}
+.je{ width:100%; border-collapse:collapse; font-size:15.5px; margin:0 0 14px; background:var(--bg); border-radius:14px; overflow:hidden; }
+.je caption{ text-align:left; font-weight:800; font-size:14px; color:var(--muted); padding:0 0 6px; }
+.je th, .je td{ padding:9px 14px; text-align:left; border-bottom:1px solid var(--line); }
+.je thead th{ font-size:13px; color:var(--muted); font-weight:700; }
+.je tbody tr:last-child th, .je tbody tr:last-child td{ border-bottom:0; }
+.je tbody th{ font-weight:600; }
+.je .num{ text-align:right; width:100px; white-space:nowrap; font-weight:700; }
+.je .cr{ padding-left:40px; }
+.fx{ list-style:none; margin:0; padding:0; display:flex; flex-wrap:wrap; gap:8px; }
+.fx li{ margin:0; font-size:14.5px; line-height:1.35; padding:6px 12px; border-radius:999px; border:1px solid var(--line); background:var(--paper); }
+.fx .is{ border-color:var(--eq-line); background:var(--eq-bg); }
+.fx .bs{ border-color:var(--assets-line); background:var(--assets-bg); }
+.calc{ background:var(--paper); border-radius:18px; padding:16px 18px; margin:0 0 20px; box-shadow:var(--shadow); }
+.calc p{ margin:0 0 6px; font-size:16px; max-width:none; }
+.calc p:last-child{ margin:0; }
+.calc .formula{ font-weight:700; font-size:1.05rem; }
+
+/* Think-about-it callout */
+.callout.think{ background:var(--assets-bg); border:1px solid var(--assets-line); }
+.callout.think .callout-icon{ background:var(--gold); color:#2B1250; }
+
+/* Financial statements */
+.stmt{ width:100%; border-collapse:collapse; font-size:16px; min-width:0; }
+.stmt caption{ padding:18px 16px 12px; text-align:center; line-height:1.35; }
+.stmt caption .co{ display:block; font-family:'Bricolage Grotesque','Figtree',sans-serif; font-weight:800; font-size:1.15rem; color:var(--ink); }
+.stmt caption .st{ display:block; font-weight:700; color:var(--ink); }
+.stmt caption .dt{ display:block; font-size:14px; color:var(--muted); font-weight:600; }
+.stmt th, .stmt td{ padding:8px 16px; border:0; text-align:left; }
+.stmt td{ text-align:right; white-space:nowrap; font-weight:600; width:130px; }
+.stmt .sec th{ font-weight:800; padding-top:16px; color:var(--brand); }
+.stmt .sub th{ font-weight:700; padding-top:10px; }
+.stmt .ind th{ padding-left:34px; font-weight:500; }
+.stmt .ind2 th{ padding-left:52px; font-weight:500; }
+.stmt .tot th, .stmt .tot td{ font-weight:800; border-top:1px solid var(--muted); }
+.stmt .grand th, .stmt .grand td{ font-weight:800; border-top:1px solid var(--muted); border-bottom:4px double var(--muted); background:var(--eq-bg); }
+.stmt.wide{ min-width:560px; }
+.stmt.wide thead th{ font-size:14px; color:var(--muted); text-align:right; font-weight:700; border-bottom:1px solid var(--line); }
+.stmt.wide thead th:first-child{ text-align:left; }
+.stmt.wide td{ width:auto; }
+.flowmap{ list-style:none; margin:0 0 28px; padding:0; display:grid; gap:12px; }
+.flowmap li{ margin:0; background:var(--paper); border-radius:18px; padding:14px 18px; box-shadow:var(--shadow); font-size:16px; line-height:1.5; border-left:6px solid var(--gold); }
+.flowmap strong{ display:block; font-family:'Bricolage Grotesque','Figtree',sans-serif; font-size:1.08rem; }
+@media (max-width:640px){
+  .types{ grid-template-columns:minmax(0,1fr); }
+  .je .cr{ padding-left:26px; }
+  .stmt td{ width:auto; }
+}
+.drivers.two{ grid-template-columns:repeat(2,minmax(0,1fr)); }
+@media (max-width:640px){ .drivers.two{ grid-template-columns:minmax(0,1fr); } }
+
+
+.quiz-wrap{ max-width:780px; margin:0 auto; padding:24px 24px 90px; }
+.intro{ background:var(--paper); border-radius:22px; padding:20px 22px; box-shadow:var(--shadow); margin:0 0 28px; }
+.intro h2{ font-size:1.35rem; margin:0 0 10px; }
+.intro ul{ margin:0; padding-left:22px; }
+.intro li{ margin:0 0 6px; }
+.q{ background:var(--paper); border-radius:22px; padding:20px 22px 22px; margin:0 0 18px; box-shadow:var(--shadow); }
+.q fieldset{ border:0; padding:0; margin:0; min-width:0; }
+.q legend{ font-weight:700; font-size:1.06rem; line-height:1.45; padding:0; margin:0 0 14px; }
+.qnum{ display:inline-grid; place-items:center; width:30px; height:30px; border-radius:50%; background:var(--badge); color:var(--badge-ink); font-weight:800; font-size:14px; margin-right:10px; vertical-align:middle; }
+.q.is-ok{ box-shadow:inset 6px 0 0 var(--ok-ink), var(--shadow); }
+.q.is-no{ box-shadow:inset 6px 0 0 var(--no-ink), var(--shadow); }
+.opt.right{ border-color:var(--ok-ink); background:var(--ok-bg); }
+.qfb:empty{ display:none; }
+.actions{ display:flex; flex-wrap:wrap; gap:12px; align-items:center; margin:26px 0 0; }
+.btn.secondary{ background:transparent; color:var(--brand); border:2px solid var(--brand); }
+.btn.secondary:hover{ background:var(--key-bg); }
+.score{ background:var(--paper); border-radius:22px; padding:22px; margin:0 0 24px; box-shadow:var(--shadow); border-left:8px solid var(--gold); }
+.score[hidden]{ display:none; }
+.score h2{ margin:0 0 6px; font-size:1.5rem; }
+.score p{ margin:0; }
+.backlinks{ display:flex; flex-wrap:wrap; gap:12px; margin:34px 0 0; }
+@media print{ .actions, .backlinks{ display:none; } }
+
+</style>
+</head>
+<body>
+
+<a class="skip-link" href="#main-content">Skip to main content</a>
+
+<header class="hero">
+  <div class="hero-inner">
+    <nav class="crumb" aria-label="Breadcrumb">
+      <ol>
+        <li><a href="../index.html">All course materials</a></li>
+        <li>ACCT 251</li>
+        <li><span aria-current="page">Practice quiz</span></li>
+      </ol>
+    </nav>
+    <p class="pill">Practice quiz</p>
+    <h1>Adjusting the accounts</h1>
+    <p class="subtitle">Practice quiz on accrual vs. cash basis, the four types of adjusting entries, and the adjusted trial balance.</p>
+    <div class="goals"><p class="goals-title">How this quiz works:</p><ul><li><svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true" focusable="false"><path d="M5 12.5l4.5 4.5L19 7.5" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg><span>16 multiple-choice questions, one best answer each.</span></li><li><svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true" focusable="false"><path d="M5 12.5l4.5 4.5L19 7.5" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Check your answers any time; you&rsquo;ll see your score and an explanation for every question.</span></li><li><svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true" focusable="false"><path d="M5 12.5l4.5 4.5L19 7.5" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Retake it as often as you like. Nothing is recorded or graded.</span></li></ul></div>
+  </div>
+  <svg class="ridge" viewBox="0 0 1440 220" preserveAspectRatio="none" aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg">
+    <path class="r1" d="M0,150 L110,96 L190,128 L320,52 L430,120 L540,78 L660,138 L790,60 L900,118 L1030,70 L1150,126 L1290,58 L1440,110 L1440,220 L0,220 Z"/>
+    <path class="r2" d="M0,176 L140,122 L250,158 L390,96 L520,152 L640,112 L770,168 L910,104 L1040,150 L1180,100 L1320,152 L1440,128 L1440,220 L0,220 Z"/>
+    <polyline class="crest" points="0,176 140,122 250,158 390,96 520,152 640,112 770,168 910,104 1040,150 1180,100 1320,152 1440,128"/>
+    <path class="r3" d="M0,204 L170,164 L300,190 L470,148 L610,188 L780,156 L930,192 L1100,152 L1250,190 L1440,166 L1440,220 L0,220 Z"/>
+  </svg>
+</header>
+
+<main class="quiz-wrap" id="main-content" tabindex="-1">
+  <div class="score" id="score" tabindex="-1" role="status" hidden>
+    <h2 id="score-head"></h2>
+    <p id="score-text"></p>
+  </div>
+
+  <form id="quiz" novalidate>
+    
+      <div class="q" id="q1">
+        <fieldset data-correct="b" data-explain="Accrual-basis revenue follows delivery. Whether cash comes in before, at the same time, or after doesn’t change when revenue is recorded.">
+          <legend><span class="qnum" aria-hidden="true">1</span><span class="sr-only">Question 1: </span>Under accrual-basis accounting, when does a company record revenue?</legend>
+          <label class="opt"><input type="radio" name="q1" value="a"><span><b>A.</b> When cash is collected from the customer</span></label><label class="opt"><input type="radio" name="q1" value="b"><span><b>B.</b> When goods or services are delivered to the customer</span></label><label class="opt"><input type="radio" name="q1" value="c"><span><b>C.</b> When the customer signs a contract</span></label><label class="opt"><input type="radio" name="q1" value="d"><span><b>D.</b> At the end of the year, when the books are closed</span></label>
+        </fieldset>
+        <p class="feedback qfb"></p>
+      </div>
+      <div class="q" id="q2">
+        <fieldset data-correct="c" data-explain="The cash basis records expenses when cash is paid, so the full cost is expensed in December. The accrual basis would wait until January, when the flour is used.">
+          <legend><span class="qnum" aria-hidden="true">2</span><span class="sr-only">Question 2: </span>Highlands Trail Bakery pays cash in December for flour it will use in January. Under <em>cash-basis</em> accounting, when is the expense recorded?</legend>
+          <label class="opt"><input type="radio" name="q2" value="a"><span><b>A.</b> January, when the flour is used</span></label><label class="opt"><input type="radio" name="q2" value="b"><span><b>B.</b> Split between December and January</span></label><label class="opt"><input type="radio" name="q2" value="c"><span><b>C.</b> December, when the cash is paid</span></label><label class="opt"><input type="radio" name="q2" value="d"><span><b>D.</b> Never, because supplies are an asset</span></label>
+        </fieldset>
+        <p class="feedback qfb"></p>
+      </div>
+      <div class="q" id="q3">
+        <fieldset data-correct="a" data-explain="Over time both methods record the same totals. They differ only in which period gets the revenue or expense. GAAP requires the accrual basis for most companies.">
+          <legend><span class="qnum" aria-hidden="true">3</span><span class="sr-only">Question 3: </span>Which statement about accrual-basis and cash-basis accounting is true?</legend>
+          <label class="opt"><input type="radio" name="q3" value="a"><span><b>A.</b> They eventually record the same total revenues and expenses; the difference is timing.</span></label><label class="opt"><input type="radio" name="q3" value="b"><span><b>B.</b> Cash-basis accounting is required by GAAP for large companies.</span></label><label class="opt"><input type="radio" name="q3" value="c"><span><b>C.</b> Accrual-basis accounting ignores cash transactions.</span></label><label class="opt"><input type="radio" name="q3" value="d"><span><b>D.</b> They always report the same net income each period.</span></label>
+        </fieldset>
+        <p class="feedback qfb"></p>
+      </div>
+      <div class="q" id="q4">
+        <fieldset data-correct="d" data-explain="Three months (October through December) have expired: $12,000 ÷ 12 × 3 = $3,000. Record the expense and reduce the prepaid asset.">
+          <legend><span class="qnum" aria-hidden="true">4</span><span class="sr-only">Question 4: </span>Cullowhee Climbing Gym paid $12,000 on October 1 for 12 months of insurance and recorded Prepaid insurance. What adjusting entry is needed on December 31?</legend>
+          <label class="opt"><input type="radio" name="q4" value="a"><span><b>A.</b> Debit Prepaid insurance $3,000; credit Insurance expense $3,000</span></label><label class="opt"><input type="radio" name="q4" value="b"><span><b>B.</b> Debit Insurance expense $9,000; credit Prepaid insurance $9,000</span></label><label class="opt"><input type="radio" name="q4" value="c"><span><b>C.</b> Debit Insurance expense $12,000; credit Cash $12,000</span></label><label class="opt"><input type="radio" name="q4" value="d"><span><b>D.</b> Debit Insurance expense $3,000; credit Prepaid insurance $3,000</span></label>
+        </fieldset>
+        <p class="feedback qfb"></p>
+      </div>
+      <div class="q" id="q5">
+        <fieldset data-correct="a" data-explain="Supplies available ($1,500 + $4,000 = $5,500) minus supplies on hand ($1,200) equals supplies used: $4,300.">
+          <legend><span class="qnum" aria-hidden="true">5</span><span class="sr-only">Question 5: </span>Dillsboro Pottery Studio began the month with $1,500 of supplies and bought $4,000 more. A count at month-end shows $1,200 on hand. What is supplies expense for the month?</legend>
+          <label class="opt"><input type="radio" name="q5" value="a"><span><b>A.</b> $4,300</span></label><label class="opt"><input type="radio" name="q5" value="b"><span><b>B.</b> $2,800</span></label><label class="opt"><input type="radio" name="q5" value="c"><span><b>C.</b> $5,500</span></label><label class="opt"><input type="radio" name="q5" value="d"><span><b>D.</b> $1,200</span></label>
+        </fieldset>
+        <p class="feedback qfb"></p>
+      </div>
+      <div class="q" id="q6">
+        <fieldset data-correct="c" data-explain="$48,000 ÷ 48 months = $1,000 per month, so three months is $3,000.">
+          <legend><span class="qnum" aria-hidden="true">6</span><span class="sr-only">Question 6: </span>Franklin Gem Mine Tours bought a $48,000 sluice system expected to last four years with no resale value. How much depreciation is recorded for the first three months?</legend>
+          <label class="opt"><input type="radio" name="q6" value="a"><span><b>A.</b> $1,000</span></label><label class="opt"><input type="radio" name="q6" value="b"><span><b>B.</b> $12,000</span></label><label class="opt"><input type="radio" name="q6" value="c"><span><b>C.</b> $3,000</span></label><label class="opt"><input type="radio" name="q6" value="d"><span><b>D.</b> $4,000</span></label>
+        </fieldset>
+        <p class="feedback qfb"></p>
+      </div>
+      <div class="q" id="q7">
+        <fieldset data-correct="b" data-explain="Accumulated depreciation is a contra asset account. Crediting it reduces the asset’s book value while leaving the original cost in the Equipment account.">
+          <legend><span class="qnum" aria-hidden="true">7</span><span class="sr-only">Question 7: </span>When recording depreciation, which account is credited?</legend>
+          <label class="opt"><input type="radio" name="q7" value="a"><span><b>A.</b> Equipment</span></label><label class="opt"><input type="radio" name="q7" value="b"><span><b>B.</b> Accumulated depreciation</span></label><label class="opt"><input type="radio" name="q7" value="c"><span><b>C.</b> Depreciation expense</span></label><label class="opt"><input type="radio" name="q7" value="d"><span><b>D.</b> Cash</span></label>
+        </fieldset>
+        <p class="feedback qfb"></p>
+      </div>
+      <div class="q" id="q8">
+        <fieldset data-correct="d" data-explain="Book value (carrying value) is cost minus accumulated depreciation: $90,000 − $27,000 = $63,000.">
+          <legend><span class="qnum" aria-hidden="true">8</span><span class="sr-only">Question 8: </span>Equipment costs $90,000 and has accumulated depreciation of $27,000. What is its book value?</legend>
+          <label class="opt"><input type="radio" name="q8" value="a"><span><b>A.</b> $117,000</span></label><label class="opt"><input type="radio" name="q8" value="b"><span><b>B.</b> $90,000</span></label><label class="opt"><input type="radio" name="q8" value="c"><span><b>C.</b> $27,000</span></label><label class="opt"><input type="radio" name="q8" value="d"><span><b>D.</b> $63,000</span></label>
+        </fieldset>
+        <p class="feedback qfb"></p>
+      </div>
+      <div class="q" id="q9">
+        <fieldset data-correct="a" data-explain="Two months of tours (November and December) have been delivered: 2 × $1,200 = $2,400. Reduce the liability and record the revenue.">
+          <legend><span class="qnum" aria-hidden="true">9</span><span class="sr-only">Question 9: </span>On November 1, Brevard Waterfall Tours collected $7,200 for six months of weekly tours ($1,200 per month) and recorded Deferred revenue. What is the December 31 adjusting entry?</legend>
+          <label class="opt"><input type="radio" name="q9" value="a"><span><b>A.</b> Debit Deferred revenue $2,400; credit Service revenue $2,400</span></label><label class="opt"><input type="radio" name="q9" value="b"><span><b>B.</b> Debit Service revenue $2,400; credit Deferred revenue $2,400</span></label><label class="opt"><input type="radio" name="q9" value="c"><span><b>C.</b> Debit Cash $7,200; credit Service revenue $7,200</span></label><label class="opt"><input type="radio" name="q9" value="d"><span><b>D.</b> Debit Deferred revenue $1,200; credit Service revenue $1,200</span></label>
+        </fieldset>
+        <p class="feedback qfb"></p>
+      </div>
+      <div class="q" id="q10">
+        <fieldset data-correct="c" data-explain="The wages were earned in December, so December carries the expense. Because cash hasn’t been paid, record a liability: Salaries payable.">
+          <legend><span class="qnum" aria-hidden="true">10</span><span class="sr-only">Question 10: </span>Employees at Cashiers Canoe Rentals earn $500 per day. They work December 29, 30, and 31 and will be paid on January 2. What adjustment is needed on December 31?</legend>
+          <label class="opt"><input type="radio" name="q10" value="a"><span><b>A.</b> No adjustment; record the expense when paid on January 2</span></label><label class="opt"><input type="radio" name="q10" value="b"><span><b>B.</b> Debit Salaries payable $1,500; credit Cash $1,500</span></label><label class="opt"><input type="radio" name="q10" value="c"><span><b>C.</b> Debit Salaries expense $1,500; credit Salaries payable $1,500</span></label><label class="opt"><input type="radio" name="q10" value="d"><span><b>D.</b> Debit Salaries expense $1,500; credit Cash $1,500</span></label>
+        </fieldset>
+        <p class="feedback qfb"></p>
+      </div>
+      <div class="q" id="q11">
+        <fieldset data-correct="b" data-explain="$60,000 × 8% × 4/12 = $1,600. September through December is four months.">
+          <legend><span class="qnum" aria-hidden="true">11</span><span class="sr-only">Question 11: </span>On September 1, Murphy Lakeside Lodge borrowed $60,000 on a note with 8% annual interest. How much interest has accrued by December 31?</legend>
+          <label class="opt"><input type="radio" name="q11" value="a"><span><b>A.</b> $4,800</span></label><label class="opt"><input type="radio" name="q11" value="b"><span><b>B.</b> $1,600</span></label><label class="opt"><input type="radio" name="q11" value="c"><span><b>C.</b> $400</span></label><label class="opt"><input type="radio" name="q11" value="d"><span><b>D.</b> $1,200</span></label>
+        </fieldset>
+        <p class="feedback qfb"></p>
+      </div>
+      <div class="q" id="q12">
+        <fieldset data-correct="d" data-explain="Interest owed is tracked separately in Interest payable so it isn’t mixed with the principal in Notes payable.">
+          <legend><span class="qnum" aria-hidden="true">12</span><span class="sr-only">Question 12: </span>When recording accrued interest on a bank loan, which account is credited?</legend>
+          <label class="opt"><input type="radio" name="q12" value="a"><span><b>A.</b> Notes payable</span></label><label class="opt"><input type="radio" name="q12" value="b"><span><b>B.</b> Interest expense</span></label><label class="opt"><input type="radio" name="q12" value="c"><span><b>C.</b> Cash</span></label><label class="opt"><input type="radio" name="q12" value="d"><span><b>D.</b> Interest payable</span></label>
+        </fieldset>
+        <p class="feedback qfb"></p>
+      </div>
+      <div class="q" id="q13">
+        <fieldset data-correct="a" data-explain="The service was delivered in December, so revenue belongs in December. The right to collect later is an asset: Accounts receivable.">
+          <legend><span class="qnum" aria-hidden="true">13</span><span class="sr-only">Question 13: </span>Maggie Valley Ski Rentals delivered $3,500 of equipment tune-ups in late December but won&rsquo;t bill the customers until January. What type of adjustment is needed?</legend>
+          <label class="opt"><input type="radio" name="q13" value="a"><span><b>A.</b> Accrued revenue: debit Accounts receivable, credit Service revenue</span></label><label class="opt"><input type="radio" name="q13" value="b"><span><b>B.</b> Deferred revenue: debit Deferred revenue, credit Service revenue</span></label><label class="opt"><input type="radio" name="q13" value="c"><span><b>C.</b> Prepaid expense: debit Supplies expense, credit Supplies</span></label><label class="opt"><input type="radio" name="q13" value="d"><span><b>D.</b> No adjustment until the customers are billed</span></label>
+        </fieldset>
+        <p class="feedback qfb"></p>
+      </div>
+      <div class="q" id="q14">
+        <fieldset data-correct="c" data-explain="Dividends are transactions with owners and don’t involve revenue or expense, so there’s nothing to adjust. The other three all create timing differences.">
+          <legend><span class="qnum" aria-hidden="true">14</span><span class="sr-only">Question 14: </span>Which transaction does <em>not</em> require an adjusting entry at the end of the period?</legend>
+          <label class="opt"><input type="radio" name="q14" value="a"><span><b>A.</b> Rent paid in advance that is partly used up</span></label><label class="opt"><input type="radio" name="q14" value="b"><span><b>B.</b> Interest that has built up on a loan</span></label><label class="opt"><input type="radio" name="q14" value="c"><span><b>C.</b> A cash dividend paid to stockholders</span></label><label class="opt"><input type="radio" name="q14" value="d"><span><b>D.</b> Services delivered but not yet billed</span></label>
+        </fieldset>
+        <p class="feedback qfb"></p>
+      </div>
+      <div class="q" id="q15">
+        <fieldset data-correct="a" data-explain="Adjustments update accounts for activity that already happened without new cash moving. Each one pairs an income statement account with a balance sheet account, not Cash.">
+          <legend><span class="qnum" aria-hidden="true">15</span><span class="sr-only">Question 15: </span>Which account almost never appears in an adjusting entry?</legend>
+          <label class="opt"><input type="radio" name="q15" value="a"><span><b>A.</b> Cash</span></label><label class="opt"><input type="radio" name="q15" value="b"><span><b>B.</b> Accounts receivable</span></label><label class="opt"><input type="radio" name="q15" value="c"><span><b>C.</b> Deferred revenue</span></label><label class="opt"><input type="radio" name="q15" value="d"><span><b>D.</b> Depreciation expense</span></label>
+        </fieldset>
+        <p class="feedback qfb"></p>
+      </div>
+      <div class="q" id="q16">
+        <fieldset data-correct="b" data-explain="The missing adjustment is Debit Utilities expense, Credit Utilities payable. Leaving it out makes expenses and liabilities too low and net income too high.">
+          <legend><span class="qnum" aria-hidden="true">16</span><span class="sr-only">Question 16: </span>A company forgets to record $2,000 of December utilities that it will pay in January. What is the effect on December&rsquo;s financial statements?</legend>
+          <label class="opt"><input type="radio" name="q16" value="a"><span><b>A.</b> Expenses overstated, net income understated, liabilities overstated</span></label><label class="opt"><input type="radio" name="q16" value="b"><span><b>B.</b> Expenses understated, net income overstated, liabilities understated</span></label><label class="opt"><input type="radio" name="q16" value="c"><span><b>C.</b> Assets understated and liabilities overstated</span></label><label class="opt"><input type="radio" name="q16" value="d"><span><b>D.</b> No effect, because no cash was paid in December</span></label>
+        </fieldset>
+        <p class="feedback qfb"></p>
+      </div>
+    <div class="actions">
+      <button type="submit" class="btn">Check my answers</button>
+      <button type="button" class="btn secondary" id="reset">Clear and start over</button>
+    </div>
+  </form>
+
+  <div class="backlinks">
+    <a class="btn secondary" href="../notes/ch3-part-a.html"><span aria-hidden="true">&larr;</span> Review the notes: Adjusting the accounts</a>
+    <a class="btn secondary" href="../index.html">All course materials</a>
+  </div>
+</main>
+
+<footer>
+  <p>Western Carolina University &middot; Department of Accounting</p>
+</footer>
+
+<script>
+(function () {
+  var form = document.getElementById('quiz');
+  var qs = form.querySelectorAll('.q');
+  var score = document.getElementById('score');
+  var scoreText = document.getElementById('score-text');
+  var scoreHead = document.getElementById('score-head');
+  function fb(out, kind, lead, text) {
+    out.className = 'feedback qfb ' + kind; out.textContent = '';
+    var s = document.createElement('strong'); s.textContent = lead; out.appendChild(s);
+    out.appendChild(document.createTextNode(text));
+  }
+  form.addEventListener('submit', function (e) {
+    e.preventDefault();
+    var right = 0, blank = 0;
+    qs.forEach(function (q) {
+      var fs = q.querySelector('fieldset'), out = q.querySelector('.qfb');
+      var sel = fs.querySelector('input:checked');
+      q.classList.remove('is-ok', 'is-no');
+      fs.querySelectorAll('.opt').forEach(function (o) { o.classList.remove('right'); });
+      if (!sel) { blank++; fb(out, 'info', 'Not answered. ', 'Choose an answer, then check again.'); return; }
+      if (sel.value === fs.dataset.correct) {
+        right++; q.classList.add('is-ok'); fb(out, 'ok', 'Correct. ', fs.dataset.explain);
+      } else {
+        q.classList.add('is-no');
+        fs.querySelector('input[value="' + fs.dataset.correct + '"]').closest('.opt').classList.add('right');
+        fb(out, 'no', 'Not quite. The correct answer is ' + fs.dataset.correct.toUpperCase() + '. ', fs.dataset.explain);
+      }
+    });
+    var pct = Math.round(right / qs.length * 100);
+    scoreHead.textContent = 'You scored ' + right + ' out of ' + qs.length + ' (' + pct + '%)';
+    scoreText.textContent = (blank ? blank + ' question' + (blank === 1 ? ' was' : 's were') + ' left blank. ' : '') +
+      (pct >= 90 ? 'Excellent work. You have a strong handle on this material.' :
+       pct >= 70 ? 'Solid effort. Review the explanations below for the ones you missed.' :
+       'Review the notes, read the explanations below, and try again.');
+    score.hidden = false;
+    score.focus();
+  });
+  document.getElementById('reset').addEventListener('click', function () {
+    form.reset();
+    qs.forEach(function (q) {
+      q.classList.remove('is-ok', 'is-no');
+      q.querySelectorAll('.opt').forEach(function (o) { o.classList.remove('right'); });
+      var out = q.querySelector('.qfb'); out.className = 'feedback qfb'; out.textContent = '';
+    });
+    score.hidden = true;
+    document.getElementById('main-content').focus();
+    window.scrollTo(0, 0);
+  });
+})();
+</script>
+</body>
+</html>
